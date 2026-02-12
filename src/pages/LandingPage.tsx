@@ -285,8 +285,8 @@ const LandingPage: React.FC = () => {
             subtitle: t('college_subtitle'),
             description: t('college_desc'),
             icon: <Business sx={{ fontSize: 40 }} />,
-            color: '#76a345',
-            lightColor: '#eef6e3',
+            color: '#7c3aed', // Modern Violet
+            lightColor: '#f5f3ff',
         },
         {
             type: 'university' as const,
@@ -294,8 +294,8 @@ const LandingPage: React.FC = () => {
             subtitle: t('univ_subtitle'),
             description: t('univ_desc'),
             icon: <AccountBalance sx={{ fontSize: 40 }} />,
-            color: '#76a345',
-            lightColor: '#eef6e3',
+            color: '#059669', // Emerald Green
+            lightColor: '#ecfdf5',
         },
     ];
 
