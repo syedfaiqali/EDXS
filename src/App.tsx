@@ -14,8 +14,6 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
 // Lazy load pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
-const InfoPage = lazy(() => import('./pages/InfoPage'));
-const OrganizationPage = lazy(() => import('./pages/OrganizationPage'));
 
 const LoadingScreen = () => (
   <Box sx={{
@@ -95,8 +93,6 @@ const MainLayout: React.FC = () => {
         <Suspense fallback={<LoadingScreen />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/info" element={<InfoPage />} />
-            <Route path="/organization" element={<OrganizationPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

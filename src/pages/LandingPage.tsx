@@ -153,11 +153,11 @@ const LandingPage: React.FC = () => {
 
     const validateForm = (): boolean => {
         const requiredFields = [
-            { field: 'contactName', label: 'Contact Person Name' },
-            { field: 'email', label: 'Email Address' },
-            { field: 'cellPhone', label: 'Cell Phone Number' },
-            { field: 'address', label: 'Address' },
-            { field: 'city', label: 'City' }
+            { field: 'contactName', label: t('contact_person_name') },
+            { field: 'email', label: t('email_address') },
+            { field: 'cellPhone', label: t('cell_phone_number') },
+            { field: 'address', label: t('address') },
+            { field: 'city', label: t('city') }
         ];
 
         const newErrors: Partial<Record<keyof FormData, boolean>> = {};
@@ -174,13 +174,13 @@ const LandingPage: React.FC = () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (formData.email && !emailRegex.test(formData.email)) {
             newErrors.email = true;
-            if (!firstErrorLabel) firstErrorLabel = 'Valid Email Address';
+            if (!firstErrorLabel) firstErrorLabel = t('valid_email_address');
         }
 
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length > 0) {
-            setToastMessage(`Please fill in the required fields correctly: ${firstErrorLabel}`);
+            setToastMessage(`${t('please_fill_required_fields')}: ${firstErrorLabel}`);
             setToastOpen(true);
 
             // Focus the first empty field
@@ -209,14 +209,14 @@ const LandingPage: React.FC = () => {
 
     const validateOrgForm = (): boolean => {
         const requiredFields = [
-            { field: 'institutionName', label: `${selectedOrg?.name} Name` },
-            { field: 'code', label: 'Organization Code' }
+            { field: 'institutionName', label: `${selectedOrg?.name} ${t('name')}` },
+            { field: 'code', label: t('organization_code') }
         ];
 
         // Add type-specific validation if needed
-        if (selectedOrg?.type === 'school') requiredFields.push({ field: 'curriculum', label: 'Curriculum' });
-        if (selectedOrg?.type === 'college') requiredFields.push({ field: 'affiliation', label: 'Affiliation Board' });
-        if (selectedOrg?.type === 'university') requiredFields.push({ field: 'hecId', label: 'HEC ID' });
+        if (selectedOrg?.type === 'school') requiredFields.push({ field: 'curriculum', label: t('curriculum') });
+        if (selectedOrg?.type === 'college') requiredFields.push({ field: 'affiliation', label: t('affiliation_board') });
+        if (selectedOrg?.type === 'university') requiredFields.push({ field: 'hecId', label: t('hec_id_registration_no') });
 
         const newErrors: Partial<Record<keyof OrgFormData, boolean>> = {};
         let firstErrorLabel = '';
@@ -231,7 +231,7 @@ const LandingPage: React.FC = () => {
         setOrgErrors(newErrors);
 
         if (Object.keys(newErrors).length > 0) {
-            setToastMessage(`Please fill in the required fields correctly: ${firstErrorLabel}`);
+            setToastMessage(`${t('please_fill_required_fields')}: ${firstErrorLabel}`);
             setToastOpen(true);
 
             // Focus the first empty field
