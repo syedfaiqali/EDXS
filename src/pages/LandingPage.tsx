@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, Grid, Paper, keyframes, Button, TextField, MenuItem, Switch, FormControlLabel, Divider, Fade, Snackbar, Alert } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
+import { Box, Container, Typography, Grid, Paper, keyframes, Button, TextField, MenuItem, Divider, Fade, Snackbar, Alert } from '@mui/material';
 import {
     School, Business, AccountBalance, ChevronRight, ArrowBack, ArrowForward, CheckCircleOutline,
     HistoryEdu, Science, Calculate, Brush, Computer, Palette, Biotech, MenuBook,
-    Settings, Group, Description
+    Settings, Landscape
 } from '@mui/icons-material';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // --- Keyframes ---
 const float = keyframes`
@@ -39,10 +40,24 @@ interface FormData {
     postalCode: string;
 }
 
+interface OrgFormData {
+    institutionName: string;
+    code: string;
+    fiscalYear: string;
+    visibility: Record<string, boolean>;
+    // Type specific fields
+    curriculum?: string;
+    affiliation?: string;
+    hecId?: string;
+    logo?: string;
+}
+
 const LandingPage: React.FC = () => {
     const [step, setStep] = useState<Step>('selection');
     const [logoStage, setLogoStage] = useState<'waiting' | 'opening' | 'finished'>('waiting');
     const [selectedOrg, setSelectedOrg] = useState<SelectedOrg | null>(null);
+    const { language, t } = useLanguage();
+
     const [formData, setFormData] = useState<FormData>({
         contactName: '',
         designation: '',
@@ -57,6 +72,28 @@ const LandingPage: React.FC = () => {
     });
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [errors, setErrors] = useState<Partial<Record<keyof FormData, boolean>>>({});
+    const [orgData, setOrgData] = useState<OrgFormData>({
+        institutionName: '',
+        code: '',
+        fiscalYear: '2024-25',
+        visibility: {
+            'Academics': true,
+            'Admission': true,
+            'Human Resource': true,
+            'Fee Management': true,
+            'Dashboard': true
+        },
+        curriculum: '',
+        affiliation: '',
+        hecId: '',
+        logo: ''
+    });
+    const [orgErrors, setOrgErrors] = useState<Partial<Record<keyof OrgFormData, boolean>>>({});
+
+    // Refs for focusing first empty field
+    const fieldRefs = useRef<Partial<Record<keyof FormData, HTMLInputElement>>>({});
+    const orgFieldRefs = useRef<Partial<Record<keyof OrgFormData, HTMLInputElement>>>({});
 
     useEffect(() => {
         // Logo Split Timeline
@@ -71,6 +108,7 @@ const LandingPage: React.FC = () => {
 
     const handleSelect = (type: OrgType, name: string, subtitle: string, description: string, color: string) => {
         setSelectedOrg({ type, name, subtitle, description, color });
+        setOrgData(prev => ({ ...prev, institutionName: name }));
         setStep('info');
     };
 
@@ -79,6 +117,38 @@ const LandingPage: React.FC = () => {
             ...prev,
             [field]: event.target.value
         }));
+        if (errors[field]) {
+            setErrors(prev => ({
+                ...prev,
+                [field]: false
+            }));
+        }
+    };
+
+    const handleOrgFormChange = (field: keyof OrgFormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setOrgData(prev => ({
+            ...prev,
+            [field]: value
+        }));
+        if (orgErrors[field]) {
+            setOrgErrors(prev => ({
+                ...prev,
+                [field]: false
+            }));
+        }
+    };
+
+
+    const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setOrgData(prev => ({ ...prev, logo: reader.result as string }));
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const validateForm = (): boolean => {
@@ -90,19 +160,37 @@ const LandingPage: React.FC = () => {
             { field: 'city', label: 'City' }
         ];
 
+        const newErrors: Partial<Record<keyof FormData, boolean>> = {};
+        let firstErrorLabel = '';
+
         for (const { field, label } of requiredFields) {
             if (!formData[field as keyof FormData].trim()) {
-                setToastMessage(`Please fill in the required field: ${label}`);
-                setToastOpen(true);
-                return false;
+                newErrors[field as keyof FormData] = true;
+                if (!firstErrorLabel) firstErrorLabel = label;
             }
         }
 
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            setToastMessage('Please enter a valid email address');
+        if (formData.email && !emailRegex.test(formData.email)) {
+            newErrors.email = true;
+            if (!firstErrorLabel) firstErrorLabel = 'Valid Email Address';
+        }
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length > 0) {
+            setToastMessage(`Please fill in the required fields correctly: ${firstErrorLabel}`);
             setToastOpen(true);
+
+            // Focus the first empty field
+            const firstEmptyField = requiredFields.find(f => newErrors[f.field as keyof FormData]);
+            if (firstEmptyField && fieldRefs.current[firstEmptyField.field as keyof FormData]) {
+                fieldRefs.current[firstEmptyField.field as keyof FormData]?.focus();
+            } else if (newErrors.email && fieldRefs.current.email) {
+                fieldRefs.current.email.focus();
+            }
+
             return false;
         }
 
@@ -119,39 +207,92 @@ const LandingPage: React.FC = () => {
         setToastOpen(false);
     };
 
-    const handleDone = () => {
-        setStep('complete');
-        setTimeout(() => {
-            // Reset to selection after showing success
-            setStep('selection');
-            setSelectedOrg(null);
-        }, 3000);
+    const validateOrgForm = (): boolean => {
+        const requiredFields = [
+            { field: 'institutionName', label: `${selectedOrg?.name} Name` },
+            { field: 'code', label: 'Organization Code' }
+        ];
+
+        // Add type-specific validation if needed
+        if (selectedOrg?.type === 'school') requiredFields.push({ field: 'curriculum', label: 'Curriculum' });
+        if (selectedOrg?.type === 'college') requiredFields.push({ field: 'affiliation', label: 'Affiliation Board' });
+        if (selectedOrg?.type === 'university') requiredFields.push({ field: 'hecId', label: 'HEC ID' });
+
+        const newErrors: Partial<Record<keyof OrgFormData, boolean>> = {};
+        let firstErrorLabel = '';
+
+        for (const { field, label } of requiredFields) {
+            if (!orgData[field as keyof OrgFormData]?.toString().trim()) {
+                newErrors[field as keyof OrgFormData] = true;
+                if (!firstErrorLabel) firstErrorLabel = label;
+            }
+        }
+
+        setOrgErrors(newErrors);
+
+        if (Object.keys(newErrors).length > 0) {
+            setToastMessage(`Please fill in the required fields correctly: ${firstErrorLabel}`);
+            setToastOpen(true);
+
+            // Focus the first empty field
+            const firstEmptyField = requiredFields.find(f => newErrors[f.field as keyof OrgFormData]);
+            if (firstEmptyField && orgFieldRefs.current[firstEmptyField.field as keyof OrgFormData]) {
+                orgFieldRefs.current[firstEmptyField.field as keyof OrgFormData]?.focus();
+            }
+
+            return false;
+        }
+
+        return true;
     };
+
+    const handleDone = () => {
+        if (validateOrgForm()) {
+            setStep('complete');
+            setTimeout(() => {
+                // Reset to selection after showing success
+                setStep('selection');
+                setSelectedOrg(null);
+                // Clear data
+                setFormData({
+                    contactName: '', designation: '', email: '', cellPhone: '',
+                    landline: '', website: '', address: '', city: '', state: '', postalCode: ''
+                });
+                setOrgData({
+                    institutionName: '', code: '', fiscalYear: '2024-25',
+                    visibility: { 'Academics': true, 'Admission': true, 'Human Resource': true, 'Fee Management': true, 'Dashboard': true }
+                });
+                setErrors({});
+                setOrgErrors({});
+            }, 3000);
+        }
+    };
+
 
     const cards = [
         {
             type: 'school' as const,
-            name: 'School',
-            subtitle: 'K-12 Education Suite',
-            description: 'Comprehensive management for students, exams, and daily attendance.',
+            name: t('school'),
+            subtitle: t('school_subtitle'),
+            description: t('school_desc'),
             icon: <School sx={{ fontSize: 40 }} />,
             color: '#76a345',
             lightColor: '#eef6e3',
         },
         {
             type: 'college' as const,
-            name: 'College',
-            subtitle: 'Academic & Vocational',
-            description: 'Streamline admissions, faculty workflows, and course scheduling.',
+            name: t('college'),
+            subtitle: t('college_subtitle'),
+            description: t('college_desc'),
             icon: <Business sx={{ fontSize: 40 }} />,
             color: '#76a345',
             lightColor: '#eef6e3',
         },
         {
             type: 'university' as const,
-            name: 'University',
-            subtitle: 'Global Campus ERP',
-            description: 'Advanced unification for multi-campus research and administration.',
+            name: t('university'),
+            subtitle: t('univ_subtitle'),
+            description: t('univ_desc'),
             icon: <AccountBalance sx={{ fontSize: 40 }} />,
             color: '#76a345',
             lightColor: '#eef6e3',
@@ -219,6 +360,7 @@ const LandingPage: React.FC = () => {
                         zIndex: 9999,
                         pointerEvents: logoStage === 'finished' ? 'none' : 'auto',
                         display: 'flex',
+                        direction: 'ltr'
                     }}
                 >
                     {/* Left Panel: "ED" */}
@@ -296,10 +438,10 @@ const LandingPage: React.FC = () => {
                             <Box mb={6} textAlign="center" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <School sx={{ fontSize: 80, color: '#76a345', mb: 2 }} />
                                 <Typography variant="h3" fontWeight="800" sx={{ mb: 1, background: 'linear-gradient(45deg, #76a345, #5a7d34)', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent' }}>
-                                    Welcome to EDXS
+                                    {t('welcome')}
                                 </Typography>
                                 <Typography variant="h6" color="text.secondary" fontWeight="400">
-                                    Please select your organization type to proceed
+                                    {t('select_org')}
                                 </Typography>
                             </Box>
 
@@ -360,9 +502,9 @@ const LandingPage: React.FC = () => {
 
                                             <Box sx={{ display: 'flex', alignItems: 'center', mt: 'auto' }}>
                                                 <Typography variant="button" sx={{ color: card.color, fontWeight: 700 }}>
-                                                    ENTER MODULE
+                                                    {t('enter_module')}
                                                 </Typography>
-                                                <ChevronRight sx={{ ml: 1, color: card.color }} />
+                                                <ChevronRight sx={{ ml: 1, color: card.color, ...(language !== 'English' && { transform: 'rotate(180deg)' }) }} />
                                             </Box>
                                         </Paper>
                                     </Grid>
@@ -376,17 +518,17 @@ const LandingPage: React.FC = () => {
                 {step === 'info' && selectedOrg && (
                     <Fade in timeout={800}>
                         <Box>
-                            <Button
-                                startIcon={<ArrowBack />}
-                                onClick={() => setStep('selection')}
-                                sx={{ mb: 4 }}
-                            >
-                                Back to Selection
-                            </Button>
 
                             <Paper sx={{ p: 6, borderRadius: 4, bgcolor: 'rgba(255,255,255,0.95)' }}>
+                                <Button
+                                    startIcon={<ArrowBack />}
+                                    onClick={() => setStep('selection')}
+                                    sx={{ mb: 4 }}
+                                >
+                                    {t('back_to_selection')}
+                                </Button>
                                 <Typography variant="h2" gutterBottom color="primary">
-                                    {selectedOrg.name} Information
+                                    {selectedOrg.name} {t('information')}
                                 </Typography>
                                 <Typography variant="body1" paragraph color="text.secondary">
                                     {selectedOrg.description}
@@ -395,126 +537,149 @@ const LandingPage: React.FC = () => {
                                 <Divider sx={{ my: 4 }} />
 
                                 <Typography variant="h3" gutterBottom>
-                                    Basic Information
+                                    {t('basic_information')}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                                    Please provide the following details to set up your {selectedOrg.name}.
+                                    {t('please_provide_the_following_details_to_set_up_your')} {selectedOrg.name}.
                                 </Typography>
 
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                                    <Grid container spacing={2}>
-                                        <Grid size={{ xs: 12, md: 6 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="Contact Person Name"
-                                                placeholder="John Doe"
-                                                required
-                                                value={formData.contactName}
-                                                onChange={handleFormChange('contactName')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12, md: 6 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="Designation"
-                                                placeholder="Principal / Director"
-                                                value={formData.designation}
-                                                onChange={handleFormChange('designation')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12, md: 6 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="Email Address"
-                                                type="email"
-                                                placeholder="contact@example.com"
-                                                required
-                                                value={formData.email}
-                                                onChange={handleFormChange('email')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12, md: 6 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="Cell Phone Number"
-                                                type="tel"
-                                                placeholder="+92 300 1234567"
-                                                required
-                                                value={formData.cellPhone}
-                                                onChange={handleFormChange('cellPhone')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12, md: 6 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="Landline Number"
-                                                type="tel"
-                                                placeholder="+92 21 12345678"
-                                                value={formData.landline}
-                                                onChange={handleFormChange('landline')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12, md: 6 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="Website"
-                                                type="url"
-                                                placeholder="www.example.com"
-                                                value={formData.website}
-                                                onChange={handleFormChange('website')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="Address"
-                                                placeholder="Street Address"
-                                                multiline
-                                                rows={2}
-                                                required
-                                                value={formData.address}
-                                                onChange={handleFormChange('address')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12, md: 4 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="City"
-                                                placeholder="Karachi"
-                                                required
-                                                value={formData.city}
-                                                onChange={handleFormChange('city')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12, md: 4 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="State/Province"
-                                                placeholder="Sindh"
-                                                value={formData.state}
-                                                onChange={handleFormChange('state')}
-                                            />
-                                        </Grid>
-                                        <Grid size={{ xs: 12, md: 4 }}>
-                                            <TextField
-                                                fullWidth
-                                                label="Postal Code"
-                                                placeholder="75500"
-                                                value={formData.postalCode}
-                                                onChange={handleFormChange('postalCode')}
-                                            />
-                                        </Grid>
+                                <Grid container spacing={3}>
+                                    <Grid size={{ xs: 12, md: 6 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('contact_person_name')}
+                                            placeholder="John Doe"
+                                            required
+                                            value={formData.contactName}
+                                            onChange={handleFormChange('contactName')}
+                                            error={!!errors.contactName}
+                                            inputProps={{ maxLength: 50 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.contactName = el; }}
+                                        />
                                     </Grid>
-                                </Box>
+                                    <Grid size={{ xs: 12, md: 6 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('designation')}
+                                            placeholder="Principal / Director"
+                                            value={formData.designation}
+                                            onChange={handleFormChange('designation')}
+                                            inputProps={{ maxLength: 50 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.designation = el; }}
+                                        />
+                                    </Grid>
+                                    <Grid size={{ xs: 12, md: 6 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('email_address')}
+                                            type="email"
+                                            placeholder="contact@example.com"
+                                            required
+                                            value={formData.email}
+                                            onChange={handleFormChange('email')}
+                                            error={!!errors.email}
+                                            inputProps={{ maxLength: 100 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.email = el; }}
+                                        />
+                                    </Grid>
+                                    <Grid size={{ xs: 12, md: 6 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('cell_phone_number')}
+                                            type="tel"
+                                            placeholder="+92 300 1234567"
+                                            required
+                                            value={formData.cellPhone}
+                                            onChange={handleFormChange('cellPhone')}
+                                            error={!!errors.cellPhone}
+                                            inputProps={{ maxLength: 20 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.cellPhone = el; }}
+                                        />
+                                    </Grid>
+                                    <Grid size={{ xs: 12, md: 6 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('landline_number')}
+                                            type="tel"
+                                            placeholder="+92 21 12345678"
+                                            value={formData.landline}
+                                            onChange={handleFormChange('landline')}
+                                            inputProps={{ maxLength: 20 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.landline = el; }}
+                                        />
+                                    </Grid>
+                                    <Grid size={{ xs: 12, md: 6 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('website')}
+                                            type="url"
+                                            placeholder="www.example.com"
+                                            value={formData.website}
+                                            onChange={handleFormChange('website')}
+                                            inputProps={{ maxLength: 100 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.website = el; }}
+                                        />
+                                    </Grid>
+                                    <Grid size={{ xs: 12 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('address')}
+                                            placeholder={t('street_address')}
+                                            multiline
+                                            rows={2}
+                                            required
+                                            value={formData.address}
+                                            onChange={handleFormChange('address')}
+                                            error={!!errors.address}
+                                            inputProps={{ maxLength: 250 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.address = el; }}
+                                        />
+                                    </Grid>
+                                    <Grid size={{ xs: 12, md: 4 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('city')}
+                                            placeholder={t('karachi')}
+                                            required
+                                            value={formData.city}
+                                            onChange={handleFormChange('city')}
+                                            error={!!errors.city}
+                                            inputProps={{ maxLength: 50 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.city = el; }}
+                                        />
+                                    </Grid>
+                                    <Grid size={{ xs: 12, md: 4 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('state_province')}
+                                            placeholder={t('sindh')}
+                                            value={formData.state}
+                                            onChange={handleFormChange('state')}
+                                            inputProps={{ maxLength: 50 }}
+                                            inputRef={(el: HTMLInputElement) => { fieldRefs.current.state = el; }}
+                                        />
+                                    </Grid>
+                                    <Grid size={{ xs: 12, md: 4 }}>
+                                        <TextField
+                                            fullWidth
+                                            label={t('postal_code')}
+                                            placeholder={t('75500')}
+                                            value={formData.postalCode}
+                                            onChange={handleFormChange('postalCode')}
+                                            inputProps={{ maxLength: 15 }}
+                                            inputRef={(el: HTMLInputElement) => { if (el) fieldRefs.current.postalCode = el; }}
+                                        />
+                                    </Grid>
+                                </Grid>
 
                                 <Box sx={{ mt: 6, display: 'flex', justifyContent: 'flex-end' }}>
                                     <Button
                                         variant="contained"
                                         size="large"
-                                        endIcon={<ArrowForward />}
+                                        endIcon={<ArrowForward sx={{ ...(language !== 'English' && { transform: 'rotate(180deg)' }) }} />}
                                         onClick={handleNextFromInfo}
                                     >
-                                        Next
+                                        {t('next')}
                                     </Button>
                                 </Box>
                             </Paper>
@@ -526,88 +691,208 @@ const LandingPage: React.FC = () => {
                 {step === 'organization' && selectedOrg && (
                     <Fade in timeout={800}>
                         <Box>
-                            <Button
-                                startIcon={<ArrowBack />}
-                                onClick={() => setStep('info')}
-                                sx={{ mb: 4 }}
-                            >
-                                Back
-                            </Button>
 
-                            <Typography variant="h2" gutterBottom align="center" color="primary" sx={{ mb: 6 }}>
-                                {selectedOrg.name} Organization Setup
-                            </Typography>
+                            <Paper sx={{ p: 6, borderRadius: 4, bgcolor: 'rgba(255,255,255,0.95)' }}>
+                                <Button
+                                    startIcon={<ArrowBack sx={{ ...(language !== 'English' && { transform: 'rotate(180deg)' }) }} />}
+                                    onClick={() => setStep('info')}
+                                    sx={{ mb: 4 }}
+                                >
+                                    {t('back')}
+                                </Button>
+                                <Typography variant="h2" gutterBottom color="primary">
+                                    {selectedOrg.name} {t('organization_setup')}
+                                </Typography>
+                                <Typography variant="body1" paragraph color="text.secondary">
+                                    {t('configure_the_core_settings_and_branding_for_your')} {selectedOrg.name.toLowerCase()}.
+                                </Typography>
 
-                            <Grid container spacing={4}>
-                                <Grid size={{ xs: 12, md: 4 }}>
-                                    <Paper sx={{ p: 4, height: '100%', borderTop: `4px solid ${selectedOrg.color}`, bgcolor: 'rgba(255,255,255,0.95)' }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                            <Settings color="primary" sx={{ mr: 1 }} />
-                                            <Typography variant="h5">Core Settings</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                                            <TextField fullWidth label="Institution Name" defaultValue={selectedOrg.name} />
-                                            <TextField fullWidth label="Code" placeholder="EB-2024" />
-                                            <TextField fullWidth select label="Fiscal Year" defaultValue="2024-25">
-                                                <MenuItem value="2023-24">2023-24</MenuItem>
-                                                <MenuItem value="2024-25">2024-25</MenuItem>
-                                            </TextField>
-                                        </Box>
-                                    </Paper>
-                                </Grid>
+                                <Divider sx={{ my: 4 }} />
 
-                                <Grid size={{ xs: 12, md: 4 }}>
-                                    <Paper sx={{ p: 4, height: '100%', borderTop: `4px solid ${selectedOrg.color}`, bgcolor: 'rgba(255,255,255,0.95)' }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                            <Group color="primary" sx={{ mr: 1 }} />
-                                            <Typography variant="h5">Visibility</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                            {['Academics', 'Admission', 'Human Resource', 'Fee Management', 'Dashboard'].map((module) => (
-                                                <FormControlLabel
-                                                    key={module}
-                                                    control={<Switch defaultChecked color="primary" />}
-                                                    label={module}
+                                <Grid container spacing={6}>
+                                    <Grid size={{ xs: 12, md: 7 }}>
+                                        <Typography variant="h3" gutterBottom sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                            <Settings color="primary" sx={{ mr: 1.5 }} />
+                                            {t('core_settings')}
+                                        </Typography>
+
+                                        <Grid container spacing={3}>
+                                            <Grid size={{ xs: 12 }}>
+                                                <TextField
+                                                    fullWidth
+                                                    label={`${selectedOrg.name} ${t('name')}`}
+                                                    value={orgData.institutionName}
+                                                    onChange={handleOrgFormChange('institutionName')}
+                                                    error={!!orgErrors.institutionName}
+                                                    inputProps={{ maxLength: 100 }}
+                                                    inputRef={(el: HTMLInputElement) => { if (el) orgFieldRefs.current.institutionName = el; }}
+                                                    required
                                                 />
-                                            ))}
-                                        </Box>
-                                    </Paper>
-                                </Grid>
+                                            </Grid>
 
-                                <Grid size={{ xs: 12, md: 4 }}>
-                                    <Paper sx={{ p: 4, height: '100%', borderTop: `4px solid ${selectedOrg.color}`, bgcolor: 'rgba(255,255,255,0.95)' }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                            <Description color="primary" sx={{ mr: 1 }} />
-                                            <Typography variant="h5">Logo & Branding</Typography>
-                                        </Box>
+                                            {selectedOrg.type === 'school' && (
+                                                <Grid size={{ xs: 12 }}>
+                                                    <TextField
+                                                        fullWidth
+                                                        label={t('curriculum')}
+                                                        placeholder={t('curriculum_placeholder')}
+                                                        value={orgData.curriculum}
+                                                        onChange={handleOrgFormChange('curriculum')}
+                                                        error={!!orgErrors.curriculum}
+                                                        inputRef={(el: HTMLInputElement) => { if (el) orgFieldRefs.current.curriculum = el; }}
+                                                        required
+                                                    />
+                                                </Grid>
+                                            )}
+
+                                            {selectedOrg.type === 'college' && (
+                                                <Grid size={{ xs: 12 }}>
+                                                    <TextField
+                                                        fullWidth
+                                                        label={t('affiliation_board')}
+                                                        placeholder={t('affiliation_placeholder')}
+                                                        value={orgData.affiliation}
+                                                        onChange={handleOrgFormChange('affiliation')}
+                                                        error={!!orgErrors.affiliation}
+                                                        inputRef={(el: HTMLInputElement) => { if (el) orgFieldRefs.current.affiliation = el; }}
+                                                        required
+                                                    />
+                                                </Grid>
+                                            )}
+
+                                            {selectedOrg.type === 'university' && (
+                                                <Grid size={{ xs: 12 }}>
+                                                    <TextField
+                                                        fullWidth
+                                                        label={t('hec_id_registration_no')}
+                                                        placeholder={t('hec_id_placeholder')}
+                                                        value={orgData.hecId}
+                                                        onChange={handleOrgFormChange('hecId')}
+                                                        error={!!orgErrors.hecId}
+                                                        inputRef={(el: HTMLInputElement) => { if (el) orgFieldRefs.current.hecId = el; }}
+                                                        required
+                                                    />
+                                                </Grid>
+                                            )}
+
+                                            <Grid size={{ xs: 12, md: 6 }}>
+                                                <TextField
+                                                    fullWidth
+                                                    label={t('organization_code')}
+                                                    placeholder="EB-2024"
+                                                    value={orgData.code}
+                                                    onChange={handleOrgFormChange('code')}
+                                                    error={!!orgErrors.code}
+                                                    inputProps={{ maxLength: 20 }}
+                                                    inputRef={(el: HTMLInputElement) => { if (el) orgFieldRefs.current.code = el; }}
+                                                    required
+                                                />
+                                            </Grid>
+                                            <Grid size={{ xs: 12, md: 6 }}>
+                                                <TextField
+                                                    fullWidth
+                                                    select
+                                                    label={t('fiscal_year')}
+                                                    value={orgData.fiscalYear}
+                                                    onChange={handleOrgFormChange('fiscalYear')}
+                                                >
+                                                    <MenuItem value="2023-24">2023-24</MenuItem>
+                                                    <MenuItem value="2024-25">2024-25</MenuItem>
+                                                </TextField>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid size={{ xs: 12, md: 5 }}>
+                                        <Typography variant="h3" gutterBottom sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                            <Palette color="primary" sx={{ mr: 1.5 }} />
+                                            {t('branding')}
+                                        </Typography>
+
                                         <Box
                                             sx={{
-                                                border: '2px dashed rgba(0,0,0,0.1)',
-                                                borderRadius: 2,
+                                                border: '2px dashed',
+                                                borderColor: orgData.logo ? selectedOrg.color : 'rgba(0,0,0,0.1)',
+                                                borderRadius: 4,
                                                 p: 4,
                                                 textAlign: 'center',
-                                                backgroundColor: 'rgba(0,0,0,0.02)'
+                                                backgroundColor: orgData.logo ? `${selectedOrg.color}05` : 'rgba(0,0,0,0.02)',
+                                                minHeight: 280,
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                cursor: 'pointer',
+                                                position: 'relative',
+                                                transition: 'all 0.3s ease',
+                                                '&:hover': {
+                                                    borderColor: selectedOrg.color,
+                                                    bgcolor: `${selectedOrg.color} 10`
+                                                }
                                             }}
+                                            component="label"
                                         >
-                                            <Typography variant="body2" color="text.secondary">
-                                                Drag and drop your logo here or click to browse
-                                            </Typography>
+                                            <input
+                                                type="file"
+                                                hidden
+                                                accept="image/*"
+                                                onChange={handleLogoUpload}
+                                            />
+                                            {orgData.logo ? (
+                                                <Box sx={{ position: 'relative', width: '100%' }}>
+                                                    <img
+                                                        src={orgData.logo}
+                                                        alt="Logo Preview"
+                                                        style={{
+                                                            maxWidth: '100%',
+                                                            maxHeight: '200px',
+                                                            objectFit: 'contain',
+                                                            borderRadius: '8px'
+                                                        }}
+                                                    />
+                                                    <Typography variant="caption" sx={{ display: 'block', mt: 2, color: selectedOrg.color, fontWeight: 700 }}>
+                                                        {t('click_to_change_logo')}
+                                                    </Typography>
+                                                </Box>
+                                            ) : (
+                                                <>
+                                                    <Box sx={{
+                                                        width: 80,
+                                                        height: 80,
+                                                        borderRadius: '50%',
+                                                        bgcolor: `${selectedOrg.color} 15`,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        mb: 2
+                                                    }}>
+                                                        <Landscape sx={{ fontSize: 40, color: selectedOrg.color }} />
+                                                    </Box>
+                                                    <Typography variant="body1" fontWeight="600" gutterBottom>
+                                                        {t('upload_logo')}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        {t('drag_and_drop_or_click_to_browse')}
+                                                    </Typography>
+                                                </>
+                                            )}
                                         </Box>
-                                    </Paper>
-                                </Grid>
-                            </Grid>
 
-                            <Box sx={{ mt: 8, display: 'flex', justifyContent: 'center' }}>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    startIcon={<CheckCircleOutline />}
-                                    sx={{ px: 8, py: 2, fontSize: '1.2rem' }}
-                                    onClick={handleDone}
-                                >
-                                    Done
-                                </Button>
-                            </Box>
+                                    </Grid>
+                                </Grid>
+
+                                <Box sx={{ mt: 6, display: 'flex', justifyContent: 'flex-end' }}>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        startIcon={<CheckCircleOutline />}
+                                        onClick={handleDone}
+                                        sx={{ px: 6 }}
+                                    >
+                                        {t('complete_setup')}
+                                    </Button>
+                                </Box>
+                            </Paper>
                         </Box>
                     </Fade>
                 )}
@@ -624,10 +909,10 @@ const LandingPage: React.FC = () => {
                         }}>
                             <CheckCircleOutline sx={{ fontSize: 120, color: '#76a345', mb: 3 }} />
                             <Typography variant="h2" gutterBottom color="primary" fontWeight="800">
-                                Configuration Complete!
+                                {t('configuration_complete')}
                             </Typography>
                             <Typography variant="h5" color="text.secondary">
-                                Redirecting to selection...
+                                {t('redirecting_to_selection')}
                             </Typography>
                         </Box>
                     </Fade>
@@ -773,7 +1058,7 @@ const LandingPage: React.FC = () => {
                                 textShadow: '0 2px 8px rgba(0,0,0,0.3)',
                                 letterSpacing: '0.3px'
                             }}>
-                                ⚡ Validation Required
+                                ⚡ {t('validation_required')}
                             </Typography>
                             <Typography sx={{
                                 fontSize: '0.9rem',

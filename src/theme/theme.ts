@@ -78,6 +78,9 @@ const theme = createTheme({
             },
         },
         MuiTextField: {
+            defaultProps: {
+                size: 'small',
+            },
             styleOverrides: {
                 root: {
                     '& .MuiOutlinedInput-root': {

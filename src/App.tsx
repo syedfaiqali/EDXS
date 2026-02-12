@@ -1,10 +1,16 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container } from '@mui/material';
+import {
+  ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
+  Button, Dialog, DialogTitle, DialogContent, DialogActions, Select, MenuItem,
+  FormControl, InputLabel, Typography
+} from '@mui/material';
+import { Language } from '@mui/icons-material';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import theme from './theme/theme';
 import Logo from './components/Logo';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
 // Lazy load pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -28,6 +34,21 @@ const LoadingScreen = () => (
 const MainLayout: React.FC = () => {
   const location = useLocation();
   const isLanding = location.pathname === '/';
+  const { language, setLanguage, t } = useLanguage();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tempLang, setTempLang] = useState(language);
+
+  const handleOpenModal = () => {
+    setTempLang(language);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleSaveLanguage = () => {
+    setLanguage(tempLang);
+    handleCloseModal();
+  };
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -47,8 +68,24 @@ const MainLayout: React.FC = () => {
               <Logo />
             </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
-              Enterprise Solutions v3.0
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Typography sx={{ color: 'text.secondary', fontSize: '0.875rem', fontWeight: 600 }}>
+                {t('enterprise_solutions')}
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<Language />}
+                onClick={handleOpenModal}
+                sx={{
+                  borderRadius: 2,
+                  textTransform: 'none',
+                  borderColor: 'rgba(0,0,0,0.1)',
+                  color: 'text.secondary'
+                }}
+              >
+                {t('change_language')}
+              </Button>
             </Box>
           </Toolbar>
         </Container>
@@ -69,10 +106,44 @@ const MainLayout: React.FC = () => {
         <Container maxWidth="lg">
           <Logo size="small" />
           <Box sx={{ opacity: 0.6, mt: 2, fontSize: '0.75rem' }}>
-            © {new Date().getFullYear()} EDXS Solutions. All rights reserved.
+            © {new Date().getFullYear()} EDXS Solutions. {t('all_rights_reserved')}
           </Box>
         </Container>
       </Box>
+
+      {/* Language Modal */}
+      <Dialog open={isModalOpen} onClose={handleCloseModal} maxWidth="xs" fullWidth>
+        <DialogTitle sx={{ fontWeight: 700 }}>{t('select_language')}</DialogTitle>
+        <DialogContent>
+          <Box sx={{ mt: 2 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="language-select-label">{t('select_language')}</InputLabel>
+              <Select
+                labelId="language-select-label"
+                value={tempLang}
+                label={t('select_language')}
+                onChange={(e) => setTempLang(e.target.value as any)}
+              >
+                <MenuItem value="English">English</MenuItem>
+                <MenuItem value="Urdu">Urdu (اردو)</MenuItem>
+                <MenuItem value="Arabic">Arabic (العربية)</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={handleCloseModal} sx={{ color: 'text.secondary' }}>
+            {t('cancel')}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleSaveLanguage}
+            sx={{ px: 4 }}
+          >
+            {t('save')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
@@ -80,12 +151,14 @@ const MainLayout: React.FC = () => {
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <MainLayout />
-        </Router>
-      </ThemeProvider>
+      <LanguageProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <MainLayout />
+          </Router>
+        </ThemeProvider>
+      </LanguageProvider>
     </Provider>
   );
 };
