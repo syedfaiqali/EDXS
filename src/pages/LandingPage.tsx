@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, Grid, Paper, keyframes, Button, TextField, MenuItem, Switch, FormControlLabel, Divider, Fade } from '@mui/material';
+import { Box, Container, Typography, Grid, Paper, keyframes, Button, TextField, MenuItem, Switch, FormControlLabel, Divider, Fade, Snackbar, Alert } from '@mui/material';
 import {
     School, Business, AccountBalance, ChevronRight, ArrowBack, ArrowForward, CheckCircleOutline,
     HistoryEdu, Science, Calculate, Brush, Computer, Palette, Biotech, MenuBook,
@@ -26,10 +26,37 @@ interface SelectedOrg {
     color: string;
 }
 
+interface FormData {
+    contactName: string;
+    designation: string;
+    email: string;
+    cellPhone: string;
+    landline: string;
+    website: string;
+    address: string;
+    city: string;
+    state: string;
+    postalCode: string;
+}
+
 const LandingPage: React.FC = () => {
     const [step, setStep] = useState<Step>('selection');
     const [logoStage, setLogoStage] = useState<'waiting' | 'opening' | 'finished'>('waiting');
     const [selectedOrg, setSelectedOrg] = useState<SelectedOrg | null>(null);
+    const [formData, setFormData] = useState<FormData>({
+        contactName: '',
+        designation: '',
+        email: '',
+        cellPhone: '',
+        landline: '',
+        website: '',
+        address: '',
+        city: '',
+        state: '',
+        postalCode: ''
+    });
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
 
     useEffect(() => {
         // Logo Split Timeline
@@ -45,6 +72,51 @@ const LandingPage: React.FC = () => {
     const handleSelect = (type: OrgType, name: string, subtitle: string, description: string, color: string) => {
         setSelectedOrg({ type, name, subtitle, description, color });
         setStep('info');
+    };
+
+    const handleFormChange = (field: keyof FormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData(prev => ({
+            ...prev,
+            [field]: event.target.value
+        }));
+    };
+
+    const validateForm = (): boolean => {
+        const requiredFields = [
+            { field: 'contactName', label: 'Contact Person Name' },
+            { field: 'email', label: 'Email Address' },
+            { field: 'cellPhone', label: 'Cell Phone Number' },
+            { field: 'address', label: 'Address' },
+            { field: 'city', label: 'City' }
+        ];
+
+        for (const { field, label } of requiredFields) {
+            if (!formData[field as keyof FormData].trim()) {
+                setToastMessage(`Please fill in the required field: ${label}`);
+                setToastOpen(true);
+                return false;
+            }
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            setToastMessage('Please enter a valid email address');
+            setToastOpen(true);
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleNextFromInfo = () => {
+        if (validateForm()) {
+            setStep('organization');
+        }
+    };
+
+    const handleCloseToast = () => {
+        setToastOpen(false);
     };
 
     const handleDone = () => {
@@ -323,21 +395,116 @@ const LandingPage: React.FC = () => {
                                 <Divider sx={{ my: 4 }} />
 
                                 <Typography variant="h3" gutterBottom>
-                                    Key Features
+                                    Basic Information
                                 </Typography>
-                                <Box component="ul" sx={{ pl: 4 }}>
-                                    <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-                                        Streamlined administrative operations tailored for {selectedOrg.name}s.
-                                    </Typography>
-                                    <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-                                        Comprehensive student performance tracking and analytics.
-                                    </Typography>
-                                    <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-                                        Integrated communication hub for parents, students, and staff.
-                                    </Typography>
-                                    <Typography component="li" variant="body1">
-                                        Secure and scalable cloud-based infrastructure.
-                                    </Typography>
+                                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                                    Please provide the following details to set up your {selectedOrg.name}.
+                                </Typography>
+
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                                    <Grid container spacing={2}>
+                                        <Grid size={{ xs: 12, md: 6 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Contact Person Name"
+                                                placeholder="John Doe"
+                                                required
+                                                value={formData.contactName}
+                                                onChange={handleFormChange('contactName')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12, md: 6 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Designation"
+                                                placeholder="Principal / Director"
+                                                value={formData.designation}
+                                                onChange={handleFormChange('designation')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12, md: 6 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Email Address"
+                                                type="email"
+                                                placeholder="contact@example.com"
+                                                required
+                                                value={formData.email}
+                                                onChange={handleFormChange('email')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12, md: 6 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Cell Phone Number"
+                                                type="tel"
+                                                placeholder="+92 300 1234567"
+                                                required
+                                                value={formData.cellPhone}
+                                                onChange={handleFormChange('cellPhone')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12, md: 6 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Landline Number"
+                                                type="tel"
+                                                placeholder="+92 21 12345678"
+                                                value={formData.landline}
+                                                onChange={handleFormChange('landline')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12, md: 6 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Website"
+                                                type="url"
+                                                placeholder="www.example.com"
+                                                value={formData.website}
+                                                onChange={handleFormChange('website')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Address"
+                                                placeholder="Street Address"
+                                                multiline
+                                                rows={2}
+                                                required
+                                                value={formData.address}
+                                                onChange={handleFormChange('address')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12, md: 4 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="City"
+                                                placeholder="Karachi"
+                                                required
+                                                value={formData.city}
+                                                onChange={handleFormChange('city')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12, md: 4 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="State/Province"
+                                                placeholder="Sindh"
+                                                value={formData.state}
+                                                onChange={handleFormChange('state')}
+                                            />
+                                        </Grid>
+                                        <Grid size={{ xs: 12, md: 4 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Postal Code"
+                                                placeholder="75500"
+                                                value={formData.postalCode}
+                                                onChange={handleFormChange('postalCode')}
+                                            />
+                                        </Grid>
+                                    </Grid>
                                 </Box>
 
                                 <Box sx={{ mt: 6, display: 'flex', justifyContent: 'flex-end' }}>
@@ -345,7 +512,7 @@ const LandingPage: React.FC = () => {
                                         variant="contained"
                                         size="large"
                                         endIcon={<ArrowForward />}
-                                        onClick={() => setStep('organization')}
+                                        onClick={handleNextFromInfo}
                                     >
                                         Next
                                     </Button>
@@ -466,6 +633,161 @@ const LandingPage: React.FC = () => {
                     </Fade>
                 )}
             </Container>
+
+            {/* Unique Attractive Toast Notification - EDXS Green Theme */}
+            <Snackbar
+                open={toastOpen}
+                autoHideDuration={5000}
+                onClose={handleCloseToast}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                TransitionProps={{
+                    enter: true,
+                    exit: true,
+                }}
+                sx={{
+                    mt: 10,
+                    mr: 2
+                }}
+            >
+                <Alert
+                    onClose={handleCloseToast}
+                    severity="error"
+                    variant="filled"
+                    icon={false}
+                    sx={{
+                        minWidth: '380px',
+                        background: 'linear-gradient(135deg, #76a345 0%, #5a7d34 100%)',
+                        backdropFilter: 'blur(10px)',
+                        borderRadius: 4,
+                        border: '2px solid rgba(255, 255, 255, 0.4)',
+                        boxShadow: '0 16px 48px rgba(118, 163, 69, 0.5), 0 0 24px rgba(118, 163, 69, 0.3)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        animation: 'slideInRight 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), pulse 2.5s ease-in-out infinite',
+                        '@keyframes slideInRight': {
+                            '0%': {
+                                transform: 'translateX(120%) scale(0.8)',
+                                opacity: 0
+                            },
+                            '100%': {
+                                transform: 'translateX(0) scale(1)',
+                                opacity: 1
+                            }
+                        },
+                        '@keyframes pulse': {
+                            '0%, 100%': {
+                                boxShadow: '0 16px 48px rgba(118, 163, 69, 0.5), 0 0 24px rgba(118, 163, 69, 0.3)'
+                            },
+                            '50%': {
+                                boxShadow: '0 16px 48px rgba(118, 163, 69, 0.7), 0 0 36px rgba(118, 163, 69, 0.5)'
+                            }
+                        },
+                        '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: '-100%',
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+                            animation: 'shimmer 3s infinite',
+                        },
+                        '@keyframes shimmer': {
+                            '0%': { left: '-100%' },
+                            '100%': { left: '100%' }
+                        },
+                        '&::after': {
+                            content: '""',
+                            position: 'absolute',
+                            top: -2,
+                            left: -2,
+                            right: -2,
+                            bottom: -2,
+                            background: 'linear-gradient(45deg, #76a345, #94bc65, #76a345)',
+                            borderRadius: 4,
+                            zIndex: -1,
+                            opacity: 0.6,
+                            filter: 'blur(8px)',
+                        },
+                        '& .MuiAlert-message': {
+                            width: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                            position: 'relative',
+                            zIndex: 1,
+                            py: 1
+                        },
+                        '& .MuiAlert-action': {
+                            position: 'relative',
+                            zIndex: 1,
+                            '& .MuiIconButton-root': {
+                                color: 'rgba(255,255,255,0.9)',
+                                '&:hover': {
+                                    bgcolor: 'rgba(255,255,255,0.2)',
+                                    transform: 'rotate(90deg)',
+                                    transition: 'all 0.3s ease'
+                                }
+                            }
+                        }
+                    }}
+                >
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, width: '100%' }}>
+                        {/* Custom Animated Icon */}
+                        <Box sx={{
+                            width: 56,
+                            height: 56,
+                            borderRadius: '50%',
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1))',
+                            border: '2px solid rgba(255,255,255,0.5)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                            animation: 'bounce 1s ease-in-out infinite',
+                            '@keyframes bounce': {
+                                '0%, 100%': {
+                                    transform: 'translateY(0) scale(1)',
+                                },
+                                '50%': {
+                                    transform: 'translateY(-8px) scale(1.05)',
+                                }
+                            }
+                        }}>
+                            <Typography sx={{
+                                fontSize: '2rem',
+                                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                            }}>
+                                ⚠️
+                            </Typography>
+                        </Box>
+
+                        {/* Message Content */}
+                        <Box sx={{ flex: 1 }}>
+                            <Typography sx={{
+                                fontWeight: 800,
+                                fontSize: '1.05rem',
+                                color: '#fff',
+                                mb: 0.5,
+                                textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                                letterSpacing: '0.3px'
+                            }}>
+                                ⚡ Validation Required
+                            </Typography>
+                            <Typography sx={{
+                                fontSize: '0.9rem',
+                                color: 'rgba(255,255,255,0.95)',
+                                lineHeight: 1.5,
+                                fontWeight: 500,
+                                textShadow: '0 1px 4px rgba(0,0,0,0.2)'
+                            }}>
+                                {toastMessage}
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
