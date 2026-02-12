@@ -3,7 +3,7 @@ import { Box, Container, Typography, Grid, Paper, keyframes, Button, TextField, 
 import {
     School, Business, AccountBalance, ChevronRight, ArrowBack, ArrowForward, CheckCircleOutline,
     HistoryEdu, Science, Calculate, Brush, Computer, Palette, Biotech, MenuBook,
-    Settings, Landscape
+    Settings, Landscape, Engineering, BusinessCenter
 } from '@mui/icons-material';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -16,7 +16,7 @@ const float = keyframes`
   100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
 `;
 
-type OrgType = 'school' | 'college' | 'university';
+type OrgType = 'school' | 'college' | 'university' | 'training' | 'corporate';
 type Step = 'selection' | 'info' | 'organization' | 'complete';
 
 interface SelectedOrg {
@@ -296,6 +296,24 @@ const LandingPage: React.FC = () => {
             icon: <AccountBalance sx={{ fontSize: 40 }} />,
             color: '#059669', // Emerald Green
             lightColor: '#ecfdf5',
+        },
+        {
+            type: 'training' as const,
+            name: t('training'),
+            subtitle: t('training_subtitle'),
+            description: t('training_desc'),
+            icon: <Engineering sx={{ fontSize: 40 }} />,
+            color: '#e11d48', // Rose
+            lightColor: '#fff1f2',
+        },
+        {
+            type: 'corporate' as const,
+            name: t('corporate'),
+            subtitle: t('corp_subtitle'),
+            description: t('corp_desc'),
+            icon: <BusinessCenter sx={{ fontSize: 40 }} />,
+            color: '#334155', // Slate-700
+            lightColor: '#f8fafc',
         },
     ];
 

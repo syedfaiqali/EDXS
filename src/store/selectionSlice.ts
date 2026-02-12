@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface SelectionState {
-    type: 'school' | 'college' | 'university' | null;
+    type: 'school' | 'college' | 'university' | 'training' | 'corporate' | null;
     name: string;
     description: string;
 }
