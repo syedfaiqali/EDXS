@@ -9,8 +9,10 @@ const theme = createTheme({
             contrastText: '#fff',
         },
         secondary: {
-            main: '#2c3e50',
-            dark: '#1e293b',
+            main: '#f0dbb0',
+            light: '#f7ebcf',
+            dark: '#e5c98f',
+            contrastText: '#76a345',
         },
         background: {
             default: '#f8fafc',
@@ -55,12 +57,22 @@ const theme = createTheme({
                     transition: 'all 0.3s ease',
                     '&:hover': {
                         transform: 'translateY(-2px)',
-                        boxShadow: '0 8px 16px rgba(118, 163, 69, 0.2)',
+                        boxShadow: '0 8px 16px rgba(35, 92, 139, 0.2)',
                     },
                 },
                 containedPrimary: {
-                    background: 'linear-gradient(135deg, #76a345 0%, #94bc65 100%)',
+                    background: '#76a345',
+                    '&:hover': {
+                        background: '#5a7d34',
+                    }
                 },
+                containedSecondary: {
+                    background: '#f0dbb0',
+                    color: '#76a345',
+                    '&:hover': {
+                        background: '#e5c98f',
+                    }
+                }
             },
         },
         MuiCard: {
