@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, keyframes, Typography } from '@mui/material';
-import { useLanguage } from '../contexts/LanguageContext';
+
 
 // Components
 import HeroSection from '../components/landing/HeroSection';
 import StatsSection from '../components/landing/StatsSection';
 import WhyEduman from '../components/landing/WhyEduman';
 import HowItWorks from '../components/landing/HowItWorks';
+// ... other imports
 import TestimonialsSection from '../components/landing/TestimonialsSection';
+import SeamlessScalingSection from '../components/landing/SeamlessScalingSection';
+import EduPartnerSection from '../components/landing/EduPartnerSection';
 
 // --- Keyframes ---
 const float = keyframes`
@@ -18,10 +21,7 @@ const float = keyframes`
   100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
 `;
 
-const spin = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
+
 
 const flow = keyframes`
   0% { stroke-dashoffset: 80; }
@@ -36,7 +36,7 @@ const pulse = keyframes`
 
 const LandingPage: React.FC = () => {
     const [logoStage, setLogoStage] = useState<'waiting' | 'opening' | 'finished'>('waiting');
-    const { t } = useLanguage();
+
 
     useEffect(() => {
         // Logo animation trigger
@@ -57,14 +57,14 @@ const LandingPage: React.FC = () => {
                     key={i}
                     sx={{
                         position: 'absolute',
-                        left: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}% `,
                         bottom: -100,
                         width: Math.random() * 60 + 20,
                         height: Math.random() * 60 + 20,
                         bgcolor: i % 2 === 0 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(240, 219, 176, 0.05)',
                         borderRadius: i % 3 === 0 ? '50%' : '8px',
                         animation: `${float} ${Math.random() * 10 + 10}s linear infinite`,
-                        animationDelay: `${Math.random() * 20}s`,
+                        animationDelay: `${Math.random() * 20} s`,
                         zIndex: 0
                     }}
                 />
@@ -192,7 +192,7 @@ const LandingPage: React.FC = () => {
                             left: '52%',
                             color: '#5d4037',
                             fontSize: '1.8rem',
-                            animation: `${pulse} 2s ease-in-out infinite`
+                            animation: `${pulse} 2s ease -in -out infinite`
                         }}>★</Box>
                     </Box>
                 </Box>
@@ -241,12 +241,14 @@ const LandingPage: React.FC = () => {
                             left: '35%',
                             color: '#76a345',
                             fontSize: '1.5rem',
-                            animation: `${pulse} 2.5s ease-in-out infinite`
+                            animation: `${pulse} 2.5s ease -in -out infinite`
                         }}>★</Box>
                     </Box>
                 </Box>
 
                 <TestimonialsSection />
+                <SeamlessScalingSection />
+                <EduPartnerSection />
             </Box>
         </Box >
     );

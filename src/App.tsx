@@ -11,6 +11,7 @@ import { store } from './store';
 import { resetFlow } from './store/selectionSlice';
 import theme from './theme/theme';
 import Logo from './components/Logo';
+import Footer from './components/Footer';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
 // Lazy load pages
@@ -134,6 +135,9 @@ const MainLayout: React.FC = () => {
       <Box component="main" sx={{
         flexGrow: 1,
         backgroundColor: 'background.default',
+        position: 'relative',
+        zIndex: 1,
+        mb: { xs: 0, md: '90vh' } // Margin equal to footer height for reveal effect
       }}>
         <Suspense fallback={<LoadingScreen />}>
           <Routes>
@@ -144,13 +148,14 @@ const MainLayout: React.FC = () => {
         </Suspense>
       </Box>
 
-      <Box component="footer" sx={{ py: 4, textAlign: 'center', bgcolor: 'secondary.dark', color: 'white' }}>
-        <Container maxWidth="lg">
-          <Logo size="small" />
-          <Box sx={{ opacity: 0.6, mt: 2, fontSize: '0.75rem' }}>
-            © {new Date().getFullYear()} EDXS Solutions. {t('all_rights_reserved')}
-          </Box>
-        </Container>
+      <Box sx={{
+        position: { xs: 'relative', md: 'fixed' },
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 0
+      }}>
+        <Footer />
       </Box>
 
       {/* Language Modal */}

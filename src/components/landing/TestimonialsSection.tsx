@@ -173,37 +173,45 @@ const TestimonialsSection: React.FC = () => {
                     ))}
                 </Box>
             </Box>
-            <Box textAlign="center" pb={12} pt={6} sx={{ position: 'relative', zIndex: 1, color: 'white' }}>
+            <Box textAlign="center" pb={12} pt={6} sx={{ position: 'relative', zIndex: 1, color: 'white', display: 'flex', justifyContent: 'center', gap: 3 }}>
                 <Button
                     variant="contained"
                     onClick={() => dispatch(setGlobalStep('selection'))}
                     sx={{
                         bgcolor: '#edd8b4',
-                        color: 'white',
-                        px: 8,
-                        py: 2,
-                        borderRadius: '2px #5d8a32',
+                        color: '#76a345',
+                        px: 4,
+                        py: 1.5,
+                        border: '2px solid #edd8b4',
+                        borderRadius: 50,
                         fontWeight: 700,
                         fontSize: '1rem',
-                        '&:hover': { borderRadius: '2px solid' },
+                        '&:hover': {
+                            bgcolor: '#dcc6a0',
+                            borderColor: '#dcc6a0'
+                        },
                         boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
                     }}
                 >
                     Start 10 Day Free Trial
                 </Button>
                 <Button
-                    variant="contained"
+                    variant="outlined"
                     onClick={() => dispatch(setGlobalStep('selection'))}
                     sx={{
-                        bgcolor: '#76a345',
+                        bgcolor: 'transparent',
                         color: 'white',
-                        px: 8,
-                        py: 2,
-                        borderRadius: '2px solid',
+                        px: 4,
+                        py: 1.5,
+                        border: '2px solid white',
+                        borderRadius: 50,
                         fontWeight: 700,
                         fontSize: '1rem',
-                        '&:hover': { borderRadius: '2px solid' },
-                        boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
+                        '&:hover': {
+                            bgcolor: 'rgba(255,255,255,0.1)',
+                            border: '2px solid white'
+                        },
+                        boxShadow: 'none'
                     }}
                 >
                     Book a Sale Call
