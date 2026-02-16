@@ -1,5 +1,11 @@
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, keyframes } from '@mui/material';
 import { Star, Language, Groups, DesktopWindows } from '@mui/icons-material';
+
+const reveal = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
 const rotateY = keyframes`
   0% { transform: rotateY(0deg); }
@@ -15,6 +21,7 @@ const starSpecial = keyframes`
 `;
 
 const StatsSection: React.FC = () => {
+    const [isVisible, setIsVisible] = useState(false);
     const stats = [
         { val: '200+', label: 'Schools and Groups', icon: <DesktopWindows sx={{ fontSize: '2.5rem' }} /> },
         { val: '7', label: 'Our Global Presence', icon: <Language sx={{ fontSize: '2.5rem' }} /> },
@@ -29,6 +36,13 @@ const StatsSection: React.FC = () => {
         }
     ];
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, 100);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <Box sx={{ bgcolor: 'transparent', py: 8 }}>
             <Grid container spacing={0} justifyContent="center" alignItems="center">
@@ -41,7 +55,10 @@ const StatsSection: React.FC = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        mb: { xs: 4, md: 0 }
+                        mb: { xs: 4, md: 0 },
+                        opacity: 0,
+                        animation: isVisible ? `${reveal} 0.6s ease forwards` : 'none',
+                        animationDelay: `${i * 0.15}s`
                     }}>
                         {/* Vertical Separator */}
                         {i > 0 && (

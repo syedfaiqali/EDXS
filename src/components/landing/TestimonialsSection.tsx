@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Box, Typography, Grid, Paper, Button, keyframes } from '@mui/material';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { useDispatch } from 'react-redux';
 import { setGlobalStep } from '../../store/selectionSlice';
 
@@ -14,6 +15,8 @@ const scrollLeft = keyframes`
 `;
 
 const TestimonialsSection: React.FC = () => {
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const isVisible = useIntersectionObserver(sectionRef);
     const dispatch = useDispatch();
     const [activeIndex, setActiveIndex] = React.useState(0);
     const [isSliding, setIsSliding] = React.useState(false);
@@ -46,7 +49,7 @@ const TestimonialsSection: React.FC = () => {
     }, [col1.length]);
 
     return (
-        <Box sx={{ bgcolor: '#edd8b4', pt: 10, pb: 0, px: '5%', position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', pt: 10, pb: 0, px: '5%', position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             {/* Split Background Effect */}
             <Box sx={{
                 position: 'absolute',
@@ -63,9 +66,9 @@ const TestimonialsSection: React.FC = () => {
                     const nextItem = col[(activeIndex + 1) % col.length];
 
                     return (
-                        <Grid item key={colIndex} size={{ xs: 12, md: 5 }} sx={{
+                        <Grid key={colIndex} size={{ xs: 12, md: 5 }} sx={{
                             opacity: 0,
-                            animation: `${revealScroll} 0.8s ease forwards`,
+                            animation: isVisible ? `${revealScroll} 0.8s ease forwards` : 'none',
                             animationDelay: `${colIndex * 0.2}s`,
                             backfaceVisibility: 'hidden',
                             transform: 'translateZ(0)',

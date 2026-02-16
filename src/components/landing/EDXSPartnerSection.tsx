@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Box, Button, Container, Grid, Typography, keyframes } from '@mui/material';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 
 const reveal = keyframes`
   from { opacity: 0; transform: translateY(10px); }
@@ -7,20 +8,13 @@ const reveal = keyframes`
 `;
 
 const EDXSPartnerSection: React.FC = () => {
-    const [isVisible, setIsVisible] = useState(false);
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const isVisible = useIntersectionObserver(sectionRef);
     const titleText = "Become An EDXS Partner";
     const descText = "Empower education together! Collaborate with us as an EDXS Partner and access customized resources to drive positive change in learning.";
 
-    useEffect(() => {
-        // Trigger animation on mount
-        const timer = setTimeout(() => {
-            setIsVisible(true);
-        }, 100);
-        return () => clearTimeout(timer);
-    }, []);
-
     return (
-        <Box sx={{ bgcolor: '#edd8b4', py: { xs: 8, md: 12 }, overflow: 'hidden' }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', py: { xs: 8, md: 12 }, overflow: 'hidden' }}>
             <Container maxWidth="lg">
                 <Grid container spacing={6} alignItems="center">
                     {/* Left Side: Content */}

@@ -1,4 +1,6 @@
+import React, { useRef } from 'react';
 import { Box, Typography, Grid, keyframes } from '@mui/material';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 
 const reveal = keyframes`
   from { opacity: 0; transform: translateY(10px); }
@@ -6,12 +8,14 @@ const reveal = keyframes`
 `;
 
 const HowItWorks: React.FC = () => {
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const isVisible = useIntersectionObserver(sectionRef);
     const titleText = "How EDXS Actually takes the Strain";
     const bodyText = "We seamlessly integrate into your school's workflow, allowing you to offload the burdensome tasks that consume your time and energy. Say goodbye to manual paperwork and administrative headaches – EDXS automates processes such as student enrollment, attendance tracking, and financial management, freeing you to focus on what truly matters: providing quality education. Our intuitive interface and customizable features make navigating the system a breeze, empowering you to streamline operations with ease. And with our dedicated support team by your side, assistance is just a click away whenever you need it. EDXS takes the strain out of school management so you can devote your energy to shaping young minds and fostering a thriving learning environment.";
     const footerText = "Let EDXS take the strain";
 
     return (
-        <Box sx={{ bgcolor: '#edd8b4', pt: 5, pb: 15, px: '6%', borderTop: 'none', color: '#76a345', position: 'relative', zIndex: 1 }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', pt: 5, pb: 15, px: '6%', borderTop: 'none', color: '#76a345', position: 'relative', zIndex: 1 }}>
             <Grid container spacing={8} alignItems="center">
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="h4" fontWeight="800" gutterBottom>
@@ -22,7 +26,7 @@ const HowItWorks: React.FC = () => {
                                 sx={{
                                     display: 'inline-block',
                                     opacity: 0,
-                                    animation: `${reveal} 0.5s ease forwards`,
+                                    animation: isVisible ? `${reveal} 0.5s ease forwards` : 'none',
                                     animationDelay: `${i * 0.03}s`
                                 }}
                             >
@@ -38,7 +42,7 @@ const HowItWorks: React.FC = () => {
                                 sx={{
                                     display: 'inline-block',
                                     opacity: 0,
-                                    animation: `${reveal} 0.5s ease forwards`,
+                                    animation: isVisible ? `${reveal} 0.5s ease forwards` : 'none',
                                     animationDelay: `${(titleText.length * 0.03) + (i * 0.02)}s`,
                                     mr: '0.25em'
                                 }}
@@ -72,7 +76,7 @@ const HowItWorks: React.FC = () => {
                                 sx={{
                                     display: 'inline-block',
                                     opacity: 0,
-                                    animation: `${reveal} 0.5s ease forwards`,
+                                    animation: isVisible ? `${reveal} 0.5s ease forwards` : 'none',
                                     animationDelay: `${(titleText.length * 0.03) + (bodyText.split(' ').length * 0.02) + (i * 0.05)}s`
                                 }}
                             >
@@ -82,7 +86,7 @@ const HowItWorks: React.FC = () => {
                     </Typography>
                 </Grid>
             </Grid>
-        </Box>
+        </Box >
     );
 };
 

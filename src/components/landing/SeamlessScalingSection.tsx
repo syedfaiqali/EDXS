@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Box, Container, Grid, Typography, keyframes } from '@mui/material';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import {
     AssessmentOutlined,
     BadgeOutlined,
@@ -48,20 +49,13 @@ const features = [
 ];
 
 const SeamlessScalingSection: React.FC = () => {
-    const [isVisible, setIsVisible] = useState(false);
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const isVisible = useIntersectionObserver(sectionRef);
     const titleText = "Seamless Scaling: Features For Pain-Free Growth";
     const subText = "Centralized Solutions: Your School Management essentials All Together";
 
-    useEffect(() => {
-        // Trigger animation on mount
-        const timer = setTimeout(() => {
-            setIsVisible(true);
-        }, 100);
-        return () => clearTimeout(timer);
-    }, []);
-
     return (
-        <Box sx={{ bgcolor: '#edd8b4', py: 15, px: '5%' }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', py: 15, px: '5%' }}>
             <Container maxWidth="xl">
                 <Box textAlign="center" mb={10}>
                     <Typography variant="h3" fontWeight="800" sx={{ color: '#333', mb: 2 }}>
