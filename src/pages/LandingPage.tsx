@@ -13,6 +13,7 @@ import HowItWorks from '../components/landing/HowItWorks';
 import TestimonialsSection from '../components/landing/TestimonialsSection';
 import SeamlessScalingSection from '../components/landing/SeamlessScalingSection';
 import EDXSPartnerSection from '../components/landing/EDXSPartnerSection';
+import ProductsSection from '../components/landing/ProductsSection';
 
 // --- Keyframes ---
 const float = keyframes`
@@ -65,7 +66,7 @@ const LandingPage: React.FC = () => {
                         bgcolor: i % 3 === 0 ? 'transparent' : (i % 2 === 0 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(240, 219, 176, 0.05)'),
                         borderRadius: i % 3 === 0 ? '8px' : (i % 2 === 0 ? '50%' : '8px'),
                         animation: `${float} ${Math.random() * 10 + 10}s linear infinite`,
-                        animationDelay: `${Math.random() * 20} s`,
+                        animationDelay: `${Math.random() * 20}s`,
                         zIndex: 0,
                         display: 'flex',
                         alignItems: 'center',

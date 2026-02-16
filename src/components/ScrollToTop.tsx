@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Zoom } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import xsLogo from '../assets/xs_square_light.png';
 
 const ScrollToTop: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const { pathname } = useLocation();
+
+    // Scroll to top on route change
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     useEffect(() => {
         const toggleVisibility = () => {

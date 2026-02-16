@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import {
   ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
@@ -14,11 +14,16 @@ import Logo from './components/Logo';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import ProductsSection from './components/landing/ProductsSection';
 
 // Lazy load pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'));
+const ProductsPage = lazy(() => import('./pages/ProductsPage'));
+const ServicesPage = lazy(() => import('./pages/ServicesPage'));
+const TeamPage = lazy(() => import('./pages/TeamPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 const LoadingScreen = () => (
   <Box sx={{
@@ -35,6 +40,13 @@ const LoadingScreen = () => (
 );
 
 const MainLayout: React.FC = () => {
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   const { language, setLanguage, t } = useLanguage();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -60,6 +72,14 @@ const MainLayout: React.FC = () => {
       dispatch(resetFlow());
     } else if (item === 'About Us') {
       navigate('/aboutus');
+    } else if (item === 'Products') {
+      navigate('/products');
+    } else if (item === 'Services') {
+      navigate('/services');
+    } else if (item === 'Team') {
+      navigate('/team');
+    } else if (item === 'Contact') {
+      navigate('/contact');
     }
   };
 
@@ -92,7 +112,13 @@ const MainLayout: React.FC = () => {
                     cursor: 'pointer',
                     opacity: 1,
                     '&:hover': { opacity: 0.8 },
-                    borderBottom: (item === 'Home' && location.pathname === '/') || (item === 'About Us' && location.pathname.startsWith('/aboutus')) ? '2px solid white' : 'none',
+                    borderBottom: (
+                      (item === 'Home' && location.pathname === '/') ||
+                      (item === 'About Us' && location.pathname.startsWith('/aboutus')) ||
+                      (item === 'Products' && location.pathname.startsWith('/products')) ||
+                      (item === 'Services' && location.pathname.startsWith('/services')) ||
+                      (item === 'Team' && location.pathname.startsWith('/team'))
+                    ) ? '2px solid white' : 'none',
                     pb: 0.5,
                     px: 0.5
                   }}
@@ -108,7 +134,19 @@ const MainLayout: React.FC = () => {
                 sx={{ color: 'white', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
                 onClick={handleOpenLanguageModal}
               />
-              <Typography sx={{ color: 'white', fontSize: '0.8rem', cursor: 'pointer', display: { xs: 'none', lg: 'block' } }}>Contact us</Typography>
+              <Typography
+                sx={{
+                  color: 'white',
+                  fontSize: '0.8rem',
+                  cursor: 'pointer',
+                  display: { xs: 'none', lg: 'block' },
+                  fontWeight: location.pathname === '/contact' ? 800 : 500,
+                  textDecoration: location.pathname === '/contact' ? 'underline' : 'none'
+                }}
+                onClick={() => handleNavigation('Contact')}
+              >
+                Contact us
+              </Typography>
               <Button
                 variant="outlined"
                 onClick={() => navigate('/registration')}
@@ -156,6 +194,10 @@ const MainLayout: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/registration" element={<RegistrationPage />} />
             <Route path="/aboutus" element={<AboutUsPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
