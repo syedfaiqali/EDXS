@@ -1,7 +1,23 @@
-import React from 'react';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Container, Grid, Typography, keyframes } from '@mui/material';
 
-const EduPartnerSection: React.FC = () => {
+const reveal = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const EDXSPartnerSection: React.FC = () => {
+    const [isVisible, setIsVisible] = useState(false);
+    const titleText = "Become An EDXS Partner";
+    const descText = "Empower education together! Collaborate with us as an EDXS Partner and access customized resources to drive positive change in learning.";
+
+    useEffect(() => {
+        // Trigger animation on mount
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, 100);
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <Box sx={{ bgcolor: '#edd8b4', py: { xs: 8, md: 12 }, overflow: 'hidden' }}>
@@ -19,7 +35,20 @@ const EduPartnerSection: React.FC = () => {
                                 fontSize: { xs: '2.5rem', md: '3.5rem' }
                             }}
                         >
-                            Become An Edu Partner
+                            {titleText.split('').map((char, i) => (
+                                <Box
+                                    key={i}
+                                    component="span"
+                                    sx={{
+                                        display: 'inline-block',
+                                        opacity: 0,
+                                        animation: isVisible ? `${reveal} 0.5s ease forwards` : 'none',
+                                        animationDelay: `${i * 0.04}s`
+                                    }}
+                                >
+                                    {char === ' ' ? '\u00A0' : char}
+                                </Box>
+                            ))}
                         </Typography>
                         <Typography
                             variant="body1"
@@ -31,7 +60,21 @@ const EduPartnerSection: React.FC = () => {
                                 maxWidth: '90%'
                             }}
                         >
-                            Empower education together! Collaborate with us as an Edu Partner and access customized resources to drive positive change in learning.
+                            {descText.split(' ').map((word, i) => (
+                                <Box
+                                    key={i}
+                                    component="span"
+                                    sx={{
+                                        display: 'inline-block',
+                                        opacity: 0,
+                                        animation: isVisible ? `${reveal} 0.5s ease forwards` : 'none',
+                                        animationDelay: `${(titleText.length * 0.04) + (i * 0.05)}s`,
+                                        mr: '0.25em'
+                                    }}
+                                >
+                                    {word}
+                                </Box>
+                            ))}
                         </Typography>
                         <Button
                             variant="contained"
@@ -45,6 +88,9 @@ const EduPartnerSection: React.FC = () => {
                                 borderRadius: 50,
                                 fontWeight: 700,
                                 fontSize: '1rem',
+                                opacity: 0,
+                                animation: isVisible ? `${reveal} 0.6s ease forwards` : 'none',
+                                animationDelay: `${(titleText.length * 0.04) + (descText.split(' ').length * 0.05) + 0.2}s`,
                                 '&:hover': {
                                     borderColor: '#dcc6a0'
                                 },
@@ -56,7 +102,11 @@ const EduPartnerSection: React.FC = () => {
                     </Grid>
 
                     {/* Right Side: Illustration */}
-                    <Grid size={{ xs: 12, md: 6 }}>
+                    <Grid size={{ xs: 12, md: 6 }} sx={{
+                        opacity: 0,
+                        animation: isVisible ? `${reveal} 0.8s ease forwards` : 'none',
+                        animationDelay: `${(titleText.length * 0.04) + (descText.split(' ').length * 0.05) + 0.4}s`
+                    }}>
                         <Box sx={{ position: 'relative', height: 400, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             {/* Abstract World Map Background (Simplified opacity layer) */}
                             <svg
@@ -162,4 +212,4 @@ const EduPartnerSection: React.FC = () => {
     );
 };
 
-export default EduPartnerSection;
+export default EDXSPartnerSection;

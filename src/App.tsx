@@ -12,6 +12,7 @@ import { resetFlow } from './store/selectionSlice';
 import theme from './theme/theme';
 import Logo from './components/Logo';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
 // Lazy load pages
@@ -191,6 +192,7 @@ const MainLayout: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <ScrollToTop />
     </Box>
   );
 };

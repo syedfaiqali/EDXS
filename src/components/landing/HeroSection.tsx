@@ -18,8 +18,16 @@ const rotate = keyframes`
   to { transform: rotate(360deg); }
 `;
 
+const reveal = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
 const HeroSection: React.FC = () => {
     const navigate = useNavigate();
+
+    const titleText = "Let EDXS Take the Strain";
+    const subText = "We've revolutionized the way schools operate, taking the strain out of management tasks so educators can focus on what truly matters: nurturing young minds.";
 
     return (
         <Box sx={{
@@ -36,12 +44,39 @@ const HeroSection: React.FC = () => {
                         fontWeight: 800,
                         mb: 3,
                         lineHeight: 1.1,
-                        color: '#f0dbb0' // Cream color for title from image
+                        color: '#f0dbb0'
                     }}>
-                        Let EDXS Take the Strain
+                        {titleText.split('').map((char, i) => (
+                            <Box
+                                key={i}
+                                component="span"
+                                sx={{
+                                    display: 'inline-block',
+                                    opacity: 0,
+                                    animation: `${reveal} 0.5s ease forwards`,
+                                    animationDelay: `${i * 0.05}s`
+                                }}
+                            >
+                                {char === ' ' ? '\u00A0' : char}
+                            </Box>
+                        ))}
                     </Typography>
                     <Typography variant="h6" sx={{ color: 'rgba(255,255,255,0.8)', mb: 6, fontWeight: 400, maxWidth: '90%' }}>
-                        We've revolutionized the way schools operate, taking the strain out of management tasks so educators can focus on what truly matters: nurturing young minds.
+                        {subText.split(' ').map((word, i) => (
+                            <Box
+                                key={i}
+                                component="span"
+                                sx={{
+                                    display: 'inline-block',
+                                    opacity: 0,
+                                    animation: `${reveal} 0.5s ease forwards`,
+                                    animationDelay: `${(titleText.length * 0.05) + (i * 0.1)}s`,
+                                    mr: '0.25em'
+                                }}
+                            >
+                                {word}
+                            </Box>
+                        ))}
                     </Typography>
                     <Button
                         variant="contained"

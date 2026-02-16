@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, keyframes, Typography } from '@mui/material';
+import xsLogo from '../assets/xs_square_light.png';
 
 
 // Components
@@ -10,7 +11,7 @@ import HowItWorks from '../components/landing/HowItWorks';
 // ... other imports
 import TestimonialsSection from '../components/landing/TestimonialsSection';
 import SeamlessScalingSection from '../components/landing/SeamlessScalingSection';
-import EduPartnerSection from '../components/landing/EduPartnerSection';
+import EDXSPartnerSection from '../components/landing/EDXSPartnerSection';
 
 // --- Keyframes ---
 const float = keyframes`
@@ -37,7 +38,6 @@ const pulse = keyframes`
 const LandingPage: React.FC = () => {
     const [logoStage, setLogoStage] = useState<'waiting' | 'opening' | 'finished'>('waiting');
 
-
     useEffect(() => {
         // Logo animation trigger
         const openTimer = setTimeout(() => setLogoStage('opening'), 1000);
@@ -61,13 +61,30 @@ const LandingPage: React.FC = () => {
                         bottom: -100,
                         width: Math.random() * 60 + 20,
                         height: Math.random() * 60 + 20,
-                        bgcolor: i % 2 === 0 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(240, 219, 176, 0.05)',
-                        borderRadius: i % 3 === 0 ? '50%' : '8px',
+                        bgcolor: i % 3 === 0 ? 'transparent' : (i % 2 === 0 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(240, 219, 176, 0.05)'),
+                        borderRadius: i % 3 === 0 ? '8px' : (i % 2 === 0 ? '50%' : '8px'),
                         animation: `${float} ${Math.random() * 10 + 10}s linear infinite`,
                         animationDelay: `${Math.random() * 20} s`,
-                        zIndex: 0
+                        zIndex: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }}
-                />
+                >
+                    {i % 3 === 0 && (
+                        <Box
+                            component="img"
+                            src={xsLogo}
+                            sx={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'contain',
+                                opacity: 0.1,
+                                filter: 'brightness(0) invert(1)' // Make it white/light
+                            }}
+                        />
+                    )}
+                </Box>
             ))}
 
             {/* Logo animation overlay */}
@@ -107,7 +124,7 @@ const LandingPage: React.FC = () => {
                         <Typography variant="h1" sx={{
                             fontSize: '15rem',
                             fontWeight: 900,
-                            color: '#fff',
+                            color: '#f0dbb0', // Update to Tan
                             letterSpacing: -10,
                             ml: logoStage === 'opening' ? 10 : 0,
                             transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -248,7 +265,7 @@ const LandingPage: React.FC = () => {
 
                 <TestimonialsSection />
                 <SeamlessScalingSection />
-                <EduPartnerSection />
+                <EDXSPartnerSection />
             </Box>
         </Box >
     );

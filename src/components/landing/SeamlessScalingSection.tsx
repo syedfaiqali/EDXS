@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Grid, Typography, keyframes } from '@mui/material';
 import {
     AssessmentOutlined,
     BadgeOutlined,
@@ -8,6 +8,11 @@ import {
     PowerOutlined,
     Inventory2Outlined
 } from '@mui/icons-material';
+
+const reveal = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
 const features = [
     {
@@ -43,15 +48,54 @@ const features = [
 ];
 
 const SeamlessScalingSection: React.FC = () => {
+    const [isVisible, setIsVisible] = useState(false);
+    const titleText = "Seamless Scaling: Features For Pain-Free Growth";
+    const subText = "Centralized Solutions: Your School Management essentials All Together";
+
+    useEffect(() => {
+        // Trigger animation on mount
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, 100);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <Box sx={{ bgcolor: '#edd8b4', py: 15, px: '5%' }}>
             <Container maxWidth="xl">
                 <Box textAlign="center" mb={10}>
                     <Typography variant="h3" fontWeight="800" sx={{ color: '#333', mb: 2 }}>
-                        Seamless Scaling: Features For Pain-Free Growth
+                        {titleText.split('').map((char, i) => (
+                            <Box
+                                key={i}
+                                component="span"
+                                sx={{
+                                    display: 'inline-block',
+                                    opacity: 0,
+                                    animation: isVisible ? `${reveal} 0.5s ease forwards` : 'none',
+                                    animationDelay: `${i * 0.03}s`
+                                }}
+                            >
+                                {char === ' ' ? '\u00A0' : char}
+                            </Box>
+                        ))}
                     </Typography>
                     <Typography variant="h6" sx={{ color: '#666', fontWeight: 'normal', opacity: 0.8 }}>
-                        Centralized Solutions: Your School Management essentials All Together
+                        {subText.split(' ').map((word, i) => (
+                            <Box
+                                key={i}
+                                component="span"
+                                sx={{
+                                    display: 'inline-block',
+                                    opacity: 0,
+                                    animation: isVisible ? `${reveal} 0.5s ease forwards` : 'none',
+                                    animationDelay: `${(titleText.length * 0.03) + (i * 0.08)}s`,
+                                    mr: '0.25em'
+                                }}
+                            >
+                                {word}
+                            </Box>
+                        ))}
                     </Typography>
                 </Box>
 
@@ -59,7 +103,11 @@ const SeamlessScalingSection: React.FC = () => {
                     {features.map((feature, index) => {
                         const Icon = feature.icon;
                         return (
-                            <Grid key={index} size={{ xs: 12, md: 4 }}>
+                            <Grid key={index} size={{ xs: 12, md: 4 }} sx={{
+                                opacity: 0,
+                                animation: isVisible ? `${reveal} 0.6s ease forwards` : 'none',
+                                animationDelay: `${(titleText.length * 0.03) + (subText.split(' ').length * 0.08) + (index * 0.15)}s`
+                            }}>
                                 <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>
                                     <Box sx={{
                                         minWidth: 70,

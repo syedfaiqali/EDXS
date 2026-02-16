@@ -3,9 +3,14 @@ import { Box, Typography, Grid, Paper, Button, keyframes } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setGlobalStep } from '../../store/selectionSlice';
 
+const revealScroll = keyframes`
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
 const scrollLeft = keyframes`
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 `;
 
 const TestimonialsSection: React.FC = () => {
@@ -41,7 +46,7 @@ const TestimonialsSection: React.FC = () => {
     }, [col1.length]);
 
     return (
-        <Box sx={{ bgcolor: '#edd8b4', pt: 15, pb: 0, px: '5%', position: 'relative', zIndex: 1 }}>
+        <Box sx={{ bgcolor: '#edd8b4', pt: 10, pb: 0, px: '5%', position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             {/* Split Background Effect */}
             <Box sx={{
                 position: 'absolute',
@@ -52,25 +57,43 @@ const TestimonialsSection: React.FC = () => {
                 bgcolor: '#76a345',
                 zIndex: 0
             }} />
-
-            <Grid container justifyContent="center" sx={{ position: 'relative', zIndex: 1 }}>
+            <Grid container justifyContent="center" spacing={4} sx={{ position: 'relative', zIndex: 1, mb: 10 }}>
                 {columns.map((col, colIndex) => {
                     const currentItem = col[activeIndex];
                     const nextItem = col[(activeIndex + 1) % col.length];
 
                     return (
-                        <React.Fragment key={colIndex}>
-                            <Grid size={{ xs: 12, md: 5 }}>
-                                <Paper elevation={0} sx={{
-                                    p: { xs: 4, md: 5 },
-                                    borderRadius: 4,
-                                    height: 300,
-                                    position: 'relative',
-                                    pt: 10,
-                                    border: 'none',
-                                    boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
-                                }}>
-                                    <Box sx={{
+                        <Grid item key={colIndex} size={{ xs: 12, md: 5 }} sx={{
+                            opacity: 0,
+                            animation: `${revealScroll} 0.8s ease forwards`,
+                            animationDelay: `${colIndex * 0.2}s`,
+                            backfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                        }}>
+                            <Paper elevation={0} sx={{
+                                p: { xs: 4, md: 5 },
+                                borderRadius: 4,
+                                height: { xs: 'auto', md: 300 },
+                                position: 'relative',
+                                pt: 8,
+                                border: '1px solid rgba(118, 163, 69, 0.1)',
+                                boxShadow: '0 10px 40px rgba(0,0,0,0.05)',
+                                transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                backfaceVisibility: 'hidden',
+                                WebkitFontSmoothing: 'antialiased',
+                                transform: 'translateZ(0)',
+                                '&:hover': {
+                                    transform: 'translateY(-10px) translateZ(0)',
+                                    boxShadow: '0 20px 50px rgba(0,0,0,0.12)',
+                                    '& .quote-box': {
+                                        transform: 'translateX(-50%) rotate(10deg) scale(1.1)',
+                                        bgcolor: '#5d8a2e'
+                                    }
+                                }
+                            }}>
+                                <Box
+                                    className="quote-box"
+                                    sx={{
                                         position: 'absolute',
                                         top: -30,
                                         left: '50%',
@@ -85,94 +108,153 @@ const TestimonialsSection: React.FC = () => {
                                         justifyContent: 'center',
                                         color: 'white',
                                         fontSize: '2.5rem',
-                                        boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
-                                    }}>"</Box>
+                                        boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                                        transition: 'all 0.4s ease'
+                                    }}
+                                >
+                                    "
+                                </Box>
 
-                                    {/* Viewport to clip content strictly within padding limits */}
-                                    <Box sx={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-                                        {/* Gradient Masks - Reduced height to prevent blurring text */}
-                                        <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 20, background: 'linear-gradient(to bottom, white 0%, transparent 100%)', zIndex: 1 }} />
-                                        <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 20, background: 'linear-gradient(to top, white 0%, transparent 100%)', zIndex: 1 }} />
-
-                                        {/* Sliding Container */}
-                                        <Box sx={{
-                                            position: 'relative',
-                                            height: '200%', // Holds two items stacked
-                                            transform: isSliding ? 'translateY(-50%)' : 'translateY(0)',
-                                            transition: isSliding ? 'transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1)' : 'none',
-                                            mt: -2 // Slight adjustment for spacing
-                                        }}>
-                                            {[currentItem, nextItem].map((item, i) => (
-                                                <Box key={i} sx={{
-                                                    height: '50%',
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    justifyContent: 'center',
-                                                    px: 1
-                                                }}>
-                                                    <Typography variant="h6" align="center" sx={{ mb: 2, lineHeight: 1.6, fontWeight: 500, color: '#444', fontSize: { xs: '0.8rem', md: '0.95rem' } }}>
-                                                        {item.text}
-                                                    </Typography>
-                                                    <Typography variant="subtitle1" align="center" sx={{ color: '#000', fontWeight: 'bold', fontSize: '1.1rem' }}>
-                                                        {item.name} - {item.role}
-                                                    </Typography>
-                                                </Box>
-                                            ))}
-                                        </Box>
+                                <Box sx={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+                                    <Box sx={{
+                                        position: 'relative',
+                                        height: '200%',
+                                        transform: isSliding ? 'translateY(-50%) translateZ(0)' : 'translateY(0) translateZ(0)',
+                                        transition: isSliding ? 'transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1)' : 'none',
+                                        backfaceVisibility: 'hidden',
+                                        WebkitFontSmoothing: 'antialiased',
+                                    }}>
+                                        {[currentItem, nextItem].map((item, i) => (
+                                            <Box key={i} sx={{
+                                                height: '50%',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                justifyContent: 'flex-start',
+                                                pt: 2,
+                                                px: { xs: 1, md: 2 }
+                                            }}>
+                                                <Typography variant="subtitle1" align="center" sx={{ color: '#76a345', fontWeight: 800, fontSize: '1.25rem', letterSpacing: -0.5, mb: 0.5 }}>
+                                                    {item.name}
+                                                </Typography>
+                                                <Typography variant="caption" align="center" sx={{ color: '#999', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
+                                                    {item.role}
+                                                </Typography>
+                                                <Typography variant="h6" align="center" sx={{ lineHeight: 1.6, fontWeight: 500, color: '#555', fontSize: { xs: '0.85rem', md: '1.05rem' }, fontStyle: 'italic' }}>
+                                                    "{item.text}"
+                                                </Typography>
+                                            </Box>
+                                        ))}
                                     </Box>
-                                </Paper>
-                            </Grid>
-                            {colIndex === 0 && <Grid size={{ xs: 12, md: 1 }} sx={{ display: { xs: 'none', md: 'block' } }} />}
-                        </React.Fragment>
+                                </Box>
+                            </Paper>
+                        </Grid>
                     );
                 })}
             </Grid>
 
-            <Box textAlign="center" pt={12} pb={2} sx={{ position: 'relative', zIndex: 1, color: 'white' }}>
-                <Typography variant="h3" fontWeight="800" sx={{ mb: 2 }}>Still Not Convinced?</Typography>
-                <Typography variant="h6" sx={{ opacity: 0.9 }}>See it yourself</Typography>
+            {/* Section Header moved to Top */}
+            <Box textAlign="center" pt={5} pb={8} sx={{ position: 'relative', zIndex: 1 }}>
+                <Typography variant="h3" fontWeight="900" sx={{ mb: 2, letterSpacing: -1, color: '#1a4163' }}>
+                    Still Not Convinced?
+                </Typography>
+                <Typography variant="h6" sx={{ opacity: 0.8, fontWeight: 500, color: '#76a345' }}>
+                    Experience the EDXS difference first-hand
+                </Typography>
             </Box>
 
             {/* Horizontal Marquee Section */}
-            <Box sx={{
-                width: '100%',
-                overflow: 'hidden',
-                position: 'relative',
-                zIndex: 2,
-            }}>
+            <Box sx={{ width: '100%', overflow: 'hidden', position: 'relative', zIndex: 2, py: 2 }}>
                 <Box sx={{
                     display: 'flex',
                     width: 'max-content',
-                    animation: `${scrollLeft} 40s linear infinite`,
+                    animation: `${scrollLeft} 50s linear infinite`,
                     '&:hover': { animationPlayState: 'paused' },
-                    px: 0
                 }}>
                     {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, i) => (
-                        <Paper key={i} elevation={3} sx={{
-                            minWidth: 400,
-                            maxWidth: 400,
-                            mx: 3,
+                        <Paper key={i} elevation={0} sx={{
+                            minWidth: 420,
+                            maxWidth: 420,
+                            mx: 2,
                             p: 4,
                             borderRadius: 4,
-                            bgcolor: 'rgba(255, 255, 255, 0.95)',
+                            bgcolor: 'rgba(255, 255, 255, 0.98)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
+                            transition: 'all 0.4s ease',
+                            cursor: 'pointer',
                             position: 'relative',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center'
+                            overflow: 'hidden',
+                            '&:hover': {
+                                transform: 'scale(1.03)',
+                                boxShadow: '0 15px 40px rgba(0,0,0,0.12)',
+                                borderColor: '#76a345',
+                                '& .view-details-overlay': {
+                                    opacity: 1,
+                                    visibility: 'visible'
+                                }
+                            }
                         }}>
-                            <Typography variant="body1" sx={{ mb: 2, fontWeight: 500, color: '#444' }}>
-                                "{t.text.substring(0, 120)}..."
+                            <Typography variant="body1" sx={{ mb: 3, fontWeight: 500, color: '#555', lineHeight: 1.6 }}>
+                                "{t.text}"
                             </Typography>
-                            <Typography variant="subtitle2" sx={{ color: '#76a345', fontWeight: 'bold' }}>
-                                {t.name}
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: '#666' }}>
-                                {t.role}
-                            </Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                <Typography variant="subtitle2" sx={{ color: '#76a345', fontWeight: 800, fontSize: '1rem' }}>
+                                    {t.name}
+                                </Typography>
+                                <Typography variant="caption" sx={{ color: '#999', fontWeight: 600 }}>
+                                    {t.role}
+                                </Typography>
+                            </Box>
+
+                            {/* View Details Overlay */}
+                            <Box
+                                className="view-details-overlay"
+                                sx={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    bgcolor: 'rgba(118, 163, 69, 0.95)',
+                                    borderRadius: 4,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    opacity: 0,
+                                    visibility: 'hidden',
+                                    transition: 'all 0.4s ease',
+                                    zIndex: 10
+                                }}
+                            >
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        bgcolor: '#edd8b4',
+                                        color: '#76a345',
+                                        px: 5,
+                                        py: 1.5,
+                                        borderRadius: 3,
+                                        fontWeight: 700,
+                                        fontSize: '1.1rem',
+                                        border: '2px solid #edd8b4',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            bgcolor: 'white',
+                                            borderColor: 'white',
+                                            transform: 'scale(1.05)',
+                                            boxShadow: '0 8px 20px rgba(0,0,0,0.3)'
+                                        }
+                                    }}
+                                >
+                                    View Details
+                                </Button>
+                            </Box>
                         </Paper>
                     ))}
                 </Box>
             </Box>
+
             <Box textAlign="center" pb={12} pt={6} sx={{ position: 'relative', zIndex: 1, color: 'white', display: 'flex', justifyContent: 'center', gap: 3 }}>
                 <Button
                     variant="contained"
@@ -217,7 +299,7 @@ const TestimonialsSection: React.FC = () => {
                     Book a Sale Call
                 </Button>
             </Box>
-        </Box>
+        </Box >
     );
 };
 

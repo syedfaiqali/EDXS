@@ -1,76 +1,93 @@
 import React from 'react';
 import { Box, Typography, keyframes } from '@mui/material';
+import xsLogo from '../assets/xs_square_light.png';
 
-const rotateY = keyframes`
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
+const float = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
 `;
 
 const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = 'small', color = 'white' }) => {
     const isLarge = size === 'large';
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <Typography
-                    sx={{
-                        color: color,
-                        fontWeight: 900,
-                        fontSize: isLarge ? '2.5rem' : '1.8rem',
-                        letterSpacing: 1
-                    }}
-                >
-                    ED
-                </Typography>
-
-                {/* Custom Shield/Hexagon Icon representing the 'O' replacement or brand mark */}
-                <Box
-                    sx={{
-                        width: isLarge ? 40 : 28,
-                        height: isLarge ? 45 : 32,
-                        bgcolor: '#f0dbb0', // Tan color
-                        clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        mx: 0.5,
-                        position: 'relative',
-                        animation: `${rotateY} 6s linear infinite`,
-                        perspective: '1000px'
-                    }}
-                >
-                    <Box sx={{
-                        width: '70%',
-                        height: '70%',
-                        bgcolor: color === 'white' ? '#76a345' : 'white', // Preserving user's green
-                        clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                    }} />
-                </Box>
-
-                <Typography
-                    sx={{
-                        color: color,
-                        fontWeight: 900,
-                        fontSize: isLarge ? '2.5rem' : '1.8rem',
-                        letterSpacing: 1
-                    }}
-                >
-                    XS
-                </Typography>
-            </Box>
-            <Typography
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: isLarge ? 2.5 : 1.5,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    transform: 'translateY(-2px)'
+                }
+            }}
+        >
+            <Box
                 sx={{
-                    color: color,
-                    opacity: 0.8,
-                    fontSize: isLarge ? '0.7rem' : '0.5rem',
-                    fontWeight: 700,
-                    letterSpacing: 1.5,
-                    mt: -0.5,
-                    width: '100%'
+                    position: 'relative',
+                    width: isLarge ? 64 : 44,
+                    height: isLarge ? 64 : 44,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    animation: `${float} 3s ease-in-out infinite`,
+                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
+                    '& img': {
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        borderRadius: isLarge ? '12px' : '8px'
+                    }
                 }}
             >
-                SCHOOL MANAGEMENT SYSTEM
-            </Typography>
+                <img src={xsLogo} alt="EDXS Logo" />
+            </Box>
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                    <Typography
+                        sx={{
+                            color: color,
+                            fontWeight: 900,
+                            fontSize: isLarge ? '2.4rem' : '1.8rem',
+                            lineHeight: 1,
+                            letterSpacing: -0.5,
+                            textTransform: 'uppercase',
+                        }}
+                    >
+                        ED
+                    </Typography>
+                    <Typography
+                        sx={{
+                            color: color === 'white' ? '#f0dbb0' : '#76a345',
+                            fontWeight: 400,
+                            fontSize: isLarge ? '2.4rem' : '1.8rem',
+                            lineHeight: 1,
+                            letterSpacing: -0.5,
+                            textTransform: 'uppercase',
+                            ml: 0.1
+                        }}
+                    >
+                        XS
+                    </Typography>
+                </Box>
+                <Typography
+                    sx={{
+                        color: color,
+                        opacity: 0.85,
+                        fontSize: isLarge ? '0.75rem' : '0.55rem',
+                        fontWeight: 700,
+                        letterSpacing: isLarge ? 3 : 2,
+                        mt: 0.2,
+                        textTransform: 'uppercase',
+                        whiteSpace: 'nowrap'
+                    }}
+                >
+                    School Management System
+                </Typography>
+            </Box>
         </Box>
     );
 };

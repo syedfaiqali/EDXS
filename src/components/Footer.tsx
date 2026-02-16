@@ -1,5 +1,6 @@
 import { Box, Container, Grid, IconButton, Typography } from '@mui/material';
 import { Facebook, Instagram, LinkedIn, Mail, Phone, East } from '@mui/icons-material';
+import Logo from './Logo';
 
 const Footer: React.FC = () => {
     return (
@@ -22,23 +23,7 @@ const Footer: React.FC = () => {
                     <Grid size={{ xs: 12, md: 5 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
                         {/* Large Shield Logo */}
                         <Box sx={{ mb: 4, display: 'inline-block' }}>
-                            <svg width="120" height="140" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M60 10 L100 30 L100 90 L60 130 L20 90 L20 30 Z"
-                                    stroke="#f0dbb0"
-                                    strokeWidth="12"
-                                    strokeLinejoin="round"
-                                    fill="none"
-                                />
-                                {/* Inner curve to match the 'shield/vase' look in screenshot */}
-                                <path
-                                    d="M20 30 Q 60 50, 100 30"
-                                    stroke="#f0dbb0"
-                                    strokeWidth="12"
-                                    strokeLinecap="round"
-                                    fill="none"
-                                />
-                            </svg>
+                            <Logo size="large" color="white" />
                         </Box>
 
                         {/* Social Icons Row */}

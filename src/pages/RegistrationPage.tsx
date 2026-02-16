@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Container, keyframes, Typography } from '@mui/material';
+import { Box, Container, keyframes } from '@mui/material';
+import xsLogo from '../assets/xs_square_light.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../store';
@@ -213,7 +214,17 @@ const RegistrationPage: React.FC = () => {
                             }}
                         >
                             {i % 4 === 0 ? (
-                                <Typography sx={{ fontWeight: 900, fontSize: size * 0.8, letterSpacing: -2 }}>EDXS</Typography>
+                                <Box
+                                    component="img"
+                                    src={xsLogo}
+                                    sx={{
+                                        width: size,
+                                        height: size,
+                                        objectFit: 'contain',
+                                        filter: color === '#76a345' ? 'none' : 'brightness(0) invert(1)',
+                                        opacity: 0.8
+                                    }}
+                                />
                             ) : (
                                 <IconComp sx={{ fontSize: size }} />
                             )}
