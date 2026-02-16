@@ -55,7 +55,7 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, icon, rever
             <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
                 <Grid container spacing={10} alignItems="center" flexDirection={reverse ? 'row-reverse' : 'row'}>
                     {/* Image/Logo Side */}
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <Box
                             sx={{
                                 position: 'relative',
@@ -102,7 +102,9 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, icon, rever
                                 }}
                             >
                                 <Box sx={{ color: accentColor, mb: 1 }}>
-                                    {React.cloneElement(icon as React.ReactElement, { sx: { fontSize: { xs: '5rem', md: '7rem' } } })}
+                                    {React.isValidElement(icon)
+                                        ? React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: { xs: '5rem', md: '7rem' } } })
+                                        : null}
                                 </Box>
                                 <Typography sx={{
                                     fontWeight: 900,
@@ -118,7 +120,7 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, icon, rever
                     </Grid>
 
                     {/* Text Side */}
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <Box sx={{
                             opacity: isVisible ? 1 : 0,
                             transform: isVisible ? 'translateX(0)' : `translateX(${reverse ? '-50px' : '50px'})`,
