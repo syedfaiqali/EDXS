@@ -46,7 +46,7 @@ const ContactSection: React.FC = () => {
                     <Grid size={{ xs: 12, md: 7 }}>
                         <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                             <Box>
-                                <Typography sx={{ fontWeight: 700, mb: 1.5, color: 'primary.main' }}>Name</Typography>
+                                <Typography sx={{ fontWeight: 700, mb: 0.5, color: 'primary.main' }}>Name</Typography>
                                 <TextField
                                     fullWidth
                                     placeholder="Your Name"
@@ -56,7 +56,7 @@ const ContactSection: React.FC = () => {
                             </Box>
 
                             <Box>
-                                <Typography sx={{ fontWeight: 700, mb: 1.5, color: 'primary.main' }}>Email</Typography>
+                                <Typography sx={{ fontWeight: 700, mb: 0.5, color: 'primary.main' }}>Email</Typography>
                                 <TextField
                                     fullWidth
                                     placeholder="Email"
@@ -66,7 +66,7 @@ const ContactSection: React.FC = () => {
                             </Box>
 
                             <Box>
-                                <Typography sx={{ fontWeight: 700, mb: 1.5, color: 'primary.main' }}>Contact Number</Typography>
+                                <Typography sx={{ fontWeight: 700, mb: 0.5, color: 'primary.main' }}>Contact Number</Typography>
                                 <TextField
                                     fullWidth
                                     placeholder="Contact Number with Country Code"
@@ -76,7 +76,7 @@ const ContactSection: React.FC = () => {
                             </Box>
 
                             <Box>
-                                <Typography sx={{ fontWeight: 700, mb: 1.5, color: 'primary.main' }}>Location</Typography>
+                                <Typography sx={{ fontWeight: 700, mb: 0.5, color: 'primary.main' }}>Location</Typography>
                                 <TextField
                                     fullWidth
                                     placeholder="City Name"
@@ -86,7 +86,7 @@ const ContactSection: React.FC = () => {
                             </Box>
 
                             <Box>
-                                <Typography sx={{ fontWeight: 700, mb: 1.5, color: 'primary.main' }}>Please Select Your Interest</Typography>
+                                <Typography sx={{ fontWeight: 700, mb: 0.5, color: 'primary.main' }}>Please Select Your Interest</Typography>
                                 <Box sx={{
                                     bgcolor: 'rgba(255,255,255,0.3)',
                                     p: 2,
@@ -110,7 +110,7 @@ const ContactSection: React.FC = () => {
                             </Box>
 
                             <Box>
-                                <Typography sx={{ fontWeight: 700, mb: 1.5, color: 'primary.main' }}>Message</Typography>
+                                <Typography sx={{ fontWeight: 700, mb: 0.5, color: 'primary.main' }}>Message</Typography>
                                 <TextField
                                     fullWidth
                                     multiline

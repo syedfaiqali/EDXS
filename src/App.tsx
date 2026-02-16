@@ -97,12 +97,12 @@ const MainLayout: React.FC = () => {
       >
         <Container maxWidth="lg">
           <Toolbar disableGutters sx={{ py: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: 4 }} onClick={() => dispatch(resetFlow())}>
+            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: 4 }} onClick={() => { dispatch(resetFlow()), handleNavigation('Home') }}>
               <Logo size="small" />
             </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 4 }}>
-              {['Home', 'About Us', 'Products', 'Services', 'Team'].map((item) => (
+              {['Home', 'About Us', 'Products', 'Services', 'Team', 'Contact'].map((item) => (
                 <Typography
                   key={item}
                   variant="body2"
@@ -117,7 +117,8 @@ const MainLayout: React.FC = () => {
                       (item === 'About Us' && location.pathname.startsWith('/aboutus')) ||
                       (item === 'Products' && location.pathname.startsWith('/products')) ||
                       (item === 'Services' && location.pathname.startsWith('/services')) ||
-                      (item === 'Team' && location.pathname.startsWith('/team'))
+                      (item === 'Team' && location.pathname.startsWith('/team')) ||
+                      (item === 'Contact' && location.pathname.startsWith('/contact'))
                     ) ? '2px solid white' : 'none',
                     pb: 0.5,
                     px: 0.5
@@ -134,19 +135,6 @@ const MainLayout: React.FC = () => {
                 sx={{ color: 'white', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
                 onClick={handleOpenLanguageModal}
               />
-              <Typography
-                sx={{
-                  color: 'white',
-                  fontSize: '0.8rem',
-                  cursor: 'pointer',
-                  display: { xs: 'none', lg: 'block' },
-                  fontWeight: location.pathname === '/contact' ? 800 : 500,
-                  textDecoration: location.pathname === '/contact' ? 'underline' : 'none'
-                }}
-                onClick={() => handleNavigation('Contact')}
-              >
-                Contact us
-              </Typography>
               <Button
                 variant="outlined"
                 onClick={() => navigate('/registration')}

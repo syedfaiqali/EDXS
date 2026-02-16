@@ -1,6 +1,13 @@
 import React, { useRef } from 'react';
 import { Box, Typography, Container, Grid, keyframes, alpha } from '@mui/material';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import abdullahImage from '../../assets/abdullah.webp';
+import ghufranImage from '../../assets/ghufran.webp';
+import aminImage from '../../assets/amin.webp';
+import farazImage from '../../assets/faraz.webp';
+import asharImage from '../../assets/ashar.webp';
+import faiqImage from '../../assets/faiq.webp';
+import raoImage from '../../assets/rao.webp';
 
 // Animation for cards
 const cardFadeIn = keyframes`
@@ -135,31 +142,38 @@ const TeamGroup: React.FC<TeamSectionProps> = ({ title, members, dark }) => {
 
 const TeamSection: React.FC = () => {
     const executives = [
-        { name: 'Sohail Tareen', role: 'Founder & CEO', image: 'https://via.placeholder.com/400x600?text=Sohail+Tareen' },
-        { name: 'Shahbaz Ahmer', role: 'Chief Technical Officer', image: 'https://via.placeholder.com/400x600?text=Shahbaz+Ahmer' },
-        { name: 'Maham Tareen', role: 'Creative Director', image: 'https://via.placeholder.com/400x600?text=Maham+Tareen' },
-        { name: 'Wareesha Tareen', role: 'Operational Manager', image: 'https://via.placeholder.com/400x600?text=Wareesha+Tareen' }
+        { name: 'Sohail Tareen', role: 'Founder & CEO', image: 'https://edu-man.com/img/Founder%20CEO.webp' },
+        { name: 'Shahbaz Ahmer', role: 'Chief Technical Officer', image: 'https://edu-man.com/img/CTO.webp' },
+        { name: 'Maham Tareen', role: 'Creative Director', image: 'https://edu-man.com/img/Creative%20director.webp' },
+        { name: 'Wareesha Tareen', role: 'Operational Manager', image: 'https://edu-man.com/img/Wareesha.webp' }
     ];
 
     const management = [
-        { name: 'Bilal Mahmood', role: 'Project Manager', image: 'https://via.placeholder.com/400x600?text=Bilal+Mahmood' },
-        { name: 'Imran Meo', role: 'Lead Business Analyst', image: 'https://via.placeholder.com/400x600?text=Imran+Meo' },
-        { name: 'Saqib Mushir', role: 'Admin Manager', image: 'https://via.placeholder.com/400x600?text=Saqib+Mushir' },
-        { name: 'Syed Raza Abbas', role: 'Team Lead', image: 'https://via.placeholder.com/400x600?text=Syed+Raza+Abbas' }
+        { name: 'Bilal Mahmood', role: 'Project Manager', image: 'https://edu-man.com/img/PM.webp' },
+        { name: 'Syed Faiq Ali Jafri', role: 'Team Lead', image: faiqImage },
+        { name: 'Adnan', role: 'Tea Making Manager', image: 'https://via.placeholder.com/400x600?text=Saqib+Mushir' },
+        { name: 'Obaid Khan', role: 'Car Driving Manager', image: 'https://via.placeholder.com/400x600?text=Syed+Raza+Abbas' }
     ];
 
     const marketing = [
-        { name: 'Anas Kamran', role: 'Sales Executive', image: 'https://via.placeholder.com/400x600?text=Anas+Kamran' },
-        { name: 'Affan Ahmed Khan', role: 'Implementation Lead', image: 'https://via.placeholder.com/400x600?text=Affan+Ahmed+Khan' },
-        { name: 'Kamran Bharday', role: 'Implementation Expert', image: 'https://via.placeholder.com/400x600?text=Kamran+Bharday' },
-        { name: 'Mujtaba Ahmed', role: 'Implementation Specialist', image: 'https://via.placeholder.com/400x600?text=Mujtaba+Ahmed' }
+        { name: 'Affan Ahmed Khan', role: 'Implementation Lead', image: 'https://edu-man.com/img/Affan.webp' },
+        { name: 'Kamran Bharday', role: 'Implementation Expert', image: 'https://edu-man.com/img/kamran.webp' },
+        { name: 'Miya Baji', role: 'Female Relaxation Provider', image: 'https://edu-man.com/img/Mia Baji.webp' },
+        { name: 'Johnny Bhayya', role: 'Male Relaxation Provider', image: 'https://via.placeholder.com/400x600?text=Johnny+Bhayya' },
     ];
 
-    const development = [
-        { name: 'Syed Osama Zaidi', role: 'Senior BE Developer', image: 'https://via.placeholder.com/400x600?text=Syed+Osama+Zaidi' },
-        { name: 'Shahab Ali', role: 'Frontend Lead', image: 'https://via.placeholder.com/400x600?text=Shahab+Ali' },
-        { name: 'Bilal Abdullah', role: 'BE Developer', image: 'https://via.placeholder.com/400x600?text=Bilal+Abdullah' },
-        { name: 'Saad Ali', role: 'Mobile App Developer', image: 'https://via.placeholder.com/400x600?text=Saad+Ali' }
+    const frontEndDevelopmentTeam = [
+        { name: 'Syed Osama Zaidi', role: 'Senior Backend Developer', image: 'https://edu-man.com/img/Osama.webp' },
+        { name: 'Abdullah Khan', role: 'Backend Developer', image: abdullahImage },
+        { name: 'Ashar Samad', role: 'Most Senior Backend Developer', image: asharImage },
+        { name: 'Rao Raza', role: 'Backend Developer', image: raoImage }
+    ];
+
+    const backEndDevelopmentTeam = [
+        { name: 'Bilal Ahmed Sagir', role: 'Senior Frontend Developer', image: 'https://edu-man.com/img/Bilal Ahmed Sagir.webp' },
+        { name: 'Ghufran Ali', role: 'Senior Frontend Developer', image: ghufranImage },
+        { name: 'Amin Lakhani', role: 'AI Developer', image: aminImage },
+        { name: 'Syed Faraz Ali', role: 'Most Senior Frontend Developer', image: farazImage }
     ];
 
     return (
@@ -167,7 +181,8 @@ const TeamSection: React.FC = () => {
             <TeamGroup title="Meet Our Executives" members={executives} />
             <TeamGroup title="Management Cadre" members={management} dark />
             <TeamGroup title="Marketing / Implementation Team" members={marketing} />
-            <TeamGroup title="Development Team" members={development} dark />
+            <TeamGroup title="Development Team" members={backEndDevelopmentTeam} dark />
+            <TeamGroup title="Development Team" members={frontEndDevelopmentTeam} dark />
 
             {/* Bottom Quote Banner */}
             <Box
