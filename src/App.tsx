@@ -149,7 +149,7 @@ const MainLayout: React.FC = () => {
         backgroundColor: 'background.default',
         position: 'relative',
         zIndex: 1,
-        mb: { xs: 0, md: '90vh' } // Margin equal to footer height for reveal effect
+        mb: { xs: 0, md: '90vh' }
       }}>
         <Suspense fallback={<LoadingScreen />}>
           <Routes>

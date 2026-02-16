@@ -23,7 +23,7 @@ const AboutUsMigration: React.FC = () => {
                 py: 12,
                 px: 4,
                 width: '100%',
-                bgcolor: '#1a4163', // Theme Blue for solid blue section
+                bgcolor: '#5a7d34', // Theme Blue for solid blue section
                 color: 'white',
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -41,7 +41,7 @@ const AboutUsMigration: React.FC = () => {
                     component="button"
                     sx={{
                         bgcolor: '#edd8b4',
-                        color: '#1a4163',
+                        color: '#76a345',
                         px: 6,
                         py: 2,
                         borderRadius: 2,
