@@ -146,27 +146,25 @@ const LandingPage: React.FC = () => {
             }}>
                 <Container maxWidth="lg">
                     <HeroSection />
-                    {/* <AboutUsSection /> */}
-                    {/* <StatsSection /> */}
                 </Container>
 
-                {/* Scroll Down Arrow / Triangle Pointer */}
+                {/* Modern Section Divider */}
                 <Box sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    mt: { xs: 4, md: 6 },
                     position: 'relative',
-                    zIndex: 20,
-                    mb: -3 // overlap with cream section
+                    height: { xs: 80, md: 150 },
+                    mt: -8,
+                    zIndex: 2,
+                    pointerEvents: 'none',
+                    overflow: 'hidden'
                 }}>
-                    <Box sx={{
-                        width: 45,
-                        height: 25,
-                        bgcolor: 'primary.main',
-                        clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)',
-                    }} />
+                    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+                        <path
+                            fill="#ffffff"
+                            fillOpacity="1"
+                            d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,128C672,107,768,117,864,138.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+                        ></path>
+                    </svg>
                 </Box>
-
                 <WhyEduman />
 
                 {/* Connection Squiggle Bridge 1: WhyEduman -> HowItWorks */}

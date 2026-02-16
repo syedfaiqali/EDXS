@@ -1,6 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, keyframes, Container, Chip } from '@mui/material';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+
+const contentIn = keyframes`
+  from { opacity: 0; transform: scale(0.95) translateY(20px); filter: blur(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+`;
 
 const AboutUsTimeline: React.FC = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
@@ -19,310 +26,209 @@ const AboutUsTimeline: React.FC = () => {
     const timelineData = [
         {
             year: 2019,
-            title: 'EDXS enters the commercial market.',
-            content: 'We launched the initial web-based Learning Management System with curriculum, timetable, assessments, reporting, and admissions modules.',
-            detail: 'Smart School and Al Hamdian, our inaugural partner schools, helped shape the platform through practical feedback.',
-            accent: '#1a4163',
-            panel: 'linear-gradient(145deg, #f8fbff 0%, #e5eef7 100%)',
-            tag: 'Foundation',
+            title: 'Foundations of Innovation',
+            content: 'The birth of EDXS. We launched a core vision to redefine classroom management and academic reporting.',
+            detail: 'Started with just two flagship schools that believed in a digital-first future.',
+            accent: '#76a345',
+            image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2132&auto=format&fit=crop',
+            tag: 'THE GENESIS',
         },
         {
             year: 2020,
-            title: 'Cloud Hosting Launched',
-            content: 'Schools began migrating from legacy systems as EDXS introduced managed cloud hosting for faster onboarding and simpler operations.',
-            detail: 'Institutions could choose cloud deployment or self-hosting, based on their internal IT capacity.',
-            accent: '#c29a5c',
-            panel: 'linear-gradient(145deg, #f8f1df 0%, #f0dbb0 100%)',
-            tag: 'Infrastructure',
+            title: 'Cloud-Scale Architecture',
+            content: 'Global disruption met global solution. We pivoted to a 100% cloud-native ecosystem.',
+            detail: 'Enabled schools to operate remotely without losing a second of academic progress.',
+            accent: '#5a7d34',
+            image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
+            tag: 'SCALABILITY',
         },
         {
             year: 2021,
-            title: 'Parents, Teachers, and School Connected',
-            content: 'We expanded communication by introducing role-focused applications for school admins, teachers, and parents.',
-            detail: 'The release improved staff coordination and enabled direct, timely communication with families.',
+            title: 'The Unified Ecosystem',
+            content: 'Bridging the triangle: Parents, Teachers, and Students finally united in one intelligent interface.',
+            detail: 'Real-time notifications and automated grade tracking became the new gold standard.',
             accent: '#76a345',
-            panel: 'linear-gradient(145deg, #eff6e3 0%, #dceabf 100%)',
-            tag: 'Engagement',
+            image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop',
+            tag: 'ENGAGEMENT',
         },
         {
             year: 2022,
-            title: 'EDXS Goes Global',
-            content: 'International expansion began with deployments in Bahrain and Oman, establishing EDXS in new academic markets.',
-            detail: 'Mobile support was also strengthened to provide easier platform access for school communities.',
-            accent: '#1a4163',
-            panel: 'linear-gradient(145deg, #f8fbff 0%, #e5eef7 100%)',
-            tag: 'Global Reach',
+            title: 'International Presence',
+            content: 'Expansion into Bahrain and Oman. EDXS becomes a preferred partner for international curricula.',
+            detail: 'Multilingual support and regional compliance modules were successfully integrated.',
+            accent: '#5a7d34',
+            image: 'https://images.unsplash.com/photo-1526285033482-02bcda1fc629?q=80&w=2071&auto=format&fit=crop',
+            tag: 'GLOBAL REACH',
         },
         {
             year: 2023,
-            title: 'Good Conduct Attracts More Schools',
-            content: 'Rapid adoption continued as more institutions joined and new modules were introduced for Library and Asset Management.',
-            detail: 'Schools reported better organization and improved operational efficiency through centralized workflows.',
-            accent: '#c29a5c',
-            panel: 'linear-gradient(145deg, #f8f1df 0%, #f0dbb0 100%)',
-            tag: 'Scale Up',
+            title: 'Automated Oversight',
+            content: 'Introduction of AI-driven asset management and smart library resource tracking.',
+            detail: 'Providing administrators with predictive analytics for school growth planning.',
+            accent: '#76a345',
+            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop',
+            tag: 'INTELLIGENCE',
         },
         {
             year: 2024,
-            title: 'EDXS launches EDXS Lite',
-            content: 'A streamlined edition was introduced for schools needing essential, cost-effective features with quick implementation.',
-            detail: 'EDXS Lite delivered practical modules for institutions looking for strong outcomes with leaner deployment.',
-            accent: '#76a345',
-            panel: 'linear-gradient(145deg, #1a4163 0%, #123451 100%)',
-            tag: 'Product Expansion',
+            title: 'EDXS Lite: Efficiency Unleashed',
+            content: 'A powerhouse platform for schools of all sizes. Focused on maximum impact with minimum setup.',
+            detail: 'Revolutionizing how entry-level institutions adopt world-class technology.',
+            accent: '#ffffff',
+            image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop',
+            tag: 'ACCESSIBILITY',
         },
     ];
 
     const [activeIndex, setActiveIndex] = useState(0);
     const activeData = timelineData[activeIndex];
     const progressPercent = (activeIndex / (timelineData.length - 1)) * 100;
-    const isDarkPanel = activeData.year === 2024;
-
-    const goPrev = () => setActiveIndex((prev) => (prev > 0 ? prev - 1 : prev));
-    const goNext = () => setActiveIndex((prev) => (prev < timelineData.length - 1 ? prev + 1 : prev));
 
     return (
         <Box
             ref={sectionRef}
-            mb={12}
+            mb={0}
             sx={{
                 position: 'relative',
                 opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                transition: 'opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s',
-                '@keyframes contentShift': {
-                    '0%': { opacity: 0, transform: 'translate3d(0, 12px, 0)' },
-                    '100%': { opacity: 1, transform: 'translate3d(0, 0, 0)' },
-                },
-            }}
+                transform: isVisible ? 'translateY(0)' : 'translateY(80px)',
+                transition: 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1)',
+            }
+            }
         >
             <Box
                 sx={{
                     position: 'relative',
-                    borderRadius: 4,
-                    p: { xs: 2, md: 3 },
-                    background: 'linear-gradient(180deg, #f8fbff 0%, #f8f1df 100%)',
-                    border: '1px solid rgba(26, 65, 99, 0.16)',
-                    boxShadow: '0 16px 36px rgba(26, 65, 99, 0.1)',
+                    borderRadius: { xs: 8, md: 12 },
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                    overflow: 'hidden',
+                    background: 'rgba(255, 255, 255, 0.4)',
+                    backdropFilter: 'blur(30px)',
+                    border: '1px solid rgba(255, 255, 255, 0.5)',
+                    boxShadow: '0 60px 150px rgba(0,0,0,0.1)',
+                    p: { xs: 4, md: 8 },
+                    mb: 10
                 }}
             >
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: { xs: 4, md: 6 }, position: 'relative' }}>
+                {/* Years Navigation */}
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: { xs: 8, md: 12 }, position: 'relative' }}>
                     <Box
-                        onClick={goPrev}
+                        onClick={() => setActiveIndex(prev => Math.max(0, prev - 1))}
                         sx={{
-                            width: 44,
-                            height: 44,
-                            borderRadius: '50%',
-                            border: '2px solid rgba(26, 65, 99, 0.22)',
-                            color: '#7e90a3',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            mr: { xs: 1, md: 2 },
-                            cursor: activeIndex === 0 ? 'not-allowed' : 'pointer',
-                            opacity: activeIndex === 0 ? 0.5 : 1,
-                            transition: 'all 0.2s ease',
-                            '&:hover': { borderColor: '#1a4163', color: '#1a4163' },
+                            width: 60, height: 60, borderRadius: '50%', border: '1px solid rgba(118,163,69,0.3)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                            zIndex: 10, transition: 'all 0.3s ease', bgcolor: 'white',
+                            color: 'primary.main', opacity: activeIndex === 0 ? 0.2 : 1,
+                            '&:hover': { bgcolor: 'primary.main', color: 'white' }
                         }}
                     >
-                        {'<'}
+                        <ArrowBackIosNewIcon fontSize="small" />
                     </Box>
 
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            left: { xs: 56, md: 72 },
-                            right: { xs: 56, md: 72 },
-                            top: '61%',
-                            height: 3,
-                            bgcolor: 'rgba(26, 65, 99, 0.2)',
-                            borderRadius: 4,
-                        }}
-                    />
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            left: { xs: 56, md: 72 },
-                            top: '61%',
-                            width: { xs: `calc((100% - 112px) * ${progressPercent / 100})`, md: `calc((100% - 144px) * ${progressPercent / 100})` },
-                            height: 3,
-                            bgcolor: '#1a4163',
-                            borderRadius: 4,
-                            transition: 'width 0.35s ease',
-                        }}
-                    />
+                    <Box sx={{ flex: 1, position: 'relative', mx: 4, display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ position: 'absolute', width: '100%', height: 4, bgcolor: 'rgba(118, 163, 69, 0.1)', borderRadius: 2 }} />
+                        <Box sx={{
+                            position: 'absolute', width: `${progressPercent}%`, height: 4,
+                            bgcolor: 'primary.main', borderRadius: 2,
+                            boxShadow: '0 0 20px rgba(118, 163, 69, 0.5)',
+                            transition: 'width 0.8s cubic-bezier(0.65, 0, 0.35, 1)'
+                        }} />
 
-                    <Box
-                        sx={{
-                            display: 'grid',
-                            gridTemplateColumns: `repeat(${timelineData.length}, minmax(44px, 1fr))`,
-                            width: '100%',
-                            maxWidth: 860,
-                            gap: { xs: 1, md: 2 },
-                            zIndex: 1,
-                        }}
-                    >
-                        {timelineData.map((data, i) => (
-                            <Box
-                                key={data.year}
-                                onClick={() => setActiveIndex(i)}
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                <Typography
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', zIndex: 5 }}>
+                            {timelineData.map((data, i) => (
+                                <Box
+                                    key={data.year}
+                                    onClick={() => setActiveIndex(i)}
                                     sx={{
-                                        color: data.accent,
-                                        fontWeight: 700,
-                                        mb: 1.1,
-                                        fontSize: { xs: '0.95rem', md: '1.15rem' },
+                                        cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center',
+                                        transform: activeIndex === i ? 'scale(1.2)' : 'scale(1)',
+                                        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
                                     }}
                                 >
-                                    {data.year}
-                                </Typography>
-                                <Box
-                                    sx={{
-                                        width: activeIndex === i ? 16 : 14,
-                                        height: activeIndex === i ? 16 : 14,
-                                        borderRadius: '50%',
-                                        bgcolor: activeIndex === i ? '#1a4163' : '#f0f5fa',
-                                        border: '2px solid #1a4163',
-                                        transition: 'all 0.25s ease',
-                                    }}
-                                />
-                            </Box>
-                        ))}
-                    </Box>
-
-                    <Box
-                        onClick={goNext}
-                        sx={{
-                            width: 44,
-                            height: 44,
-                            borderRadius: '50%',
-                            border: '2px solid rgba(26, 65, 99, 0.22)',
-                            color: '#7e90a3',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            ml: { xs: 1, md: 2 },
-                            cursor: activeIndex === timelineData.length - 1 ? 'not-allowed' : 'pointer',
-                            opacity: activeIndex === timelineData.length - 1 ? 0.5 : 1,
-                            transition: 'all 0.2s ease',
-                            '&:hover': { borderColor: '#1a4163', color: '#1a4163' },
-                        }}
-                    >
-                        {'>'}
-                    </Box>
-                </Box>
-
-                <Box
-                    key={activeData.year}
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', md: '1fr 1.3fr' },
-                        gap: { xs: 3, md: 5 },
-                        alignItems: 'center',
-                        animation: 'contentShift 0.45s ease',
-                    }}
-                >
-                    <Box sx={{ width: '100%' }}>
-                        <Box
-                            sx={{
-                                position: 'relative',
-                                minHeight: { xs: 220, md: 390 },
-                                borderRadius: 3,
-                                p: { xs: 2.2, md: 3 },
-                                background: activeData.panel,
-                                border: '1px solid rgba(26, 65, 99, 0.2)',
-                                boxShadow: '0 14px 30px rgba(26, 65, 99, 0.14)',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    display: 'inline-flex',
-                                    alignSelf: 'flex-start',
-                                    px: 1.4,
-                                    py: 0.5,
-                                    borderRadius: 30,
-                                    fontSize: '0.78rem',
-                                    fontWeight: 700,
-                                    color: isDarkPanel ? '#f5fbff' : '#1a4163',
-                                    bgcolor: isDarkPanel ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.64)',
-                                }}
-                            >
-                                {activeData.tag}
-                            </Box>
-
-                            <Typography
-                                sx={{
-                                    fontWeight: 900,
-                                    fontSize: { xs: '2rem', md: '2.6rem' },
-                                    color: isDarkPanel ? '#f4fbeb' : '#1a4163',
-                                    lineHeight: 1.05,
-                                }}
-                            >
-                                {activeData.year}
-                            </Typography>
-
-                            <Box sx={{ display: 'grid', gap: 1 }}>
-                                <Box sx={{ height: 10, borderRadius: 2, bgcolor: isDarkPanel ? 'rgba(255,255,255,0.25)' : 'rgba(14,45,74,0.14)' }} />
-                                <Box sx={{ height: 10, borderRadius: 2, width: '88%', bgcolor: isDarkPanel ? 'rgba(255,255,255,0.2)' : 'rgba(14,45,74,0.12)' }} />
-                                <Box sx={{ height: 10, borderRadius: 2, width: '76%', bgcolor: isDarkPanel ? 'rgba(255,255,255,0.16)' : 'rgba(14,45,74,0.1)' }} />
-                            </Box>
+                                    <Typography sx={{
+                                        fontWeight: 900, mb: 2, fontSize: { xs: '0.8rem', md: '1.2rem' },
+                                        color: activeIndex === i ? 'primary.main' : 'text.disabled',
+                                    }}>
+                                        {data.year}
+                                    </Typography>
+                                    <Box sx={{
+                                        width: 20, height: 20, borderRadius: '50%',
+                                        bgcolor: activeIndex === i ? 'primary.main' : 'white',
+                                        border: `3px solid ${activeIndex === i ? '#76a345' : '#e2e8f0'}`,
+                                        boxShadow: activeIndex === i ? '0 0 15px rgba(118, 163, 69, 0.4)' : 'none'
+                                    }} />
+                                </Box>
+                            ))}
                         </Box>
                     </Box>
 
                     <Box
+                        onClick={() => setActiveIndex(prev => Math.min(timelineData.length - 1, prev + 1))}
                         sx={{
-                            borderRadius: 3,
-                            p: { xs: 2.2, md: 3.2 },
-                            bgcolor: 'rgba(255, 255, 255, 0.8)',
-                            border: '1px solid rgba(26, 65, 99, 0.14)',
-                            boxShadow: '0 12px 26px rgba(26, 65, 99, 0.1)',
+                            width: 60, height: 60, borderRadius: '50%', border: '1px solid rgba(118,163,69,0.3)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                            zIndex: 10, transition: 'all 0.3s ease', bgcolor: 'white',
+                            color: 'primary.main', opacity: activeIndex === timelineData.length - 1 ? 0.2 : 1,
+                            '&:hover': { bgcolor: 'primary.main', color: 'white' }
                         }}
                     >
-                        <Typography
-                            variant="h4"
-                            sx={{
-                                color: '#1a4163',
-                                fontWeight: 700,
-                                mb: 2.4,
-                                lineHeight: 1.2,
-                                fontSize: { xs: '1.8rem', md: '2.45rem' },
-                            }}
-                        >
+                        <ArrowForwardIosIcon fontSize="small" />
+                    </Box>
+                </Box>
+
+                {/* Content Area */}
+                <Box
+                    key={activeIndex}
+                    sx={{
+                        display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1.2fr 1fr' },
+                        gap: { xs: 6, md: 10 }, alignItems: 'center',
+                        animation: `${contentIn} 0.8s cubic-bezier(0.23, 1, 0.32, 1)`
+                    }}
+                >
+                    <Box sx={{ position: 'relative', borderRadius: 10, overflow: 'hidden', height: { xs: 300, md: 500 }, border: '1px solid rgba(255,255,255,0.4)' }}>
+                        <Box sx={{
+                            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                            backgroundImage: `url(${activeData.image})`, backgroundSize: 'cover', backgroundPosition: 'center',
+                            transition: 'transform 1.5s ease', transform: 'scale(1.1)', '&:hover': { transform: 'scale(1)' }
+                        }} />
+                        <Box sx={{
+                            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                            background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.8))'
+                        }} />
+                        <Box sx={{ position: 'absolute', bottom: 40, left: 40, right: 40 }}>
+                            <Chip label={activeData.tag} sx={{ bgcolor: 'secondary.main', color: 'primary.main', fontWeight: 900, mb: 2, px: 2 }} />
+                            <Typography variant="h3" sx={{ color: 'white', fontWeight: 900, fontSize: { xs: '2rem', md: '3.5rem' }, lineHeight: 1 }}>
+                                {activeData.year}
+                            </Typography>
+                        </Box>
+                    </Box>
+
+                    <Box>
+                        <Typography variant="h2" sx={{
+                            fontWeight: 900, mb: 4, fontSize: { xs: '2.5rem', md: '4.5rem' },
+                            color: 'text.primary', lineHeight: 1, letterSpacing: '-0.04em'
+                        }}>
                             {activeData.title}
                         </Typography>
-                        <Typography
-                            sx={{
-                                color: '#4c6176',
-                                lineHeight: 1.65,
-                                fontSize: { xs: '1rem', md: '1.1rem' },
-                                mb: 2,
-                            }}
-                        >
+                        <Typography sx={{
+                            color: 'text.secondary', fontSize: { xs: '1.2rem', md: '1.5rem' },
+                            mb: 6, lineHeight: 1.6, fontWeight: 500
+                        }}>
                             {activeData.content}
                         </Typography>
-                        <Typography
-                            sx={{
-                                color: '#4c6176',
-                                lineHeight: 1.65,
-                                fontSize: { xs: '1rem', md: '1.1rem' },
-                            }}
-                        >
-                            {activeData.detail}
-                        </Typography>
+                        <Box sx={{
+                            p: 4, borderRadius: 6, bgcolor: 'rgba(118, 163, 69, 0.08)',
+                            borderLeft: '8px solid', borderColor: 'primary.main'
+                        }}>
+                            <Typography sx={{ color: 'text.primary', fontSize: '1.2rem', fontStyle: 'italic', fontWeight: 600 }}>
+                                "{activeData.detail}"
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
             </Box>
-        </Box>
+        </Box >
     );
 };
 
