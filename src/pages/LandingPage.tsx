@@ -5,7 +5,8 @@ import xsLogo from '../assets/xs_square_light.png';
 
 // Components
 import HeroSection from '../components/landing/HeroSection';
-import StatsSection from '../components/landing/StatsSection';
+// import StatsSection from '../components/landing/StatsSection';
+import AboutUsSection from '../components/landing/AboutUsSection';
 import WhyEduman from '../components/landing/WhyEduman';
 import HowItWorks from '../components/landing/HowItWorks';
 // ... other imports
@@ -145,7 +146,8 @@ const LandingPage: React.FC = () => {
             }}>
                 <Container maxWidth="lg">
                     <HeroSection />
-                    <StatsSection />
+                    {/* <AboutUsSection /> */}
+                    {/* <StatsSection /> */}
                 </Container>
 
                 {/* Scroll Down Arrow / Triangle Pointer */}

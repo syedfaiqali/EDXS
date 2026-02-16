@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import {
   ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
   Button, Dialog, DialogTitle, DialogContent, DialogActions, Select, MenuItem,
@@ -18,6 +18,7 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 // Lazy load pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
+const AboutUsPage = lazy(() => import('./pages/AboutUsPage'));
 
 const LoadingScreen = () => (
   <Box sx={{
@@ -37,6 +38,7 @@ const MainLayout: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempLang, setTempLang] = useState(language);
 
@@ -50,6 +52,15 @@ const MainLayout: React.FC = () => {
   const handleSaveLanguage = () => {
     setLanguage(tempLang);
     handleCloseModal();
+  };
+
+  const handleNavigation = (item: string) => {
+    if (item === 'Home') {
+      navigate('/');
+      dispatch(resetFlow());
+    } else if (item === 'About Us') {
+      navigate('/aboutus');
+    }
   };
 
   return (
@@ -81,11 +92,11 @@ const MainLayout: React.FC = () => {
                     cursor: 'pointer',
                     opacity: 1,
                     '&:hover': { opacity: 0.8 },
-                    borderBottom: item === 'Home' ? '2px solid white' : 'none',
+                    borderBottom: (item === 'Home' && location.pathname === '/') || (item === 'About Us' && location.pathname.startsWith('/aboutus')) ? '2px solid white' : 'none',
                     pb: 0.5,
                     px: 0.5
                   }}
-                  onClick={() => item === 'Home' ? dispatch(resetFlow()) : null}
+                  onClick={() => handleNavigation(item)}
                 >
                   {item}
                 </Typography>
@@ -144,6 +155,7 @@ const MainLayout: React.FC = () => {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/registration" element={<RegistrationPage />} />
+            <Route path="/aboutus" element={<AboutUsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
