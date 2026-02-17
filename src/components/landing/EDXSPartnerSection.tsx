@@ -77,7 +77,7 @@ const EDXSPartnerSection: React.FC = () => {
                             onClick={() => navigate('/contact')}
                             sx={{
                                 bgcolor: '#76a345',
-                                color: '#333',
+                                color: '#fff',
                                 px: 4,
                                 py: 1.5,
                                 border: '2px solid #edd8b4',

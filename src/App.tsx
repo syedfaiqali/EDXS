@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Link, NavLink } from 'react-router-dom';
 import {
   ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
   Button, Dialog, DialogTitle, DialogContent, DialogActions, Select, MenuItem,
@@ -16,14 +16,13 @@ import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
 
-// Lazy load pages
-const LandingPage = lazy(() => import('./pages/LandingPage'));
-const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
-const AboutUsPage = lazy(() => import('./pages/AboutUsPage'));
-const ProductsPage = lazy(() => import('./pages/ProductsPage'));
-const ServicesPage = lazy(() => import('./pages/ServicesPage'));
-const TeamPage = lazy(() => import('./pages/TeamPage'));
-const ContactPage = lazy(() => import('./pages/ContactPage'));
+import LandingPage from './pages/LandingPage';
+import RegistrationPage from './pages/RegistrationPage';
+import AboutUsPage from './pages/AboutUsPage';
+import ProductsPage from './pages/ProductsPage';
+import ServicesPage from './pages/ServicesPage';
+import TeamPage from './pages/TeamPage';
+import ContactPage from './pages/ContactPage';
 
 const LoadingScreen = () => (
   <Box sx={{
@@ -49,7 +48,6 @@ const MainLayout: React.FC = () => {
 
   const { language, setLanguage, t } = useLanguage();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempLang, setTempLang] = useState(language);
@@ -66,22 +64,7 @@ const MainLayout: React.FC = () => {
     handleCloseModal();
   };
 
-  const handleNavigation = (item: string) => {
-    if (item === 'Home') {
-      navigate('/');
-      dispatch(resetFlow());
-    } else if (item === 'About Us') {
-      navigate('/aboutus');
-    } else if (item === 'Products') {
-      navigate('/products');
-    } else if (item === 'Services') {
-      navigate('/services');
-    } else if (item === 'Team') {
-      navigate('/team');
-    } else if (item === 'Contact') {
-      navigate('/contact');
-    }
-  };
+
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -97,35 +80,45 @@ const MainLayout: React.FC = () => {
       >
         <Container maxWidth="lg">
           <Toolbar disableGutters sx={{ py: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: 4 }} onClick={() => { dispatch(resetFlow()), handleNavigation('Home') }}>
+            <Box
+              component={Link}
+              to="/"
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: 4, textDecoration: 'none' }}
+              onClick={() => dispatch(resetFlow())}
+            >
               <Logo size="small" />
             </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 4 }}>
-              {['Home', 'About Us', 'Products', 'Services', 'Team', 'Contact'].map((item) => (
+              {[
+                { label: 'Home', path: '/' },
+                { label: 'About Us', path: '/aboutus' },
+                { label: 'Products', path: '/products' },
+                { label: 'Services', path: '/services' },
+                { label: 'Team', path: '/team' },
+                { label: 'Contact', path: '/contact' }
+              ].map((item) => (
                 <Typography
-                  key={item}
+                  key={item.label}
+                  component={NavLink}
+                  to={item.path}
                   variant="body2"
                   sx={{
                     color: 'white',
                     fontWeight: 600,
-                    cursor: 'pointer',
+                    textDecoration: 'none',
                     opacity: 1,
                     '&:hover': { opacity: 0.8 },
-                    borderBottom: (
-                      (item === 'Home' && location.pathname === '/') ||
-                      (item === 'About Us' && location.pathname.startsWith('/aboutus')) ||
-                      (item === 'Products' && location.pathname.startsWith('/products')) ||
-                      (item === 'Services' && location.pathname.startsWith('/services')) ||
-                      (item === 'Team' && location.pathname.startsWith('/team')) ||
-                      (item === 'Contact' && location.pathname.startsWith('/contact'))
-                    ) ? '2px solid white' : 'none',
                     pb: 0.5,
-                    px: 0.5
+                    px: 0.5,
+                    borderBottom: '2px solid transparent',
+                    '&.active': {
+                      borderBottom: '2px solid white'
+                    }
                   }}
-                  onClick={() => handleNavigation(item)}
+                  onClick={item.label === 'Home' ? () => dispatch(resetFlow()) : undefined}
                 >
-                  {item}
+                  {item.label}
                 </Typography>
               ))}
             </Box>
@@ -138,8 +131,9 @@ const MainLayout: React.FC = () => {
                 />
               )}
               <Button
+                component={Link}
+                to="/registration"
                 variant="outlined"
-                onClick={() => navigate('/registration')}
                 sx={{
                   color: 'white',
                   borderColor: 'white',
@@ -153,8 +147,9 @@ const MainLayout: React.FC = () => {
                 Get A Demo
               </Button>
               <Button
+                component={Link}
+                to="/registration"
                 variant="contained"
-                onClick={() => navigate('/registration')}
                 sx={{
                   bgcolor: '#f0dbb0',
                   color: '#76a345',

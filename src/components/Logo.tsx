@@ -73,7 +73,7 @@ const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = '
                         XS
                     </Typography>
                 </Box>
-                <Typography
+                {/* <Typography
                     sx={{
                         color: color,
                         opacity: 0.85,
@@ -86,7 +86,7 @@ const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = '
                     }}
                 >
                     School Management System
-                </Typography>
+                </Typography> */}
             </Box>
         </Box>
     );

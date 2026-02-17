@@ -195,7 +195,7 @@ const TestimonialsSection: React.FC = () => {
                                 boxShadow: '0 15px 40px rgba(0,0,0,0.12)',
                                 borderColor: '#76a345',
                                 '& .view-details-overlay': {
-                                    opacity: 1,
+                                    opacity: 0.9,
                                     visibility: 'visible'
                                 }
                             }

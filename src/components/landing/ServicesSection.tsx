@@ -7,6 +7,14 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import MemoryIcon from '@mui/icons-material/Memory';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import VrpanoIcon from '@mui/icons-material/Vrpano';
+import SecurityIcon from '@mui/icons-material/Security';
+import TrafficIcon from '@mui/icons-material/Traffic';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import ShieldIcon from '@mui/icons-material/Shield';
+import LockIcon from '@mui/icons-material/Lock';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
+import SettingsRemoteIcon from '@mui/icons-material/SettingsRemote';
 
 // Animations
 const fadeInUp = keyframes`
@@ -262,6 +270,120 @@ const ServicesSection: React.FC = () => {
                                 borderColor: 'secondary.main',
                                 opacity: 0.6
                             }} />
+                        </Box>
+                    </Box>
+                }
+            />
+
+            {/* Section 7: Cyber Security */}
+            <ServiceRow
+                title="UNCOMPROMISING CYBERSECURITY FOR THE MODERN ENTERPRISE"
+                description="In an era of persistent digital threats, we fortify your organization with elite-level security protocols. Our comprehensive cybersecurity suite includes advanced threat detection, encrypted data management, and proactive vulnerability protection, ensuring your digital assets remain impenetrable."
+                illustration={
+                    <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <ShieldIcon sx={{ fontSize: '15rem', color: 'primary.main', filter: 'drop-shadow(0 10px 20px rgba(118,163,69,0.3))' }} />
+                        <Box sx={{ position: 'absolute', animation: `${pulse} 2s infinite` }}>
+                            <LockIcon sx={{ fontSize: '4rem', color: 'white' }} />
+                        </Box>
+                        {[0, 90, 180, 270].map((angle) => (
+                            <Box
+                                key={angle}
+                                sx={{
+                                    position: 'absolute',
+                                    width: 180,
+                                    height: 180,
+                                    border: '2px dashed',
+                                    borderColor: 'primary.main',
+                                    borderRadius: '50%',
+                                    opacity: 0.3,
+                                    transform: `rotate(${angle}deg)`
+                                }}
+                            />
+                        ))}
+                    </Box>
+                }
+            />
+
+            {/* Section 8: Traffic & Licensing */}
+            <ServiceRow
+                dark
+                reverse
+                title="REVOLUTIONIZING TRAFFIC MANAGEMENT & DIGITAL LICENSING"
+                description="We bring smart city efficiency to regulatory workflows. Our Traffic Management Systems and Licensing softwares streamline the entire lifecycle of permits and compliance. From real-time traffic data processing to automated licensing issuance, we build the digital infrastructure that moves society forward."
+                illustration={
+                    <Box sx={{ width: '100%', maxWidth: 450, position: 'relative' }}>
+                        <Box sx={{
+                            height: 250,
+                            bgcolor: alpha('#fff', 0.1),
+                            borderRadius: 4,
+                            border: '2px solid',
+                            borderColor: 'secondary.main',
+                            p: 3,
+                            position: 'relative',
+                            overflow: 'hidden'
+                        }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+                                <TrafficIcon sx={{ fontSize: '3rem', color: 'secondary.main' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 900, color: 'secondary.main' }}>TRAFFIC CONTROL HUB</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', gap: 2 }}>
+                                <DirectionsCarIcon sx={{ fontSize: '4rem', color: 'secondary.main', opacity: 0.5 }} />
+                                <ContactPageIcon sx={{ fontSize: '4rem', color: 'secondary.main' }} />
+                                <SettingsRemoteIcon sx={{ fontSize: '4rem', color: 'secondary.main', opacity: 0.5 }} />
+                            </Box>
+                            <Box sx={{
+                                position: 'absolute',
+                                bottom: -20,
+                                right: -20,
+                                width: 100,
+                                height: 100,
+                                bgcolor: 'secondary.main',
+                                borderRadius: '50%',
+                                opacity: 0.2
+                            }} />
+                        </Box>
+                    </Box>
+                }
+            />
+
+            {/* Section 9: CCTV Surveillance */}
+            <ServiceRow
+                title="INTELLIGENT SCHOOL SURVEILLANCE & CCTV ECOSYSTEMS"
+                description="Safety is the foundation of learning. Our intelligent CCTV systems are engineered specifically for schools, integrating high-definition surveillance with AI-powered monitoring. We provide end-to-end security hardware and software solutions that guarantee 360-degree protection and peace of mind for administrators and parents."
+                illustration={
+                    <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Box sx={{
+                            width: 280,
+                            height: 280,
+                            border: '8px solid',
+                            borderColor: 'primary.main',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'relative'
+                        }}>
+                            <VideocamIcon sx={{ fontSize: '10rem', color: 'primary.main' }} />
+                            <Box sx={{
+                                position: 'absolute',
+                                top: '20%',
+                                right: '15%',
+                                width: 20,
+                                height: 20,
+                                bgcolor: '#ff4d4d',
+                                borderRadius: '50%',
+                                animation: `${pulse} 1.5s infinite`
+                            }} />
+                            <Typography sx={{
+                                position: 'absolute',
+                                bottom: -40,
+                                fontWeight: 900,
+                                color: 'primary.main',
+                                letterSpacing: 4,
+                                bgcolor: 'secondary.main',
+                                px: 2,
+                                py: 0.5
+                            }}>LIVE 24/7</Typography>
                         </Box>
                     </Box>
                 }
