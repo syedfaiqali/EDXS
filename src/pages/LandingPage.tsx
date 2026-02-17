@@ -8,6 +8,8 @@ import HeroSection from '../components/landing/HeroSection';
 // import StatsSection from '../components/landing/StatsSection';
 
 import WhyEduman from '../components/landing/WhyEduman';
+import ServicesHomePreview from '../components/landing/ServicesHomePreview';
+import ProductDemoSection from '../components/landing/ProductDemoSection';
 import HowItWorks from '../components/landing/HowItWorks';
 // ... other imports
 import TestimonialsSection from '../components/landing/TestimonialsSection';
@@ -167,6 +169,8 @@ const LandingPage: React.FC = () => {
                     </svg>
                 </Box>
                 <WhyEduman />
+                <ServicesHomePreview />
+                <ProductDemoSection />
 
                 {/* Connection Squiggle Bridge 1: WhyEduman -> HowItWorks */}
                 <Box sx={{

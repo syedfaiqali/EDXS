@@ -7,7 +7,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import MemoryIcon from '@mui/icons-material/Memory';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import VrpanoIcon from '@mui/icons-material/Vrpano';
-import SecurityIcon from '@mui/icons-material/Security';
+
 import TrafficIcon from '@mui/icons-material/Traffic';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import ShieldIcon from '@mui/icons-material/Shield';
