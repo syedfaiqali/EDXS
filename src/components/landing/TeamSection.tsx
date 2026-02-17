@@ -87,7 +87,7 @@ const TeamGroup: React.FC<TeamSectionProps> = ({ title, members, dark }) => {
                                     animationDelay: `${index * 0.1}s`,
                                     height: '100%',
                                     position: 'relative',
-                                    borderRadius: 0, // Modern brutalist edge
+                                    borderRadius: 0.5,
                                     overflow: 'hidden',
                                     cursor: 'pointer',
                                     '&:hover .member-overlay': {
@@ -283,7 +283,8 @@ const TeamSection: React.FC = () => {
             name: 'Bilal Mahmood',
             role: 'Project Manager',
             image: 'https://edu-man.com/img/PM.webp',
-            description: 'Ensuring seamless project delivery across global teams with a focus on agile methodologies.'
+            description: 'Ensuring seamless project delivery across global teams with a focus on agile methodologies.',
+            linkedin: 'https://www.linkedin.com/in/bilal-mahmood-4a740690/'
         },
         {
             name: 'Syed Faiq Ali Jafri',
@@ -320,7 +321,7 @@ const TeamSection: React.FC = () => {
             role: 'Implementation Expert',
             image: 'https://edu-man.com/img/kamran.webp',
             description: 'Dedicated to optimizing system deployments and ensuring high-impact results for all clients.',
-            linkedin: 'https://www.linkedin.com/in/kamranbharday/'
+            linkedin: 'https://www.linkedin.com/in/muhammad-owais-b7135823a/'
         },
         // {
         //     name: 'Miya Baji',
@@ -356,7 +357,7 @@ const TeamSection: React.FC = () => {
             role: 'Backend Developer',
             image: abdullahImage,
             description: 'Optimizing performance and building robust APIs that power our entire ecosystem.',
-            linkedin: 'https://www.linkedin.com/in/abdullah-khan-4b0b1b1b/'
+            linkedin: 'https://www.linkedin.com/in/abdullah-khan-57a278213/'
         },
         {
             name: 'Rao Raza',
@@ -367,12 +368,13 @@ const TeamSection: React.FC = () => {
     ];
 
     const devTeam2 = [
-        // {
-        //     name: 'Bilal Ahmed Sagir',
-        //     role: 'Senior UI/UX Developer',
-        //     image: 'https://edu-man.com/img/Bilal Ahmed Sagir.webp',
-        //     description: 'Crafting pixel-perfect interfaces that blend aesthetic beauty with functional power.'
-        // },
+        {
+            name: 'Omair Nadiawala',
+            role: 'Senior IOS Developer',
+            image: 'https://edu-man.com/img/Omair.webp',
+            description: 'Crafting pixel-perfect interfaces that blend aesthetic beauty with functional power.',
+            linkedin: 'https://www.linkedin.com/in/omairnadiadwala/'
+        },
         {
             name: 'Ghufran Ali',
             role: 'Senior Frontend Developer',
