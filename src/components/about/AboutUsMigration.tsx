@@ -3,6 +3,7 @@ import { Box, Typography, Button, Container, Grid, keyframes } from '@mui/materi
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useNavigate } from 'react-router-dom';
 
 const pulseGlow = keyframes`
   0%, 100% { box-shadow: 0 0 20px rgba(240, 219, 176, 0.2); }
@@ -13,7 +14,7 @@ const AboutUsMigration: React.FC = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const observerVisible = useIntersectionObserver(sectionRef, { threshold: 0.1 });
     const [forceVisible, setForceVisible] = useState(false);
-
+    const navigate = useNavigate();
     useEffect(() => {
         const timer = setTimeout(() => {
             setForceVisible(true);
@@ -77,6 +78,7 @@ const AboutUsMigration: React.FC = () => {
                             </Typography>
 
                             <Button
+                                onClick={() => navigate('/contact')}
                                 variant="contained"
                                 size="large"
                                 sx={{

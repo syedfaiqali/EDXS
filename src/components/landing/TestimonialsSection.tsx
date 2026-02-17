@@ -3,6 +3,7 @@ import { Box, Typography, Grid, Paper, Button, keyframes } from '@mui/material';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { useDispatch } from 'react-redux';
 import { setGlobalStep } from '../../store/selectionSlice';
+import { useNavigate } from 'react-router-dom';
 
 const revealScroll = keyframes`
   from { opacity: 0; transform: translateY(30px); }
@@ -20,6 +21,7 @@ const TestimonialsSection: React.FC = () => {
     const dispatch = useDispatch();
     const [activeIndex, setActiveIndex] = React.useState(0);
     const [isSliding, setIsSliding] = React.useState(false);
+    const navigate = useNavigate();
 
     const testimonials = [
         { name: 'Ashar Ajaz', role: 'Director Skillston Educational System', text: "EDXS's intuitive interface handles attendance, admissions, and academic reporting with ease. Visually appealing dashboards offer key insights for informed decisions, making it a comprehensive solution for school management." },
@@ -49,14 +51,14 @@ const TestimonialsSection: React.FC = () => {
     }, [col1.length]);
 
     return (
-        <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', pt: 10, pb: 0, px: '5%', position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#f0dbb0', pt: 10, pb: 0, px: '5%', position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             {/* Split Background Effect */}
             <Box sx={{
                 position: 'absolute',
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: '75%',
+                height: '80%',
                 bgcolor: '#76a345',
                 zIndex: 0
             }} />
@@ -157,17 +159,17 @@ const TestimonialsSection: React.FC = () => {
             </Grid>
 
             {/* Section Header moved to Top */}
-            <Box textAlign="center" pt={5} pb={8} sx={{ position: 'relative', zIndex: 1 }}>
-                <Typography variant="h3" fontWeight="900" sx={{ mb: 2, letterSpacing: -1, color: '#1a4163' }}>
+            <Box textAlign="center" pt={5} pb={4} sx={{ position: 'relative', zIndex: 1, color: 'white' }}>
+                <Typography variant="h3" fontWeight="900" sx={{ mb: 2, letterSpacing: -1 }}>
                     Still Not Convinced?
                 </Typography>
-                <Typography variant="h6" sx={{ opacity: 0.8, fontWeight: 500, color: '#76a345' }}>
+                <Typography variant="h6" sx={{ opacity: 0.8, fontWeight: 500 }}>
                     Experience the EDXS difference first-hand
                 </Typography>
             </Box>
 
             {/* Horizontal Marquee Section */}
-            <Box sx={{ width: '100%', overflow: 'hidden', position: 'relative', zIndex: 2, py: 2 }}>
+            <Box sx={{ width: '100%', overflow: 'hidden', position: 'relative', zIndex: 2, pb: 2 }}>
                 <Box sx={{
                     display: 'flex',
                     width: 'max-content',
@@ -232,15 +234,16 @@ const TestimonialsSection: React.FC = () => {
                             >
                                 <Button
                                     variant="contained"
+                                    onClick={() => navigate('/products')}
                                     sx={{
-                                        bgcolor: '#edd8b4',
+                                        bgcolor: '#f0dbb0',
                                         color: '#76a345',
                                         px: 5,
                                         py: 1.5,
                                         borderRadius: 3,
                                         fontWeight: 700,
                                         fontSize: '1.1rem',
-                                        border: '2px solid #edd8b4',
+                                        border: '2px solid #f0dbb0',
                                         transition: 'all 0.3s ease',
                                         '&:hover': {
                                             bgcolor: 'white',
@@ -261,13 +264,13 @@ const TestimonialsSection: React.FC = () => {
             <Box textAlign="center" pb={12} pt={6} sx={{ position: 'relative', zIndex: 1, color: 'white', display: 'flex', justifyContent: 'center', gap: 3 }}>
                 <Button
                     variant="contained"
-                    onClick={() => dispatch(setGlobalStep('selection'))}
+                    onClick={() => { dispatch(setGlobalStep('selection')); navigate('/contact'); }}
                     sx={{
-                        bgcolor: '#edd8b4',
+                        bgcolor: '#f0dbb0',
                         color: '#76a345',
                         px: 4,
                         py: 1.5,
-                        border: '2px solid #edd8b4',
+                        border: '2px solid #f0dbb0',
                         borderRadius: 50,
                         fontWeight: 700,
                         fontSize: '1rem',
@@ -282,7 +285,7 @@ const TestimonialsSection: React.FC = () => {
                 </Button>
                 <Button
                     variant="outlined"
-                    onClick={() => dispatch(setGlobalStep('selection'))}
+                    onClick={() => { dispatch(setGlobalStep('selection')); navigate('/contact'); }}
                     sx={{
                         bgcolor: 'transparent',
                         color: 'white',

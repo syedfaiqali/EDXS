@@ -1,8 +1,10 @@
 import { Box, Container, Grid, IconButton, Typography } from '@mui/material';
 import { Facebook, Instagram, LinkedIn, Mail, Phone, East } from '@mui/icons-material';
 import Logo from './Logo';
+import { useNavigate } from 'react-router-dom';
 
 const Footer: React.FC = () => {
+    const navigate = useNavigate();
     return (
         <Box
             component="footer"
@@ -28,9 +30,19 @@ const Footer: React.FC = () => {
 
                         {/* Social Icons Row */}
                         <Box sx={{ display: 'flex', gap: 2, justifyContent: { xs: 'center', md: 'flex-start' } }}>
-                            {[Facebook, Instagram, LinkedIn, Mail, Phone].map((Icon, index) => (
+                            {[
+                                { Icon: Facebook, href: 'https://www.facebook.com/EduManSchoolManagement' },
+                                { Icon: Instagram, href: 'https://www.instagram.com/Eduman_system/' },
+                                { Icon: LinkedIn, href: 'https://www.linkedin.com/company/eduman/' },
+                                { Icon: Mail, href: 'mailto:edxssystem@gmail.com' },
+                                { Icon: Phone, href: 'tel:+923223440909' }
+                            ].map((social, index) => (
                                 <IconButton
                                     key={index}
+                                    component="a"
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     sx={{
                                         border: '1px solid rgba(255,255,255,0.3)',
                                         color: 'white',
@@ -42,7 +54,7 @@ const Footer: React.FC = () => {
                                         height: 40
                                     }}
                                 >
-                                    <Icon fontSize="small" />
+                                    <social.Icon fontSize="small" />
                                 </IconButton>
                             ))}
                         </Box>
@@ -51,6 +63,7 @@ const Footer: React.FC = () => {
                     {/* Right Side: Let's Chat */}
                     <Grid size={{ xs: 12, md: 6 }} sx={{ textAlign: { xs: 'center', md: 'right' }, display: 'flex', justifyContent: { xs: 'center', md: 'flex-end' } }}>
                         <Box
+                            onClick={() => navigate('/contact')}
                             sx={{
                                 display: 'inline-flex',
                                 alignItems: 'center',

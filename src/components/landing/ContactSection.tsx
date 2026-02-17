@@ -175,7 +175,7 @@ const ContactSection: React.FC = () => {
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6, pl: { md: 8 } }}>
                             <Box>
                                 <Typography variant="h5" sx={{ fontWeight: 900, color: 'primary.main', mb: 2 }}>Contact Details</Typography>
-                                <Typography sx={{ color: 'primary.main', fontSize: '1.2rem', fontWeight: 700 }}>0322 3440909</Typography>
+                                <Typography sx={{ color: 'primary.main', fontSize: '1.2rem', fontWeight: 700 }}>+92 322 3440909</Typography>
                                 <Typography sx={{ color: 'primary.main', fontSize: '1.2rem', fontWeight: 700 }}>edxssystem@gmail.com</Typography>
                                 <Divider sx={{ mt: 4, bgcolor: 'primary.main', height: 2 }} />
                             </Box>

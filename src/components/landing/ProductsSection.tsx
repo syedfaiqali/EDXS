@@ -1,5 +1,21 @@
-import React, { useRef } from 'react';
-import { Box, Typography, Container, Grid, Button, keyframes, alpha } from '@mui/material';
+import React, { useRef, useState } from 'react';
+import {
+    Box,
+    Typography,
+    Container,
+    Grid,
+    Button,
+    keyframes,
+    alpha,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText
+} from '@mui/material';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
@@ -7,6 +23,8 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import HubIcon from '@mui/icons-material/Hub';
 import ApiIcon from '@mui/icons-material/Api';
+import CloseIcon from '@mui/icons-material/Close';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 const float = keyframes`
   0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -21,6 +39,7 @@ const orbit = keyframes`
 interface ProductRowProps {
     title: string;
     description: string;
+    fullDescription?: string | { subtitle: string; points: string[] }[];
     icon: React.ReactNode;
     reverse?: boolean;
     bgColor: string;
@@ -28,9 +47,13 @@ interface ProductRowProps {
     tagline: string;
 }
 
-const ProductRow: React.FC<ProductRowProps> = ({ title, description, icon, reverse, bgColor, accentColor, tagline }) => {
+const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescription, icon, reverse, bgColor, accentColor, tagline }) => {
     const rowRef = useRef<HTMLDivElement>(null);
     const isVisible = useIntersectionObserver(rowRef, { threshold: 0.2 });
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     return (
         <Box
@@ -168,6 +191,7 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, icon, rever
                             <Button
                                 variant="contained"
                                 endIcon={<KeyboardArrowRightIcon />}
+                                onClick={handleOpen}
                                 sx={{
                                     bgcolor: accentColor,
                                     color: 'white',
@@ -189,6 +213,86 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, icon, rever
                     </Grid>
                 </Grid>
             </Container>
+
+            {/* Feature Details Modal */}
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                maxWidth="md"
+                fullWidth
+                PaperProps={{
+                    sx: {
+                        borderRadius: 4,
+                        bgcolor: 'background.paper',
+                        boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)'
+                    }
+                }}
+            >
+                <DialogTitle sx={{ m: 0, p: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid', borderColor: 'divider' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Box sx={{ color: accentColor, display: 'flex' }}>
+                            {React.isValidElement(icon)
+                                ? React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: '2rem' } })
+                                : null}
+                        </Box>
+                        <Typography variant="h4" sx={{ fontWeight: 900, color: '#1e293b' }}>
+                            {title}
+                        </Typography>
+                    </Box>
+                    <IconButton onClick={handleClose} sx={{ color: 'text.secondary' }}>
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent sx={{ p: 4 }}>
+                    {Array.isArray(fullDescription) ? (
+                        <Grid container spacing={4}>
+                            {fullDescription.map((section, idx) => (
+                                <Grid item xs={12} key={idx}>
+                                    <Typography variant="h6" sx={{ fontWeight: 800, color: accentColor, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: accentColor }} />
+                                        {section.subtitle}
+                                    </Typography>
+                                    <List sx={{ pl: 2 }}>
+                                        {section.points.map((point, pIdx) => (
+                                            <ListItem key={pIdx} disableGutters sx={{ alignItems: 'flex-start', py: 0.5 }}>
+                                                <ListItemIcon sx={{ minWidth: 32, mt: 0.5 }}>
+                                                    <CheckCircleOutlineIcon sx={{ fontSize: '1.2rem', color: accentColor }} />
+                                                </ListItemIcon>
+                                                <ListItemText
+                                                    primary={point}
+                                                    primaryTypographyProps={{ sx: { fontSize: '1.05rem', color: 'text.secondary', lineHeight: 1.6 } }}
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    ) : (
+                        <Typography sx={{ fontSize: '1.15rem', color: 'text.secondary', lineHeight: 1.8 }}>
+                            {fullDescription || description}
+                        </Typography>
+                    )}
+
+                    <Box sx={{ mt: 6, textAlign: 'center' }}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            onClick={handleClose}
+                            sx={{
+                                bgcolor: accentColor,
+                                px: 6,
+                                py: 1.5,
+                                borderRadius: 2,
+                                fontWeight: 700,
+                                '&:hover': { bgcolor: alpha(accentColor, 0.9) }
+                            }}
+                        >
+                            Got It
+                        </Button>
+                    </Box>
+                </DialogContent>
+            </Dialog>
         </Box>
     );
 };
@@ -198,7 +302,52 @@ const ProductsSection: React.FC = () => {
         {
             title: 'EduMart',
             tagline: 'Global Marketplace',
-            description: 'A comprehensive marketplace bridging the gap between quality education products and the families who need them. Integrated directly into the award-winning Eduman ecosystem.',
+            description: 'EduMart is a comprehensive marketplace targeted to the students of schools, colleges, and universities. All the products and vendors on EduMart will be carefully selected to cater all the needs of targeted audience.',
+            fullDescription: [
+                {
+                    subtitle: 'Ecosystem & Reach',
+                    points: [
+                        'Introduced as an icon in the existing parent app of EduMan.',
+                        'Established LMS used by 60,000+ parents all over Pakistan.',
+                        'Will be launched as a separate app accessible to everyone.'
+                    ]
+                },
+                {
+                    subtitle: 'Comprehensive Shopping Solution',
+                    points: [
+                        'Wide range of products for children aged 4 to 19.',
+                        'Includes school supplies, stationery, textbooks, educational toys, and essentials.'
+                    ]
+                },
+                {
+                    subtitle: 'Academic Support',
+                    points: [
+                        'Course Guidelines and Availability: Access comprehensive guidelines and availability on a single platform.',
+                        'Helps students and parents plan their academic journey effectively.'
+                    ]
+                },
+                {
+                    subtitle: 'Sustainability & Savings',
+                    points: [
+                        'Used Books Availability: Marketplace for buying and selling used books to save money and reduce waste.',
+                        'Free Books Availability: selection of free books promoting access to education and literacy across socio-economic backgrounds.'
+                    ]
+                },
+                {
+                    subtitle: 'Digital Resources',
+                    points: [
+                        'Online Library: Borrow digital books, research materials, and educational resources.',
+                        'Enhances learning opportunities and encourages healthy reading habits.'
+                    ]
+                },
+                {
+                    subtitle: 'Additional Value',
+                    points: [
+                        'Food Vouchers: Special offers at selected restaurants or eateries for families.',
+                        'Promotes healthy eating habits and offers exclusive discounts.'
+                    ]
+                }
+            ],
             icon: <ShoppingBagIcon />,
             accentColor: '#76a345',
             bgColor: '#ffffff'
@@ -206,7 +355,33 @@ const ProductsSection: React.FC = () => {
         {
             title: 'EduPay',
             tagline: 'Smart Payments',
-            description: 'Revolutionize your school\'s financial management. Secure, frictionless payments for fees, uniforms, and activities — all monitored in one beautiful dashboard.',
+            description: 'Revolutionize your school\'s financial management. Secure, frictionless payments for fees, uniforms, and activities.',
+            fullDescription: [
+                {
+                    subtitle: 'Seamless Financial Integration',
+                    points: [
+                        'Facilitates payments within the Eduman platform for fees and tuition.',
+                        'Streamlines administrative processes for educational institutions.',
+                        'Provides convenience for students and parents when making payments.'
+                    ]
+                },
+                {
+                    subtitle: 'Key Features',
+                    points: [
+                        'Online Payment Processing: Convenient internet-based payments.',
+                        'Integration with Eduman: Synchronizes with SIS, attendance, and gradebooks.',
+                        'Automated Invoicing: Reduces manual effort by auto-generating accurate invoices.'
+                    ]
+                },
+                {
+                    subtitle: 'Key Benefits',
+                    points: [
+                        'Improved Efficiency: Reduces manual workload for administrative staff.',
+                        'Increased Revenue Collection: Efficient collection leads to better cash flow.',
+                        'Enhanced Student Experience: Flexible options lead to higher satisfaction and loyalty.'
+                    ]
+                }
+            ],
             icon: <PaymentsIcon />,
             reverse: true,
             accentColor: '#c4a77d',
@@ -215,7 +390,33 @@ const ProductsSection: React.FC = () => {
         {
             title: 'Eduman Lite',
             tagline: 'Essential Management',
-            description: 'Big power, small footprint. Eduman Lite gives burgeoning institutions the elite management tools they deserve, without the overhead. Built for speed, scaled for success.',
+            description: 'Big power, small footprint. Eduman Lite gives burgeoning institutions the elite management tools they deserve.',
+            fullDescription: [
+                {
+                    subtitle: 'Practical & Budget-Friendly',
+                    points: [
+                        'Practical solution for managing essential administrative tasks.',
+                        'Enables schools to operate efficiently while keeping costs under control.',
+                        'Ideal for smaller institutions or those on a limited budget.'
+                    ]
+                },
+                {
+                    subtitle: 'Key Features',
+                    points: [
+                        'Essential Modules: Student info management, attendance tracking, and basic gradebooks.',
+                        'Simplified Interface: User-friendly design requiring minimal training.',
+                        'Cost-Effective: A powerful alternative to the full comprehensive platform.'
+                    ]
+                },
+                {
+                    subtitle: 'Key Benefits',
+                    points: [
+                        'Cost Savings: Significantly reduces platform expenses for smaller budgets.',
+                        'Ease of Implementation: Quick deployment without operational disruptions.',
+                        'Scalability: Seamlessly transition to the full Eduman platform as you grow.'
+                    ]
+                }
+            ],
             icon: <FlashOnIcon />,
             accentColor: '#5a7d34',
             bgColor: '#ffffff'
@@ -223,7 +424,41 @@ const ProductsSection: React.FC = () => {
         {
             title: 'Incendio Hub',
             tagline: 'Digital Pulse',
-            description: 'The social heart of your digital campus. Engage students, parents, and teachers in a secure, vibrant community that reflects your unique school identity.',
+            description: 'The social heart of your digital campus. Engage students, parents, and teachers in a secure, vibrant community.',
+            fullDescription: [
+                {
+                    subtitle: 'Digital Empowerment',
+                    points: [
+                        'Comprehensive suite of digital services to enhance online presence.',
+                        'Empowers schools to thrive in the digital age through engagement.',
+                        'Efficiently achieve digital goals via tailored strategies.'
+                    ]
+                },
+                {
+                    subtitle: 'Core Services',
+                    points: [
+                        'Website Development: Professional sites tailored to unique institutional needs.',
+                        'Social Media Marketing: Expert campaigns on Facebook, Instagram, Twitter, and LinkedIn.',
+                        'Creative Designing: Captivating visuals, logos, branding, and multimedia content.'
+                    ]
+                },
+                {
+                    subtitle: 'Strategic Support',
+                    points: [
+                        'Expert Guidance: Valuable insights from years of education sector experience.',
+                        'Maximizes online visibility through SEO optimization and content strategy.',
+                        'One-stop solution for all digital and creative requirements.'
+                    ]
+                },
+                {
+                    subtitle: 'Key Benefits',
+                    points: [
+                        'Comprehensive Solution: All digital needs managed under one roof.',
+                        'Enhanced Visibility: Stand out in a crowded online space.',
+                        'Efficiency: Save valuable time and resources by outsourcing to experts.'
+                    ]
+                }
+            ],
             icon: <HubIcon />,
             reverse: true,
             accentColor: '#76a345',

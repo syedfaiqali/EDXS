@@ -80,7 +80,7 @@ const HeroSection: React.FC = () => {
                     </Typography>
                     <Button
                         variant="contained"
-                        onClick={() => navigate('/registration')}
+                        onClick={() => navigate('/contact')}
                         sx={{
                             bgcolor: '#f0dbb0',
                             color: '#76a345',

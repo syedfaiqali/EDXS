@@ -63,7 +63,7 @@ const LandingPage: React.FC = () => {
                         bottom: -100,
                         width: Math.random() * 60 + 20,
                         height: Math.random() * 60 + 20,
-                        bgcolor: i % 3 === 0 ? 'transparent' : (i % 2 === 0 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(240, 219, 176, 0.05)'),
+                        bgcolor: i % 3 === 0 ? 'transparent' : (i % 2 === 0 ? 'rgba(240, 219, 176, 0.08)' : 'rgba(240, 219, 176, 0.05)'),
                         borderRadius: i % 3 === 0 ? '8px' : (i % 2 === 0 ? '50%' : '8px'),
                         animation: `${float} ${Math.random() * 10 + 10}s linear infinite`,
                         animationDelay: `${Math.random() * 20}s`,
@@ -109,7 +109,7 @@ const LandingPage: React.FC = () => {
                         <Typography variant="h1" sx={{
                             fontSize: '15rem',
                             fontWeight: 900,
-                            color: '#fff',
+                            color: '#f0dbb0',
                             letterSpacing: -10,
                             mr: logoStage === 'opening' ? 10 : 0,
                             transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -160,7 +160,7 @@ const LandingPage: React.FC = () => {
                 }}>
                     <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
                         <path
-                            fill="#ffffff"
+                            fill="#f0dbb0"
                             fillOpacity="1"
                             d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,128C672,107,768,117,864,138.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
                         ></path>
@@ -171,7 +171,7 @@ const LandingPage: React.FC = () => {
                 {/* Connection Squiggle Bridge 1: WhyEduman -> HowItWorks */}
                 <Box sx={{
                     position: 'relative',
-                    bgcolor: '#edd8b4',
+                    bgcolor: '#f0dbb0',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -220,7 +220,7 @@ const LandingPage: React.FC = () => {
                 {/* Connection Squiggle Bridge 2: HowItWorks -> Testimonials */}
                 <Box sx={{
                     position: 'relative',
-                    bgcolor: '#edd8b4',
+                    bgcolor: '#f0dbb0',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',

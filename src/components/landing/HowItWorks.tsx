@@ -15,7 +15,7 @@ const HowItWorks: React.FC = () => {
     const footerText = "Let EDXS take the strain";
 
     return (
-        <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', pt: 5, pb: 15, px: '6%', borderTop: 'none', color: '#76a345', position: 'relative', zIndex: 1 }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#f0dbb0', pt: 5, pb: 15, px: '6%', borderTop: 'none', color: '#76a345', position: 'relative', zIndex: 1 }}>
             <Grid container spacing={8} alignItems="center">
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="h4" fontWeight="800" gutterBottom>

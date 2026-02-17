@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Box, Button, Container, Grid, Typography, keyframes } from '@mui/material';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import { useNavigate } from 'react-router-dom';
 
 const reveal = keyframes`
   from { opacity: 0; transform: translateY(10px); }
@@ -12,7 +13,7 @@ const EDXSPartnerSection: React.FC = () => {
     const isVisible = useIntersectionObserver(sectionRef);
     const titleText = "Become An EDXS Partner";
     const descText = "Empower education together! Collaborate with us as an EDXS Partner and access customized resources to drive positive change in learning.";
-
+    const navigate = useNavigate();
     return (
         <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', py: { xs: 8, md: 12 }, overflow: 'hidden' }}>
             <Container maxWidth="lg">
@@ -73,6 +74,7 @@ const EDXSPartnerSection: React.FC = () => {
                         <Button
                             variant="contained"
                             size="large"
+                            onClick={() => navigate('/contact')}
                             sx={{
                                 bgcolor: '#76a345',
                                 color: '#333',
