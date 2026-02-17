@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Container, keyframes } from '@mui/material';
+import { Box, Container, keyframes, Typography } from '@mui/material';
 import xsLogo from '../assets/xs_square_light.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,16 +13,17 @@ import InfoForm from '../components/landing/InfoForm';
 import OrgSetupForm from '../components/landing/OrgSetupForm';
 import SuccessScreen from '../components/landing/SuccessScreen';
 import ValidationToast from '../components/landing/ValidationToast';
-import { School, Business, AccountBalance, Engineering, BusinessCenter } from '@mui/icons-material';
+import {
+    School, Business, AccountBalance, Engineering, BusinessCenter,
+    MenuBook, Calculate, Functions, HistoryEdu, Science,
+    AutoStories, Psychology, Architecture, Language, Draw
+} from '@mui/icons-material';
 import type { OrgType, SelectedOrg, FormData, OrgFormData } from '../components/landing/types';
 
-// --- Keyframes ---
-const float = keyframes`
-  0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.2; }
-  50% { opacity: 0.5; }
-  90% { opacity: 0.2; }
-  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+const drift = keyframes`
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(20px, -20px) rotate(3deg); }
+  66% { transform: translate(-15px, 15px) rotate(-3deg); }
 `;
 
 const RegistrationPage: React.FC = () => {
@@ -186,15 +187,26 @@ const RegistrationPage: React.FC = () => {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#edd8b4', position: 'relative', overflow: 'hidden' }}>
+        <Box sx={{ minHeight: '100vh', bgcolor: '#edd8b4', position: 'relative', overflow: 'hidden', mt: 5 }}>
             {/* Animated Background Elements */}
             <Box sx={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 0 }}>
-                {[...Array(25)].map((_, i) => {
-                    const icons = [School, Business, AccountBalance, Engineering, BusinessCenter];
+                {[...Array(80)].map((_, i) => {
+                    const icons = [
+                        School, Business, AccountBalance, Engineering, BusinessCenter,
+                        MenuBook, Calculate, Functions, HistoryEdu, Science,
+                        AutoStories, Psychology, Architecture, Language, Draw
+                    ];
+
+                    const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'π', 'Σ', '√'];
+
+                    const isLogo = i % 8 === 0;
+                    const isNumber = !isLogo && i % 3 === 0;
+
                     const IconComp = icons[i % icons.length];
-                    const size = Math.random() * 50 + 40;
+                    const numChar = numbers[i % numbers.length];
+
+                    const size = isNumber ? Math.random() * 40 + 30 : Math.random() * 50 + 40;
                     const color = i % 2 === 0 ? '#f0dbb0' : '#76a345';
-                    const rotation = Math.random() * 360;
 
                     return (
                         <Box
@@ -202,18 +214,18 @@ const RegistrationPage: React.FC = () => {
                             sx={{
                                 position: 'absolute',
                                 left: `${Math.random() * 100}%`,
-                                bottom: -200,
+                                top: `${Math.random() * 100}%`,
                                 color: color,
-                                opacity: 0.05,
-                                animation: `${float} ${Math.random() * 20 + 20}s linear infinite`,
-                                animationDelay: `${Math.random() * 30}s`,
+                                opacity: i % 3 === 0 ? 0.12 : 0.06,
+                                animation: `${drift} ${Math.random() * 15 + 10}s ease-in-out infinite`,
+                                animationDelay: `${Math.random() * -20}s`,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
-                                transform: `rotate(${rotation}deg)`,
+                                zIndex: 0,
                             }}
                         >
-                            {i % 4 === 0 ? (
+                            {isLogo ? (
                                 <Box
                                     component="img"
                                     src={xsLogo}
@@ -222,9 +234,18 @@ const RegistrationPage: React.FC = () => {
                                         height: size,
                                         objectFit: 'contain',
                                         filter: color === '#76a345' ? 'none' : 'brightness(0) invert(1)',
-                                        opacity: 0.8
+                                        opacity: 0.5
                                     }}
                                 />
+                            ) : isNumber ? (
+                                <Typography sx={{
+                                    fontSize: `${size}px`,
+                                    fontWeight: 900,
+                                    fontFamily: '"Outfit", sans-serif',
+                                    lineHeight: 1
+                                }}>
+                                    {numChar}
+                                </Typography>
                             ) : (
                                 <IconComp sx={{ fontSize: size }} />
                             )}

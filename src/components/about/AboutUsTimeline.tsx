@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Box, Typography, keyframes, Container, Chip } from '@mui/material';
+import { Box, Typography, keyframes, Chip } from '@mui/material';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';

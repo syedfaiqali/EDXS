@@ -62,9 +62,9 @@ const OrgSelectionGrid: React.FC<OrgSelectionGridProps> = ({ onSelect }) => {
     return (
         <Fade in timeout={800}>
             <Box>
-                <Box textAlign="center" mb={10}>
+                <Box textAlign="center" mb={5}>
                     <Typography variant="h2" fontWeight="800" color="primary" sx={{ mb: 2 }}>
-                        {t('select_your')} <Box component="span" sx={{ color: '#76a345' }}>{t('organization_type')}</Box>
+                        {t('select_our')} <Box component="span" sx={{ color: '#76a345' }}>{t('organization_type')}</Box>
                     </Typography>
                     <Typography variant="h5" color="text.secondary" sx={{ maxWidth: 700, mx: 'auto', fontWeight: 500 }}>
                         {t('get_started_desc')}

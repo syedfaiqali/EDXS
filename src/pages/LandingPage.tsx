@@ -6,14 +6,14 @@ import xsLogo from '../assets/xs_square_light.png';
 // Components
 import HeroSection from '../components/landing/HeroSection';
 // import StatsSection from '../components/landing/StatsSection';
-import AboutUsSection from '../components/landing/AboutUsSection';
+
 import WhyEduman from '../components/landing/WhyEduman';
 import HowItWorks from '../components/landing/HowItWorks';
 // ... other imports
 import TestimonialsSection from '../components/landing/TestimonialsSection';
 import SeamlessScalingSection from '../components/landing/SeamlessScalingSection';
 import EDXSPartnerSection from '../components/landing/EDXSPartnerSection';
-import ProductsSection from '../components/landing/ProductsSection';
+
 
 // --- Keyframes ---
 const float = keyframes`

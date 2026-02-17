@@ -14,7 +14,7 @@ import Logo from './components/Logo';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
-import ProductsSection from './components/landing/ProductsSection';
+
 
 // Lazy load pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -53,7 +53,7 @@ const MainLayout: React.FC = () => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempLang, setTempLang] = useState(language);
-
+  const currentPath = location.pathname;
   const handleOpenLanguageModal = () => {
     setTempLang(language);
     setIsModalOpen(true);
@@ -131,10 +131,12 @@ const MainLayout: React.FC = () => {
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Translate
-                sx={{ color: 'white', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
-                onClick={handleOpenLanguageModal}
-              />
+              {currentPath === '/registration' && (
+                <Translate
+                  sx={{ color: 'white', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
+                  onClick={handleOpenLanguageModal}
+                />
+              )}
               <Button
                 variant="outlined"
                 onClick={() => navigate('/registration')}

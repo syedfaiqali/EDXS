@@ -4,7 +4,6 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
-
 import abdullahImage from '../../assets/abdullah.webp';
 import ghufranImage from '../../assets/ghufran.webp';
 import aminImage from '../../assets/amin.webp';
@@ -12,6 +11,7 @@ import farazImage from '../../assets/faraz.webp';
 import asharImage from '../../assets/ashar.webp';
 import faiqImage from '../../assets/faiq.webp';
 import raoImage from '../../assets/rao.webp';
+import omairImage from '../../assets/omair.webp';
 
 // Animation for cards
 const cardFadeIn = keyframes`
@@ -371,7 +371,7 @@ const TeamSection: React.FC = () => {
         {
             name: 'Omair Nadiawala',
             role: 'Senior IOS Developer',
-            image: 'https://edu-man.com/img/Omair.webp',
+            image: omairImage,
             description: 'Crafting pixel-perfect interfaces that blend aesthetic beauty with functional power.',
             linkedin: 'https://www.linkedin.com/in/omairnadiadwala/'
         },
