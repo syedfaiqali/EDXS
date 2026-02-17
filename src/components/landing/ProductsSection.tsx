@@ -192,7 +192,7 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescrip
                                     {Array.isArray(fullDescription) ? (
                                         <Grid container spacing={3}>
                                             {fullDescription.map((section, idx) => (
-                                                <Grid item xs={12} key={idx}>
+                                                <Grid size={{ xs: 12 }} key={idx}>
                                                     <Typography
                                                         variant="h6"
                                                         sx={{
@@ -238,41 +238,18 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescrip
                                 endIcon={isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                                 sx={{
                                     color: accentColor,
-                                    p: 0,
-                                    minWidth: 0,
-                                    fontSize: '1.1rem',
-                                    fontWeight: 900,
+                                    fontWeight: 700,
                                     textTransform: 'none',
-                                    position: 'relative',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    overflow: 'visible',
-                                    '& .MuiButton-endIcon': {
-                                        transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                                        ml: 1
-                                    },
-                                    '&::after': {
-                                        content: '""',
-                                        position: 'absolute',
-                                        bottom: -2,
-                                        left: 0,
-                                        width: '0%',
-                                        height: '3px',
-                                        bgcolor: accentColor,
-                                        borderRadius: '4px',
-                                        transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-                                    },
+                                    fontSize: '1rem',
+                                    p: '4px 12px',
+                                    borderRadius: 1,
+                                    transition: 'all 0.2s ease',
                                     '&:hover': {
-                                        bgcolor: 'transparent',
-                                        color: accentColor,
-                                        '&::after': {
-                                            width: '100%'
-                                        },
-                                        '& .MuiButton-endIcon': {
-                                            transform: isExpanded ? 'translateY(-4px)' : 'translateY(4px)'
-                                        }
+                                        bgcolor: alpha(accentColor, 0.08),
                                     },
-                                    transition: 'all 0.3s ease'
+                                    '&:active': {
+                                        transform: 'scale(0.96)',
+                                    }
                                 }}
                             >
                                 {isExpanded ? 'Read Less' : 'Read More'}
