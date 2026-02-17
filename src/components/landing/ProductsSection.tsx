@@ -7,23 +7,20 @@ import {
     Button,
     keyframes,
     alpha,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    IconButton,
     List,
     ListItem,
     ListItemIcon,
-    ListItemText
+    ListItemText,
+    Collapse
 } from '@mui/material';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import HubIcon from '@mui/icons-material/Hub';
 import ApiIcon from '@mui/icons-material/Api';
-import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 const float = keyframes`
@@ -49,18 +46,18 @@ interface ProductRowProps {
 
 const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescription, icon, reverse, bgColor, accentColor, tagline }) => {
     const rowRef = useRef<HTMLDivElement>(null);
-    const isVisible = useIntersectionObserver(rowRef, { threshold: 0.2 });
-    const [open, setOpen] = useState(false);
+    const isVisible = useIntersectionObserver(rowRef, { threshold: 0.1 });
+    const [isExpanded, setIsExpanded] = useState(false);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const toggleExpansion = () => setIsExpanded(!isExpanded);
 
     return (
         <Box
             ref={rowRef}
             sx={{
                 bgcolor: bgColor,
-                py: { xs: 12, md: 20 },
+                py: { xs: 12, md: 15 },
+                transition: 'all 0.5s ease-in-out',
                 position: 'relative',
                 overflow: 'hidden',
                 '&::before': {
@@ -76,9 +73,9 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescrip
             }}
         >
             <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
-                <Grid container spacing={10} alignItems="center" flexDirection={reverse ? 'row-reverse' : 'row'}>
+                <Grid container spacing={10} alignItems="flex-start" flexDirection={reverse ? 'row-reverse' : 'row'}>
                     {/* Image/Logo Side */}
-                    <Grid size={{ xs: 12, md: 6 }}>
+                    <Grid size={{ xs: 12, md: 6 }} sx={{ position: 'sticky', top: 120 }}>
                         <Box
                             sx={{
                                 position: 'relative',
@@ -87,7 +84,8 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescrip
                                 alignItems: 'center',
                                 opacity: isVisible ? 1 : 0,
                                 transform: isVisible ? 'scale(1)' : 'scale(0.8)',
-                                transition: 'all 1s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                                transition: 'all 1s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                pt: { md: 5 }
                             }}
                         >
                             {/* Decorative Outer Rings */}
@@ -175,124 +173,114 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescrip
                             >
                                 {title}
                             </Typography>
+
                             <Typography
                                 sx={{
                                     fontSize: '1.25rem',
                                     color: 'text.secondary',
                                     lineHeight: 1.7,
-                                    mb: 5,
-                                    maxWidth: 500,
+                                    mb: 4,
+                                    maxWidth: 600,
                                     mx: { xs: 'auto', md: 0 }
                                 }}
                             >
                                 {description}
                             </Typography>
 
+                            <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                                <Box sx={{ mb: 4 }}>
+                                    {Array.isArray(fullDescription) ? (
+                                        <Grid container spacing={3}>
+                                            {fullDescription.map((section, idx) => (
+                                                <Grid item xs={12} key={idx}>
+                                                    <Typography
+                                                        variant="h6"
+                                                        sx={{
+                                                            fontWeight: 800,
+                                                            color: '#1e293b',
+                                                            mb: 1,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: 1.5,
+                                                            fontSize: '1.1rem'
+                                                        }}
+                                                    >
+                                                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: accentColor }} />
+                                                        {section.subtitle}
+                                                    </Typography>
+                                                    <List sx={{ pl: 1, py: 0 }}>
+                                                        {section.points.map((point, pIdx) => (
+                                                            <ListItem key={pIdx} disableGutters sx={{ alignItems: 'flex-start', py: 0.25 }}>
+                                                                <ListItemIcon sx={{ minWidth: 28, mt: 0.5 }}>
+                                                                    <CheckCircleOutlineIcon sx={{ fontSize: '1.1rem', color: accentColor }} />
+                                                                </ListItemIcon>
+                                                                <ListItemText
+                                                                    primary={point}
+                                                                    primaryTypographyProps={{ sx: { fontSize: '1rem', color: 'text.secondary', lineHeight: 1.5 } }}
+                                                                />
+                                                            </ListItem>
+                                                        ))}
+                                                    </List>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
+                                    ) : (
+                                        <Typography sx={{ fontSize: '1.1rem', color: 'text.secondary', lineHeight: 1.8 }}>
+                                            {fullDescription}
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </Collapse>
+
                             <Button
-                                variant="contained"
-                                endIcon={<KeyboardArrowRightIcon />}
-                                onClick={handleOpen}
+                                variant="text"
+                                onClick={toggleExpansion}
+                                endIcon={isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                                 sx={{
-                                    bgcolor: accentColor,
-                                    color: 'white',
-                                    py: 2,
-                                    px: 5,
-                                    borderRadius: 3,
+                                    color: accentColor,
+                                    p: 0,
+                                    minWidth: 0,
                                     fontSize: '1.1rem',
-                                    boxShadow: `0 15px 30px ${alpha(accentColor, 0.3)}`,
+                                    fontWeight: 900,
+                                    textTransform: 'none',
+                                    position: 'relative',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    overflow: 'visible',
+                                    '& .MuiButton-endIcon': {
+                                        transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                        ml: 1
+                                    },
+                                    '&::after': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        bottom: -2,
+                                        left: 0,
+                                        width: '0%',
+                                        height: '3px',
+                                        bgcolor: accentColor,
+                                        borderRadius: '4px',
+                                        transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                                    },
                                     '&:hover': {
-                                        bgcolor: alpha(accentColor, 0.8),
-                                        transform: 'translateY(-5px)',
-                                        boxShadow: `0 20px 40px ${alpha(accentColor, 0.4)}`,
-                                    }
+                                        bgcolor: 'transparent',
+                                        color: accentColor,
+                                        '&::after': {
+                                            width: '100%'
+                                        },
+                                        '& .MuiButton-endIcon': {
+                                            transform: isExpanded ? 'translateY(-4px)' : 'translateY(4px)'
+                                        }
+                                    },
+                                    transition: 'all 0.3s ease'
                                 }}
                             >
-                                Explore Features
+                                {isExpanded ? 'Read Less' : 'Read More'}
                             </Button>
                         </Box>
                     </Grid>
                 </Grid>
             </Container>
-
-            {/* Feature Details Modal */}
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                maxWidth="md"
-                fullWidth
-                PaperProps={{
-                    sx: {
-                        borderRadius: 4,
-                        bgcolor: 'background.paper',
-                        boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)'
-                    }
-                }}
-            >
-                <DialogTitle sx={{ m: 0, p: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid', borderColor: 'divider' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Box sx={{ color: accentColor, display: 'flex' }}>
-                            {React.isValidElement(icon)
-                                ? React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: '2rem' } })
-                                : null}
-                        </Box>
-                        <Typography variant="h4" sx={{ fontWeight: 900, color: '#1e293b' }}>
-                            {title}
-                        </Typography>
-                    </Box>
-                    <IconButton onClick={handleClose} sx={{ color: 'text.secondary' }}>
-                        <CloseIcon />
-                    </IconButton>
-                </DialogTitle>
-                <DialogContent sx={{ p: 4 }}>
-                    {Array.isArray(fullDescription) ? (
-                        <Grid container spacing={4}>
-                            {fullDescription.map((section, idx) => (
-                                <Grid item xs={12} key={idx}>
-                                    <Typography variant="h6" sx={{ fontWeight: 800, color: accentColor, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                                        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: accentColor }} />
-                                        {section.subtitle}
-                                    </Typography>
-                                    <List sx={{ pl: 2 }}>
-                                        {section.points.map((point, pIdx) => (
-                                            <ListItem key={pIdx} disableGutters sx={{ alignItems: 'flex-start', py: 0.5 }}>
-                                                <ListItemIcon sx={{ minWidth: 32, mt: 0.5 }}>
-                                                    <CheckCircleOutlineIcon sx={{ fontSize: '1.2rem', color: accentColor }} />
-                                                </ListItemIcon>
-                                                <ListItemText
-                                                    primary={point}
-                                                    primaryTypographyProps={{ sx: { fontSize: '1.05rem', color: 'text.secondary', lineHeight: 1.6 } }}
-                                                />
-                                            </ListItem>
-                                        ))}
-                                    </List>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    ) : (
-                        <Typography sx={{ fontSize: '1.15rem', color: 'text.secondary', lineHeight: 1.8 }}>
-                            {fullDescription || description}
-                        </Typography>
-                    )}
-
-                    <Box sx={{ mt: 6, textAlign: 'center' }}>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            onClick={handleClose}
-                            sx={{
-                                bgcolor: accentColor,
-                                px: 6,
-                                py: 1.5,
-                                borderRadius: 2,
-                                fontWeight: 700,
-                                '&:hover': { bgcolor: alpha(accentColor, 0.9) }
-                            }}
-                        >
-                            Got It
-                        </Button>
-                    </Box>
-                </DialogContent>
-            </Dialog>
         </Box>
     );
 };
