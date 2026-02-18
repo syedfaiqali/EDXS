@@ -74,17 +74,15 @@ const AboutUsStory: React.FC = () => {
                                 }}
                             >
                                 Built for <br />
-                                <Box component="span" sx={{ color: 'secondary.main' }}>Educators,</Box> <br />
-                                By Educators.
+                                <Box component="span" sx={{ color: 'secondary.main' }}>Innovation,</Box> <br />
+                                By Experts.
                             </Typography>
                             <Typography
                                 sx={{
                                     fontSize: { xs: '1.2rem', md: '1.8rem' }, mb: 6, lineHeight: 1.5, opacity: 0.9, fontWeight: 500
                                 }}
                             >
-                                Our platform was born in the classroom, fueled by the real-world challenges
-                                of modern instruction. We believe technology should serve teachers,
-                                not the other way around.
+                                Powered by a dynamic group of companies with 300+ man-years of collective software expertise, we deliver high-performance digital solutions across industries. Our platform was born from a passion for precision and a deep understanding of complex organizational needs.
                             </Typography>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, cursor: 'pointer', '&:hover .play-icon': { transform: 'scale(1.1) rotate(10deg)' } }}>

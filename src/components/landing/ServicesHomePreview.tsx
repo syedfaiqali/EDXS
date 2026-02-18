@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Typography, Container, Grid, Button, alpha, keyframes } from '@mui/material';
 import { Link } from 'react-router-dom';
-import SecurityIcon from '@mui/icons-material/Security';
 import TrafficIcon from '@mui/icons-material/Traffic';
-import VideocamIcon from '@mui/icons-material/Videocam';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import SchoolIcon from '@mui/icons-material/School';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 const float = keyframes`
   0% { transform: translateY(0px) rotate(0deg); }
@@ -19,9 +20,9 @@ const fadeInUp = keyframes`
 
 const services = [
     {
-        title: "Cyber Security",
-        desc: "Advanced threat detection and encrypted data management for modern enterprise security.",
-        icon: <SecurityIcon sx={{ fontSize: '3.5rem' }} />,
+        title: "Eduman",
+        desc: "A comprehensive school management ecosystem empowering educational excellence through seamless digital operations.",
+        icon: <SchoolIcon sx={{ fontSize: '3.5rem' }} />,
         color: '#76a345',
         gradient: 'linear-gradient(135deg, #76a345 0%, #5d8239 100%)'
     },
@@ -33,11 +34,18 @@ const services = [
         gradient: 'linear-gradient(135deg, #5d4037 0%, #3e2b25 100%)'
     },
     {
-        title: "CCTV Surveillance",
-        desc: "Intelligent HD monitoring and AI-powered security ecosystems designed for schools.",
-        icon: <VideocamIcon sx={{ fontSize: '3.5rem' }} />,
+        title: "Fatigue Management for Airlines",
+        desc: "Predictive safety solutions for aviation, monitoring crew alertness to ensure high-altitude operational integrity.",
+        icon: <FlightTakeoffIcon sx={{ fontSize: '3.5rem' }} />,
         color: '#76a345',
         gradient: 'linear-gradient(135deg, #76a345 0%, #5d8239 100%)'
+    },
+    {
+        title: "AI Powered Callagent Management",
+        desc: "Next-gen support ecosystems utilizing intelligent automation to revolutionize customer experience.",
+        icon: <SupportAgentIcon sx={{ fontSize: '3.5rem' }} />,
+        color: '#5d4037',
+        gradient: 'linear-gradient(135deg, #5d4037 0%, #3e2b25 100%)'
     }
 ];
 
@@ -105,7 +113,7 @@ const ServicesHomePreview: React.FC = () => {
 
                 <Grid container spacing={4} sx={{ mb: 10 }}>
                     {services.map((service, index) => (
-                        <Grid size={{ xs: 12, md: 4 }} key={index}>
+                        <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={index}>
                             <Box sx={{
                                 p: 5,
                                 height: '100%',

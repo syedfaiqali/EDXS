@@ -36,7 +36,7 @@ const AboutUsHeader: React.FC = () => {
                 textAlign: 'center',
                 mb: { xs: 8, md: 10 },
                 px: { xs: 2, md: 4 },
-                py: { xs: 10, md: 16 },
+                py: { xs: 10, md: 5 },
                 borderRadius: 12,
                 overflow: 'hidden',
                 background: 'rgba(255, 255, 255, 0.4)',
@@ -107,7 +107,7 @@ const AboutUsHeader: React.FC = () => {
                     variant="h1"
                     sx={{
                         fontWeight: 900,
-                        fontSize: { xs: '3rem', sm: '4.5rem', md: '6.5rem' },
+                        fontSize: { xs: '3rem', sm: '4.5rem', md: '5rem' },
                         mb: 4,
                         lineHeight: 0.85,
                         letterSpacing: '-0.04em',
@@ -139,7 +139,7 @@ const AboutUsHeader: React.FC = () => {
                         maxWidth: 700,
                         mx: 'auto',
                         color: 'text.secondary',
-                        fontSize: { xs: '1.2rem', md: '1.6rem' },
+                        fontSize: { xs: '1.2rem', md: '1.4rem' },
                         lineHeight: 1.5,
                         fontWeight: 500,
                         mb: 8,
@@ -147,8 +147,8 @@ const AboutUsHeader: React.FC = () => {
                         opacity: 0.8
                     }}
                 >
-                    We’re not just building software; we’re architecting the digital infrastructure
-                    for the schools of tomorrow.
+                    We’re not just building software; we’re architecting the elite digital infrastructure
+                    that powers the businesses of tomorrow.
                 </Typography>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 2 }}>

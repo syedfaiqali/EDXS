@@ -9,9 +9,9 @@ const reveal = keyframes`
 
 const WhyEduman: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const mainTitle = "Why EDXS?";
-    const subTitle = "Grow Seamlessly with Ease";
-    const bodyText = "Welcome to EDXS – where we're more than just a management tool, we're your partners in education. Effortlessly handle student enrollment, timetables, and budgets with a click. With EDXS, customization is key, tailored to your school's unique needs. Moreover, our dedicated support ensures smooth sailing even through rough waters. Join us in charting a course towards academic excellence. So, why choose EDXS? Because together, we're charting a course towards a brighter future for education. Come aboard, and let's navigate this journey together!";
+    const mainTitle = "Why Choose Us?";
+    const subTitle = "Scalable Excellence for Every Industry";
+    const bodyText = "With 300+ skilled professionals and decades of collective expertise, EDXS blends strong resource capability with AI-driven innovation to deliver scalable, high-performance digital solutions.\n\nFrom enterprise ERP systems to bespoke platforms, we architect intelligent ecosystems designed for efficiency, security, and sustainable growth delivering projects locally and internationally with global standards and precision.";
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -52,7 +52,7 @@ const WhyEduman: React.FC = () => {
                         justifyContent: 'center',
                         position: 'relative',
                         overflow: 'hidden',
-                        // boxShadow: '2px 8px 20px rgba(0,0,0,0.1)',
+                        boxShadow: '2px 8px 20px rgba(0,0,0,0.1)',
                         opacity: 0,
                         animation: isVisible ? `${reveal} 0.8s ease forwards` : 'none',
                     }}>

@@ -168,7 +168,7 @@ const ServicesSection: React.FC = () => {
                         </Box>
                         <Box sx={{ mt: 2, border: '4px solid', borderColor: 'secondary.main', p: 3, display: 'inline-block' }}>
                             <Typography variant="h1" sx={{ fontWeight: 900, color: 'secondary.main', mb: 0, letterSpacing: 10, fontSize: '4rem' }}>EDXS</Typography>
-                            <Typography sx={{ color: 'secondary.main', fontSize: '1rem', letterSpacing: 4, mt: 1, fontWeight: 900 }}>SCHOOL MANAGEMENT SYSTEM</Typography>
+                            <Typography sx={{ color: 'secondary.main', fontSize: '1rem', letterSpacing: 4, mt: 1, fontWeight: 900 }}>ENTERPRISE MANAGEMENT ECOSYSTEMS</Typography>
                         </Box>
                     </Box>
                 }
@@ -348,8 +348,8 @@ const ServicesSection: React.FC = () => {
 
             {/* Section 9: CCTV Surveillance */}
             <ServiceRow
-                title="INTELLIGENT SCHOOL SURVEILLANCE & CCTV ECOSYSTEMS"
-                description="Safety is the foundation of learning. Our intelligent CCTV systems are engineered specifically for schools, integrating high-definition surveillance with AI-powered monitoring. We provide end-to-end security hardware and software solutions that guarantee 360-degree protection and peace of mind for administrators and parents."
+                title="INTELLIGENT ENTERPRISE SURVEILLANCE & CCTV ECOSYSTEMS"
+                description="Safety is the foundation of operational success. Our intelligent CCTV systems are engineered for large-scale complexes and corporate campuses, integrating high-definition surveillance with AI-powered monitoring. We provide end-to-end security hardware and software solutions that guarantee 360-degree protection and peace of mind for administrators and organizations."
                 illustration={
                     <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Box sx={{

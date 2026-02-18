@@ -26,25 +26,25 @@ const reveal = keyframes`
 const HeroSection: React.FC = () => {
     const navigate = useNavigate();
 
-    const titleText = "Let EDXS Take the Strain";
-    const subText = "We've revolutionized the way schools operate, taking the strain out of management tasks so educators can focus on what truly matters: nurturing young minds.";
+    const titleText = "Next-Generation Enterprise Solutions";
+    const subText = "As a leading group of companies, powered by 300+ professionals and 300+ man-years of software innovation, we fuse human expertise with AI intelligence to deliver high-performance digital solutions that transform complexity into scalable growth.";
 
     return (
         <Box sx={{
             bgcolor: 'transparent',
             color: 'white',
-            pt: { xs: 8, md: 8 },
+            pt: { xs: 8, md: 6 },
             pb: { xs: 8, md: 10 },
             position: 'relative'
         }}>
             <Grid container spacing={4} alignItems="center">
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12, md: 7 }}>
                     <Typography variant="h1" sx={{
-                        fontSize: { xs: '3rem', md: '4.5rem' },
+                        fontSize: { xs: '2.5rem', md: '4.5rem' },
                         fontWeight: 800,
-                        mb: 3,
+                        mb: 2,
                         lineHeight: 1.1,
-                        color: '#f0dbb0'
+                        color: '#fff'
                     }}>
                         {titleText.split('').map((char, i) => (
                             <Box
@@ -61,7 +61,7 @@ const HeroSection: React.FC = () => {
                             </Box>
                         ))}
                     </Typography>
-                    <Typography variant="h6" sx={{ color: 'rgba(255,255,255,0.8)', mb: 6, fontWeight: 400, maxWidth: '90%' }}>
+                    <Typography variant="h6" sx={{ color: '#fff', mb: 5, fontWeight: 400, maxWidth: '90%' }}>
                         {subText.split(' ').map((word, i) => (
                             <Box
                                 key={i}
@@ -96,7 +96,7 @@ const HeroSection: React.FC = () => {
                         Start 10 Day Trial
                     </Button>
                 </Grid>
-                <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
+                <Grid size={{ xs: 12, md: 5 }} sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
                     <Box sx={{
                         width: '100%',
                         maxWidth: 500,

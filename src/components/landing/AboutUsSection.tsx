@@ -6,6 +6,7 @@ import AboutUsTimeline from '../about/AboutUsTimeline';
 import AboutUsStory from '../about/AboutUsStory';
 import AboutUsMigration from '../about/AboutUsMigration';
 import AboutUsBackground from '../about/AboutUsBackground';
+// import AboutUsVideo from '../about/AboutUsVideo';
 
 const AboutUsSection: React.FC = () => {
     return (
@@ -25,6 +26,7 @@ const AboutUsSection: React.FC = () => {
             <Box sx={{ pt: { xs: 8, md: 15 }, position: 'relative', zIndex: 1 }}>
                 <Container maxWidth="xl">
                     <AboutUsHeader />
+                    {/* <AboutUsVideo /> */}
                     <AboutUsStats />
                     <AboutUsTimeline />
                 </Container>
