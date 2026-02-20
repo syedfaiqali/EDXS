@@ -1,0 +1,9 @@
+<svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stylized 'E' part -->
+  <rect x="0" y="5" width="48" height="10" rx="2" fill="#76a345" />
+  <rect x="12" y="25" width="48" height="10" rx="2" fill="#76a345" />
+  <rect x="0" y="45" width="42" height="10" rx="2" fill="#76a345" />
+  
+  <!-- Stylized 'XS' could be represented simply by the bars or we can add text if it fits -->
+  <!-- For favicon, simplicity is key, so maybe just the bars or a combined shape -->
+</svg>

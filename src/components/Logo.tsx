@@ -1,62 +1,92 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, keyframes } from '@mui/material';
+import xsLogo from '../assets/xs_square_light.png';
 
-const Logo: React.FC<{ size?: 'small' | 'large' }> = ({ size = 'small' }) => {
+const float = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
+`;
+
+const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = 'small', color = 'white' }) => {
     const isLarge = size === 'large';
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box sx={{ position: 'relative', width: isLarge ? 60 : 40, height: isLarge ? 40 : 28 }}>
-                {/* Top bar */}
-                <Box sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '80%',
-                    height: '25%',
-                    backgroundColor: '#76a345',
-                    borderRadius: 2
-                }} />
-                {/* Middle bar with hook */}
-                <Box sx={{
-                    position: 'absolute',
-                    top: '37%',
-                    left: '20%',
-                    width: '80%',
-                    height: '25%',
-                    backgroundColor: '#76a345',
-                    borderRadius: 2
-                }} />
-                {/* Bottom bar */}
-                <Box sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '70%',
-                    height: '25%',
-                    backgroundColor: '#76a345',
-                    borderRadius: 2
-                }} />
-            </Box>
-            <Box sx={{
-                border: '1.5px solid #76a345',
-                borderRadius: 1,
-                px: 1,
-                py: 0.2,
+        <Box
+            sx={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <Typography
+                gap: isLarge ? 2.5 : 1.5,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    transform: 'translateY(-2px)'
+                }
+            }}
+        >
+            <Box
+                sx={{
+                    position: 'relative',
+                    width: isLarge ? 64 : 44,
+                    height: isLarge ? 64 : 44,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    animation: `${float} 3s ease-in-out infinite`,
+                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
+                    '& img': {
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        borderRadius: isLarge ? '12px' : '8px'
+                    }
+                }}
+            >
+                <img src={xsLogo} alt="EDXS Logo" />
+            </Box>
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                    <Typography
+                        sx={{
+                            color: color,
+                            fontWeight: 900,
+                            fontSize: isLarge ? '2.4rem' : '1.8rem',
+                            lineHeight: 1,
+                            letterSpacing: -0.5,
+                            textTransform: 'uppercase',
+                        }}
+                    >
+                        ED
+                    </Typography>
+                    <Typography
+                        sx={{
+                            color: color === 'white' ? '#f0dbb0' : '#76a345',
+                            fontWeight: 400,
+                            fontSize: isLarge ? '2.4rem' : '1.8rem',
+                            lineHeight: 1,
+                            letterSpacing: -0.5,
+                            textTransform: 'uppercase',
+                            ml: 0.1
+                        }}
+                    >
+                        XS
+                    </Typography>
+                </Box>
+                {/* <Typography
                     sx={{
-                        color: '#76a345',
-                        fontWeight: 800,
-                        fontSize: isLarge ? '1.5rem' : '1.1rem',
-                        letterSpacing: -0.5
+                        color: color,
+                        opacity: 0.85,
+                        fontSize: isLarge ? '0.75rem' : '0.55rem',
+                        fontWeight: 700,
+                        letterSpacing: isLarge ? 3 : 2,
+                        mt: 0.2,
+                        textTransform: 'uppercase',
+                        whiteSpace: 'nowrap'
                     }}
                 >
-                    XS
-                </Typography>
+                    School Management System
+                </Typography> */}
             </Box>
         </Box>
     );
