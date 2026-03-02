@@ -9,9 +9,9 @@ const Footer: React.FC = () => {
         <Box
             component="footer"
             sx={{
-                bgcolor: '#76a345', // Dark blue background similar to screenshot
+                background: 'radial-gradient(circle at 20% 0%, #88b653 0%, #6f9c3f 45%, #5d8239 100%)',
                 color: 'white',
-                py: { xs: 8, md: 10 },
+                py: { xs: 6, md: 10 },
                 position: 'relative',
                 overflow: 'hidden',
                 minHeight: { md: '90vh' }, // Match the margin in App.tsx
@@ -20,16 +20,16 @@ const Footer: React.FC = () => {
             }}
         >
             <Container maxWidth="lg">
-                <Grid container spacing={4} alignItems="center" justifyContent="space-between">
+                <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center" justifyContent="space-between">
                     {/* Left Side: Logo and Social Icons */}
                     <Grid size={{ xs: 12, md: 5 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
                         {/* Large Shield Logo */}
-                        <Box sx={{ mb: 4, display: 'inline-block' }}>
+                        <Box sx={{ mb: { xs: 3, md: 4 }, display: 'inline-block' }}>
                             <Logo size="large" color="white" />
                         </Box>
 
                         {/* Social Icons Row */}
-                        <Box sx={{ display: 'flex', gap: 2, justifyContent: { xs: 'center', md: 'flex-start' } }}>
+                        <Box sx={{ display: 'flex', gap: 1.5, justifyContent: { xs: 'center', md: 'flex-start' }, flexWrap: 'wrap' }}>
                             {[
                                 { Icon: Facebook, href: 'https://www.facebook.com/EduManSchoolManagement' },
                                 { Icon: Instagram, href: 'https://www.instagram.com/Eduman_system/' },
@@ -46,8 +46,9 @@ const Footer: React.FC = () => {
                                     sx={{
                                         border: '1px solid rgba(255,255,255,0.3)',
                                         color: 'white',
+                                        bgcolor: 'rgba(255,255,255,0.08)',
                                         '&:hover': {
-                                            bgcolor: 'rgba(255,255,255,0.1)',
+                                            bgcolor: 'rgba(255,255,255,0.18)',
                                             borderColor: 'white'
                                         },
                                         width: 40,
@@ -82,7 +83,7 @@ const Footer: React.FC = () => {
                                     fontWeight: 800,
                                     color: '#f0dbb0', // Tan color for text
                                     letterSpacing: -1,
-                                    fontSize: { xs: '3rem', md: '5rem' },
+                                    fontSize: { xs: '2.4rem', sm: '3.2rem', md: '5rem' },
                                     lineHeight: 1
                                 }}
                             >
@@ -92,12 +93,12 @@ const Footer: React.FC = () => {
                                 className="arrow-icon"
                                 sx={{
                                     color: '#f0dbb0',
-                                    fontSize: { xs: '3rem', md: '5rem' },
-                                    opacity: 0,
-                                    transform: 'translateX(-20px)',
-                                    maxWidth: 0,
+                                    fontSize: { xs: '2.4rem', sm: '3.2rem', md: '5rem' },
+                                    opacity: { xs: 1, md: 0 },
+                                    transform: { xs: 'translateX(0)', md: 'translateX(-20px)' },
+                                    maxWidth: { xs: '100px', md: 0 },
                                     overflow: 'hidden',
-                                    ml: 0,
+                                    ml: { xs: 1, md: 0 },
                                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
                                 }}
                             />

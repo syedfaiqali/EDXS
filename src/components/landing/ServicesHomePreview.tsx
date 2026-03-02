@@ -21,21 +21,21 @@ const services = [
     {
         title: "Cyber Security",
         desc: "Advanced threat detection and encrypted data management for modern enterprise security.",
-        icon: <SecurityIcon sx={{ fontSize: '3.5rem' }} />,
+        icon: <SecurityIcon sx={{ fontSize: { xs: '2.2rem', md: '3.5rem' } }} />,
         color: '#76a345',
         gradient: 'linear-gradient(135deg, #76a345 0%, #5d8239 100%)'
     },
     {
         title: "Traffic Management",
         desc: "Smart city efficiency for regulatory workflows and automated digital licensing systems.",
-        icon: <TrafficIcon sx={{ fontSize: '3.5rem' }} />,
+        icon: <TrafficIcon sx={{ fontSize: { xs: '2.2rem', md: '3.5rem' } }} />,
         color: '#5d4037',
         gradient: 'linear-gradient(135deg, #5d4037 0%, #3e2b25 100%)'
     },
     {
         title: "CCTV Surveillance",
         desc: "Intelligent HD monitoring and AI-powered security ecosystems designed for schools.",
-        icon: <VideocamIcon sx={{ fontSize: '3.5rem' }} />,
+        icon: <VideocamIcon sx={{ fontSize: { xs: '2.2rem', md: '3.5rem' } }} />,
         color: '#76a345',
         gradient: 'linear-gradient(135deg, #76a345 0%, #5d8239 100%)'
     }
@@ -45,7 +45,7 @@ const ServicesHomePreview: React.FC = () => {
     return (
         <Box sx={{
             bgcolor: '#f0dbb0',
-            py: 15,
+            py: { xs: 9, md: 15 },
             position: 'relative',
             overflow: 'hidden',
             '&::before': {
@@ -74,13 +74,13 @@ const ServicesHomePreview: React.FC = () => {
             }
         }}>
             <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
-                <Box textAlign="center" mb={10}>
+                <Box textAlign="center" mb={{ xs: 6, md: 10 }}>
                     <Typography
                         variant="h2"
                         fontWeight="900"
                         sx={{
-                            fontSize: { xs: '3rem', md: '4rem' },
-                            mb: 3,
+                            fontSize: { xs: '2.15rem', sm: '2.6rem', md: '4rem' },
+                            mb: { xs: 2, md: 3 },
                             color: '#5d4037',
                             textTransform: 'uppercase',
                             letterSpacing: -1
@@ -94,6 +94,7 @@ const ServicesHomePreview: React.FC = () => {
                             maxWidth: 800,
                             mx: 'auto',
                             fontWeight: 500,
+                            fontSize: { xs: '1rem', md: '1.2rem' },
                             color: 'rgba(93, 64, 55, 0.8)',
                             lineHeight: 1.6
                         }}
@@ -103,11 +104,11 @@ const ServicesHomePreview: React.FC = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={4} sx={{ mb: 10 }}>
+                <Grid container spacing={{ xs: 2.5, sm: 3, md: 4 }} sx={{ mb: { xs: 6, md: 10 } }}>
                     {services.map((service, index) => (
                         <Grid size={{ xs: 12, md: 4 }} key={index}>
                             <Box sx={{
-                                p: 5,
+                                p: { xs: 3, sm: 3.5, md: 5 },
                                 height: '100%',
                                 bgcolor: 'rgba(255, 255, 255, 0.6)',
                                 backdropFilter: 'blur(10px)',
@@ -135,11 +136,11 @@ const ServicesHomePreview: React.FC = () => {
                                 <Box
                                     className="icon-box"
                                     sx={{
-                                        mb: 4,
+                                        mb: 3,
                                         color: service.color,
                                         bgcolor: alpha(service.color, 0.1),
-                                        width: 100,
-                                        height: 100,
+                                        width: { xs: 74, sm: 82, md: 100 },
+                                        height: { xs: 74, sm: 82, md: 100 },
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -149,10 +150,10 @@ const ServicesHomePreview: React.FC = () => {
                                 >
                                     {service.icon}
                                 </Box>
-                                <Typography variant="h4" fontWeight="900" gutterBottom color="#5d4037" sx={{ mb: 2 }}>
+                                <Typography variant="h4" fontWeight="900" gutterBottom color="#5d4037" sx={{ mb: 1.5, fontSize: { xs: '1.35rem', md: '2rem' } }}>
                                     {service.title}
                                 </Typography>
-                                <Typography sx={{ color: 'rgba(93, 64, 55, 0.7)', fontSize: '1.1rem', lineHeight: 1.6 }}>
+                                <Typography sx={{ color: 'rgba(93, 64, 55, 0.7)', fontSize: { xs: '0.98rem', md: '1.1rem' }, lineHeight: 1.6 }}>
                                     {service.desc}
                                 </Typography>
                             </Box>
@@ -169,13 +170,13 @@ const ServicesHomePreview: React.FC = () => {
                         sx={{
                             bgcolor: '#76a345',
                             color: 'white',
-                            px: 8,
-                            py: 2.5,
+                            px: { xs: 4, sm: 6, md: 8 },
+                            py: { xs: 1.7, md: 2.5 },
                             borderRadius: '50px',
-                            fontSize: '1.2rem',
+                            fontSize: { xs: '0.95rem', sm: '1.05rem', md: '1.2rem' },
                             fontWeight: 800,
                             textTransform: 'uppercase',
-                            letterSpacing: 1,
+                            letterSpacing: { xs: 0.4, md: 1 },
                             boxShadow: '0 15px 35px rgba(118,163,69,0.3)',
                             '&:hover': {
                                 bgcolor: '#5d8239',

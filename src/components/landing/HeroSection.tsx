@@ -37,10 +37,10 @@ const HeroSection: React.FC = () => {
             pb: { xs: 8, md: 10 },
             position: 'relative'
         }}>
-            <Grid container spacing={4} alignItems="center">
+            <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="h1" sx={{
-                        fontSize: { xs: '3rem', md: '4.5rem' },
+                        fontSize: { xs: '2.2rem', sm: '2.7rem', md: '4.5rem' },
                         fontWeight: 800,
                         mb: 3,
                         lineHeight: 1.1,
@@ -89,6 +89,7 @@ const HeroSection: React.FC = () => {
                             py: 2,
                             fontSize: '1.1rem',
                             fontWeight: 700,
+                            width: { xs: '100%', sm: 'auto' },
                             boxShadow: '0 4px 14px 0 rgba(0,0,0,0.2)',
                             '&:hover': { bgcolor: '#e5c98f' }
                         }}
@@ -99,8 +100,8 @@ const HeroSection: React.FC = () => {
                 <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
                     <Box sx={{
                         width: '100%',
-                        maxWidth: 500,
-                        height: 500,
+                        maxWidth: { xs: 320, sm: 420, md: 500 },
+                        height: { xs: 340, sm: 420, md: 500 },
                         position: 'relative',
                         display: 'flex',
                         justifyContent: 'center',
@@ -120,14 +121,15 @@ const HeroSection: React.FC = () => {
                                     width: 3,
                                     height: 180,
                                     background: 'linear-gradient(to bottom, #f0dbb0, transparent)',
-                                    opacity: 0.4
+                                    opacity: 0.4,
+                                    display: { xs: 'none', sm: 'block' }
                                 }} />
                             ))}
 
                             {/* Main Hexagon/Shield Shape */}
                             <Box sx={{
-                                width: 220,
-                                height: 260,
+                                width: { xs: 180, sm: 200, md: 220 },
+                                height: { xs: 210, sm: 235, md: 260 },
                                 bgcolor: '#f0dbb0',
                                 clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
                                 display: 'flex',

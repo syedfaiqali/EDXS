@@ -1,11 +1,11 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Link, NavLink } from 'react-router-dom';
 import {
   ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
   Button, Dialog, DialogTitle, DialogContent, DialogActions, Select, MenuItem,
-  FormControl, InputLabel, Typography
+  FormControl, InputLabel, Typography, IconButton, Drawer, List, ListItemButton, ListItemText
 } from '@mui/material';
-import { Translate } from '@mui/icons-material';
+import { Translate, Menu as MenuIcon } from '@mui/icons-material';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from './store';
 import { resetFlow } from './store/selectionSlice';
@@ -50,14 +50,26 @@ const MainLayout: React.FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [tempLang, setTempLang] = useState(language);
   const currentPath = location.pathname;
+  const navItems = [
+    { label: 'Home', path: '/' },
+    { label: 'About Us', path: '/aboutus' },
+    { label: 'Products', path: '/products' },
+    { label: 'Services', path: '/services' },
+    { label: 'Team', path: '/team' },
+    { label: 'Contact', path: '/contact' }
+  ];
+
   const handleOpenLanguageModal = () => {
     setTempLang(language);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => setIsModalOpen(false);
+  const handleOpenMobileMenu = () => setIsMobileMenuOpen(true);
+  const handleCloseMobileMenu = () => setIsMobileMenuOpen(false);
 
   const handleSaveLanguage = () => {
     setLanguage(tempLang);
@@ -72,32 +84,31 @@ const MainLayout: React.FC = () => {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: '#76a345',
-          borderBottom: 'none',
+          bgcolor: 'rgba(118, 163, 69, 0.92)',
+          backdropFilter: 'blur(10px)',
           width: '100%',
           zIndex: (theme) => theme.zIndex.drawer + 1
         }}
       >
         <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ py: 4 }}>
+          <Toolbar disableGutters sx={{ py: { xs: 1.25, md: 3 }, minHeight: { xs: 66, md: 92 } }}>
             <Box
               component={Link}
               to="/"
-              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: 4, textDecoration: 'none' }}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                mr: { xs: 1, md: 4 },
+                textDecoration: 'none'
+              }}
               onClick={() => dispatch(resetFlow())}
             >
               <Logo size="small" />
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 4 }}>
-              {[
-                { label: 'Home', path: '/' },
-                { label: 'About Us', path: '/aboutus' },
-                { label: 'Products', path: '/products' },
-                { label: 'Services', path: '/services' },
-                { label: 'Team', path: '/team' },
-                { label: 'Contact', path: '/contact' }
-              ].map((item) => (
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 3 }}>
+              {navItems.map((item) => (
                 <Typography
                   key={item.label}
                   component={NavLink}
@@ -108,12 +119,17 @@ const MainLayout: React.FC = () => {
                     fontWeight: 600,
                     textDecoration: 'none',
                     opacity: 1,
-                    '&:hover': { opacity: 0.8 },
-                    pb: 0.5,
-                    px: 0.5,
+                    '&:hover': {
+                      opacity: 0.95,
+                      bgcolor: 'rgba(255,255,255,0.1)'
+                    },
+                    py: 0.8,
+                    px: 1.5,
+                    borderRadius: 99,
                     borderBottom: '2px solid transparent',
                     '&.active': {
-                      borderBottom: '2px solid white'
+                      borderBottom: '2px solid white',
+                      bgcolor: 'rgba(255,255,255,0.12)'
                     }
                   }}
                   onClick={item.label === 'Home' ? () => dispatch(resetFlow()) : undefined}
@@ -123,7 +139,7 @@ const MainLayout: React.FC = () => {
               ))}
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
               {currentPath === '/registration' && (
                 <Translate
                   sx={{ color: 'white', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
@@ -135,10 +151,11 @@ const MainLayout: React.FC = () => {
                 to="/registration"
                 variant="outlined"
                 sx={{
+                  display: { xs: 'none', sm: 'inline-flex' },
                   color: 'white',
                   borderColor: 'white',
                   borderRadius: 2,
-                  px: 3,
+                  px: { sm: 2, md: 3 },
                   textTransform: 'none',
                   fontWeight: 600,
                   '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)' }
@@ -151,21 +168,111 @@ const MainLayout: React.FC = () => {
                 to="/registration"
                 variant="contained"
                 sx={{
+                  display: { xs: 'none', sm: 'inline-flex' },
                   bgcolor: '#f0dbb0',
                   color: '#76a345',
                   borderRadius: 2,
-                  px: 3,
+                  px: { sm: 2, md: 3 },
+                  minWidth: { sm: 140 },
                   textTransform: 'none',
                   fontWeight: 700,
+                  fontSize: { sm: '0.875rem' },
+                  whiteSpace: 'nowrap',
                   '&:hover': { bgcolor: '#e5c98f' }
                 }}
               >
                 Start Free Trial
               </Button>
+              <IconButton
+                onClick={handleOpenMobileMenu}
+                sx={{
+                  display: { xs: 'inline-flex', md: 'none' },
+                  color: 'white',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                  bgcolor: 'rgba(255,255,255,0.08)',
+                  borderRadius: 2
+                }}
+                aria-label="open navigation"
+              >
+                <MenuIcon />
+              </IconButton>
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
+
+      <Drawer
+        anchor="right"
+        open={isMobileMenuOpen}
+        onClose={handleCloseMobileMenu}
+        PaperProps={{
+          sx: {
+            width: 300,
+            background: 'linear-gradient(180deg, #ffffff 0%, #f5f9ef 100%)',
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16
+          }
+        }}
+      >
+        <Box sx={{ p: 2.5 }} role="presentation">
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Logo size="small" />
+          </Box>
+          <List>
+            {navItems.map((item) => (
+              <ListItemButton
+                key={item.label}
+                component={NavLink}
+                to={item.path}
+                onClick={() => {
+                  if (item.label === 'Home') dispatch(resetFlow());
+                  handleCloseMobileMenu();
+                }}
+                sx={{
+                  borderRadius: 2,
+                  mb: 0.75,
+                  border: '1px solid rgba(118,163,69,0.08)',
+                  '&.active': {
+                    bgcolor: 'rgba(118,163,69,0.14)',
+                    borderColor: 'rgba(118,163,69,0.25)',
+                    '& .MuiListItemText-primary': {
+                      color: '#2f4a16',
+                      fontWeight: 700
+                    }
+                  }
+                }}
+              >
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            ))}
+          </List>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 2 }}>
+            <Button
+              component={Link}
+              to="/registration"
+              variant="outlined"
+              onClick={handleCloseMobileMenu}
+              sx={{ borderWidth: 1.5, fontWeight: 700 }}
+            >
+              Get A Demo
+            </Button>
+            <Button
+              component={Link}
+              to="/registration"
+              variant="contained"
+              onClick={handleCloseMobileMenu}
+              sx={{
+                bgcolor: '#76a345',
+                color: 'white',
+                fontWeight: 800,
+                boxShadow: '0 10px 22px rgba(118,163,69,0.35)'
+              }}
+            >
+              Start Free Trial
+            </Button>
+          </Box>
+        </Box>
+      </Drawer>
 
       <Box component="main" sx={{
         flexGrow: 1,

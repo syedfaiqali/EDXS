@@ -9,9 +9,9 @@ const reveal = keyframes`
 
 const WhyEduman: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const mainTitle = "Why EDXS?";
-    const subTitle = "Grow Seamlessly with Ease";
-    const bodyText = "Welcome to EDXS – where we're more than just a management tool, we're your partners in education. Effortlessly handle student enrollment, timetables, and budgets with a click. With EDXS, customization is key, tailored to your school's unique needs. Moreover, our dedicated support ensures smooth sailing even through rough waters. Join us in charting a course towards academic excellence. So, why choose EDXS? Because together, we're charting a course towards a brighter future for education. Come aboard, and let's navigate this journey together!";
+    const mainTitle = 'Why EDXS?';
+    const subTitle = 'Grow Seamlessly with Ease';
+    const bodyText = "Welcome to EDXS - where we're more than just a management tool, we're your partners in education. Effortlessly handle student enrollment, timetables, and budgets with a click. With EDXS, customization is key, tailored to your school's unique needs. Moreover, our dedicated support ensures smooth sailing even through rough waters. Join us in charting a course towards academic excellence. So, why choose EDXS? Because together, we're charting a course towards a brighter future for education. Come aboard, and let's navigate this journey together!";
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -21,9 +21,19 @@ const WhyEduman: React.FC = () => {
     }, []);
 
     return (
-        <Box sx={{ bgcolor: '#f0dbb0', pt: 15, pb: 6, px: "10%", color: '#76a345', position: 'relative', zIndex: 1 }}>
-            <Box textAlign="center" mb={10}>
-                <Typography variant="h2" fontWeight="800" sx={{ fontSize: '3.5rem' }}>
+        <Box
+            sx={{
+                bgcolor: '#f0dbb0',
+                pt: { xs: 9, md: 15 },
+                pb: { xs: 7, md: 8 },
+                px: { xs: 3, sm: 5, md: '10%' },
+                color: '#76a345',
+                position: 'relative',
+                zIndex: 1
+            }}
+        >
+            <Box textAlign="center" mb={{ xs: 5, md: 10 }}>
+                <Typography variant="h2" fontWeight="800" sx={{ fontSize: { xs: '2.1rem', sm: '2.6rem', md: '3.5rem' } }}>
                     {mainTitle.split('').map((char, i) => (
                         <Box
                             key={i}
@@ -40,22 +50,25 @@ const WhyEduman: React.FC = () => {
                     ))}
                 </Typography>
             </Box>
-            <Grid container spacing={8} alignItems="center">
+            <Grid container spacing={{ xs: 4, md: 8 }} alignItems="center">
                 <Grid size={{ xs: 12, md: 6 }}>
-                    <Box sx={{
-                        width: '100%',
-                        height: 350,
-                        bgcolor: 'rgba(255,255,255,0.4)',
-                        borderRadius: 4,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        // boxShadow: '2px 8px 20px rgba(0,0,0,0.1)',
-                        opacity: 0,
-                        animation: isVisible ? `${reveal} 0.8s ease forwards` : 'none',
-                    }}>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            height: { xs: 220, sm: 280, md: 350 },
+                            bgcolor: 'rgba(255,255,255,0.55)',
+                            borderRadius: 4,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            border: '1px solid rgba(255,255,255,0.7)',
+                            boxShadow: '0 24px 45px rgba(53, 72, 30, 0.18)',
+                            opacity: 0,
+                            animation: isVisible ? `${reveal} 0.8s ease forwards` : 'none'
+                        }}
+                    >
                         <Box
                             component="img"
                             src={graphImg}
@@ -69,7 +82,7 @@ const WhyEduman: React.FC = () => {
                     </Box>
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
-                    <Typography variant="h4" fontWeight="800" gutterBottom>
+                    <Typography variant="h4" fontWeight="800" gutterBottom sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, textAlign: { xs: 'center', md: 'left' } }}>
                         {subTitle.split('').map((char, i) => (
                             <Box
                                 key={i}
@@ -85,7 +98,17 @@ const WhyEduman: React.FC = () => {
                             </Box>
                         ))}
                     </Typography>
-                    <Typography variant="body1" sx={{ lineHeight: 1.8, fontSize: '1.1rem', opacity: 0.9 }}>
+                    <Typography
+                        variant="body1"
+                        sx={{
+                            lineHeight: { xs: 1.75, md: 1.8 },
+                            fontSize: { xs: '0.98rem', sm: '1.03rem', md: '1.08rem' },
+                            opacity: 0.95,
+                            p: { xs: 2.5, sm: 3, md: 0 },
+                            borderRadius: { xs: 3, md: 0 },
+                            bgcolor: { xs: 'rgba(255,255,255,0.45)', md: 'transparent' }
+                        }}
+                    >
                         {bodyText.split(' ').map((word, i) => (
                             <Box
                                 key={i}
@@ -94,7 +117,7 @@ const WhyEduman: React.FC = () => {
                                     display: 'inline-block',
                                     opacity: 0,
                                     animation: isVisible ? `${reveal} 0.5s ease forwards` : 'none',
-                                    animationDelay: `${(mainTitle.length * 0.05) + (subTitle.length * 0.03) + (i * 0.02)}s`,
+                                    animationDelay: `${(mainTitle.length * 0.05) + (subTitle.length * 0.03) + (i * 0.02)}`,
                                     mr: '0.25em'
                                 }}
                             >

@@ -109,28 +109,28 @@ const LandingPage: React.FC = () => {
                 }}>
                     <Box sx={{ display: 'flex', position: 'relative' }}>
                         <Typography variant="h1" sx={{
-                            fontSize: '15rem',
+                            fontSize: { xs: '4rem', sm: '7rem', md: '10rem', lg: '15rem' },
                             fontWeight: 900,
                             color: '#f0dbb0',
-                            letterSpacing: -10,
-                            mr: logoStage === 'opening' ? 10 : 0,
+                            letterSpacing: { xs: -2, sm: -4, md: -6, lg: -10 },
+                            mr: logoStage === 'opening' ? { xs: 2, md: 10 } : 0,
                             transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
                         }}>
                             ED
                         </Typography>
                         <Box sx={{
-                            width: logoStage === 'opening' ? 10 : 0,
+                            width: logoStage === 'opening' ? { xs: 4, md: 10 } : 0,
                             bgcolor: '#f0dbb0', // separator bar in tan
                             height: '100%',
                             transition: 'all 1s ease',
-                            mx: logoStage === 'opening' ? 2 : 0
+                            mx: logoStage === 'opening' ? { xs: 1, md: 2 } : 0
                         }} />
                         <Typography variant="h1" sx={{
-                            fontSize: '15rem',
+                            fontSize: { xs: '4rem', sm: '7rem', md: '10rem', lg: '15rem' },
                             fontWeight: 900,
                             color: '#f0dbb0', // Update to Tan
-                            letterSpacing: -10,
-                            ml: logoStage === 'opening' ? 10 : 0,
+                            letterSpacing: { xs: -2, sm: -4, md: -6, lg: -10 },
+                            ml: logoStage === 'opening' ? { xs: 2, md: 10 } : 0,
                             transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
                         }}>
                             XS
@@ -145,7 +145,7 @@ const LandingPage: React.FC = () => {
                 transition: 'all 1s ease 0.5s',
                 position: 'relative',
                 zIndex: 10,
-                pt: 12
+                pt: { xs: 10, md: 12 }
             }}>
                 <Container maxWidth="lg">
                     <HeroSection />
@@ -181,10 +181,10 @@ const LandingPage: React.FC = () => {
                     alignItems: 'center',
                     zIndex: 5,
                     overflow: 'visible',
-                    mt: -6,
-                    mb: -4
+                    mt: { xs: -3, md: -6 },
+                    mb: { xs: -2, md: -4 }
                 }}>
-                    <Box sx={{ width: '100%', maxWidth: 800, height: 200, position: 'relative' }}>
+                    <Box sx={{ width: '100%', maxWidth: 800, height: { xs: 120, md: 200 }, position: 'relative' }}>
                         <svg width="100%" height="100%" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                             {/* Base Rope with moving brown dots */}
                             <path
@@ -213,9 +213,9 @@ const LandingPage: React.FC = () => {
                             top: '35%',
                             left: '52%',
                             color: '#5d4037',
-                            fontSize: '1.8rem',
+                            fontSize: { xs: '1.2rem', md: '1.8rem' },
                             animation: `${pulse} 2s ease -in -out infinite`
-                        }}>★</Box>
+                        }}>*</Box>
                     </Box>
                 </Box>
 
@@ -230,10 +230,10 @@ const LandingPage: React.FC = () => {
                     alignItems: 'center',
                     zIndex: 5,
                     overflow: 'visible',
-                    mt: -10,
-                    mb: -4
+                    mt: { xs: -4, md: -10 },
+                    mb: { xs: -2, md: -4 }
                 }}>
-                    <Box sx={{ width: '100%', maxWidth: 800, height: 200, position: 'relative' }}>
+                    <Box sx={{ width: '100%', maxWidth: 800, height: { xs: 120, md: 200 }, position: 'relative' }}>
                         <svg width="100%" height="100%" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                             {/* Base Rope with moving brown dots */}
                             <path
@@ -262,9 +262,9 @@ const LandingPage: React.FC = () => {
                             top: '45%',
                             left: '35%',
                             color: '#76a345',
-                            fontSize: '1.5rem',
+                            fontSize: { xs: '1.1rem', md: '1.5rem' },
                             animation: `${pulse} 2.5s ease -in -out infinite`
-                        }}>★</Box>
+                        }}>*</Box>
                     </Box>
                 </Box>
 
@@ -277,3 +277,4 @@ const LandingPage: React.FC = () => {
 };
 
 export default LandingPage;
+
