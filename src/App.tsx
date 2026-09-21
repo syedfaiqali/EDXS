@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Link, NavLink } from 'react-router-dom';
 import {
   ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
@@ -23,6 +23,9 @@ import ProductsPage from './pages/ProductsPage';
 import ServicesPage from './pages/ServicesPage';
 import TeamPage from './pages/TeamPage';
 import ContactPage from './pages/ContactPage';
+import ProgramsPage from './pages/ProgramsPage';
+import AdmissionPage from './pages/AdmissionPage';
+import CareerPage from './pages/CareerPage';
 
 const LoadingScreen = () => (
   <Box sx={{
@@ -89,12 +92,15 @@ const MainLayout: React.FC = () => {
               <Logo size="small" />
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 4 }}>
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: { md: 2, lg: 3 } }}>
               {[
                 { label: 'Home', path: '/' },
                 { label: 'About Us', path: '/aboutus' },
                 { label: 'Products', path: '/products' },
                 { label: 'Services', path: '/services' },
+                { label: 'Programs', path: '/programs' },
+                { label: 'Admission', path: '/admission' },
+                { label: 'Career', path: '/career' },
                 { label: 'Team', path: '/team' },
                 { label: 'Contact', path: '/contact' }
               ].map((item) => (
@@ -107,6 +113,7 @@ const MainLayout: React.FC = () => {
                     color: 'white',
                     fontWeight: 600,
                     textDecoration: 'none',
+                    whiteSpace: 'nowrap',
                     opacity: 1,
                     '&:hover': { opacity: 0.8 },
                     pb: 0.5,
@@ -181,6 +188,9 @@ const MainLayout: React.FC = () => {
             <Route path="/aboutus" element={<AboutUsPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/programs" element={<ProgramsPage />} />
+            <Route path="/admission" element={<AdmissionPage />} />
+            <Route path="/career" element={<CareerPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
