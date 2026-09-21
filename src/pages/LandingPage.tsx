@@ -147,9 +147,10 @@ const LandingPage: React.FC = () => {
                     mt: -8,
                     zIndex: 2,
                     pointerEvents: 'none',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    lineHeight: 0
                 }}>
-                    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+                    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: '100%', display: 'block' }}>
                         <path
                             fill="#e9efdd"
                             fillOpacity="1"

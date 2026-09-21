@@ -58,7 +58,7 @@ const SeamlessScalingSection: React.FC = () => {
         <Box ref={sectionRef} sx={{ bgcolor: '#e9efdd', py: 15, px: '5%' }}>
             <Container maxWidth="xl">
                 <Box textAlign="center" mb={10}>
-                    <Typography variant="h3" fontWeight="800" sx={{ color: '#333', mb: 2 }}>
+                    <Typography variant="h3" fontWeight="800" sx={{ color: '#76a345', mb: 2 }}>
                         {titleText.split('').map((char, i) => (
                             <Box
                                 key={i}
@@ -74,7 +74,7 @@ const SeamlessScalingSection: React.FC = () => {
                             </Box>
                         ))}
                     </Typography>
-                    <Typography variant="h6" sx={{ color: '#666', fontWeight: 'normal', opacity: 0.8 }}>
+                    <Typography variant="h6" sx={{ color: '#76a345', fontWeight: 'normal', opacity: 0.8 }}>
                         {subText.split(' ').map((word, i) => (
                             <Box
                                 key={i}
@@ -110,15 +110,15 @@ const SeamlessScalingSection: React.FC = () => {
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                     }}>
-                                        <Icon sx={{ fontSize: 50, color: '#333' }} /> {/* Using dark grey for icons as depicted */}
+                                        <Icon sx={{ fontSize: 50, color: '#76a345' }} /> {/* Using dark grey for icons as depicted */}
                                         {/* To simulate the yellow 'box' or highlight from the screenshot if needed, we'd add it here.
                                             But for now sticking to clean outline icons. */}
                                     </Box>
                                     <Box>
-                                        <Typography variant="h5" fontWeight="bold" sx={{ color: '#333', mb: 1.5, fontSize: '1.4rem' }}>
+                                        <Typography variant="h5" fontWeight="bold" sx={{ color: '#76a345', mb: 1.5, fontSize: '1.4rem' }}>
                                             {feature.title}
                                         </Typography>
-                                        <Typography variant="body1" sx={{ color: '#555', lineHeight: 1.6 }}>
+                                        <Typography variant="body1" sx={{ color: '#76a345', lineHeight: 1.6 }}>
                                             {feature.desc}
                                         </Typography>
                                     </Box>

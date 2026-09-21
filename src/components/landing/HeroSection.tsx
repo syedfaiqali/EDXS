@@ -35,7 +35,8 @@ const HeroSection: React.FC = () => {
             color: 'text.primary',
             pt: { xs: 8, md: 8 },
             pb: { xs: 8, md: 10 },
-            position: 'relative'
+            position: 'relative',
+            overflow: 'hidden'
         }}>
             <Grid container spacing={4} alignItems="center">
                 <Grid size={{ xs: 12, md: 6 }}>
@@ -44,7 +45,7 @@ const HeroSection: React.FC = () => {
                         fontWeight: 800,
                         mb: 3,
                         lineHeight: 1.1,
-                        color: '#182334'
+                        color: '#76a345'
                     }}>
                         {titleText.split(' ').map((word, wordIndex) => {
                             const startIndex = titleText.indexOf(word);

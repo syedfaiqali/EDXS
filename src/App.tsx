@@ -142,7 +142,7 @@ const MainLayout: React.FC = () => {
               ))}
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
               {currentPath === '/registration' && (
                 <Translate
                   sx={{ color: 'primary.main', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
@@ -157,9 +157,11 @@ const MainLayout: React.FC = () => {
                   color: 'primary.dark',
                   borderColor: 'divider',
                   borderRadius: 3,
-                  px: 3,
+                  minHeight: 60,
+                  px: 3.5,
                   textTransform: 'none',
                   fontWeight: 600,
+                  whiteSpace: 'nowrap',
                   '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light' }
                 }}
               >
@@ -173,9 +175,11 @@ const MainLayout: React.FC = () => {
                   bgcolor: 'primary.main',
                   color: 'white',
                   borderRadius: 3,
-                  px: 3,
+                  minHeight: 60,
+                  px: 3.5,
                   textTransform: 'none',
                   fontWeight: 700,
+                  whiteSpace: 'nowrap',
                   '&:hover': { bgcolor: 'primary.dark' }
                 }}
               >
