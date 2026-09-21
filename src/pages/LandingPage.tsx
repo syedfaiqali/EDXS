@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Container, keyframes, Typography } from '@mui/material';
+import { Box, keyframes, Typography } from '@mui/material';
 import xsLogo from '../assets/xs_square_light.png';
 
 
@@ -134,30 +134,10 @@ const LandingPage: React.FC = () => {
                 transition: 'all 1s ease 0.5s',
                 position: 'relative',
                 zIndex: 10,
-                pt: { xs: 9, md: 11 }
+                pt: 0
             }}>
-                <Container maxWidth="lg">
-                    <HeroSection />
-                </Container>
+                <HeroSection />
 
-                {/* Modern Section Divider */}
-                <Box sx={{
-                    position: 'relative',
-                    height: { xs: 80, md: 150 },
-                    mt: -8,
-                    zIndex: 2,
-                    pointerEvents: 'none',
-                    overflow: 'hidden',
-                    lineHeight: 0
-                }}>
-                    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: '100%', display: 'block' }}>
-                        <path
-                            fill="#e9efdd"
-                            fillOpacity="1"
-                            d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,128C672,107,768,117,864,138.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-                        ></path>
-                    </svg>
-                </Box>
                 <WhyEduman />
                 <ServicesHomePreview />
                 <ProductDemoSection />

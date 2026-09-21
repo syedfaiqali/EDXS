@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Typography, Grid, Button, keyframes } from '@mui/material';
+import { Box, Typography, Grid, Button, Container, keyframes } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import heroImage from '../../assets/HeroImage.png';
 
 const float = keyframes`
   0% { transform: translateY(0); }
@@ -31,15 +32,20 @@ const HeroSection: React.FC = () => {
 
     return (
         <Box sx={{
-            bgcolor: 'transparent',
+            bgcolor: '#f5f7ef',
             color: 'text.primary',
-            pt: { xs: 8, md: 8 },
+            pt: { xs: 17, md: 19 },
             pb: { xs: 8, md: 10 },
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            minHeight: { md: 728 },
+            backgroundImage: `linear-gradient(90deg, rgba(245,247,239,0.98) 0%, rgba(245,247,239,0.94) 47%, rgba(245,247,239,0.68) 61%, rgba(245,247,239,0.16) 75%, rgba(245,247,239,0) 88%), url(${heroImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
         }}>
+            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
             <Grid container spacing={4} alignItems="center">
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12, md: 6 }} sx={{ position: 'relative', zIndex: 1 }}>
                     <Typography variant="h1" sx={{
                         fontSize: { xs: '3rem', md: '4.5rem' },
                         fontWeight: 800,
@@ -113,7 +119,7 @@ const HeroSection: React.FC = () => {
                         Start 10 Day Trial
                     </Button>
                 </Grid>
-                <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
+                <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'none', justifyContent: 'center', position: 'relative' }}>
                     <Box sx={{
                         width: '100%',
                         maxWidth: 500,
@@ -187,6 +193,24 @@ const HeroSection: React.FC = () => {
                     </Box>
                 </Grid>
             </Grid>
+            </Container>
+            <Box sx={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: { xs: 80, md: 150 },
+                zIndex: 2,
+                pointerEvents: 'none',
+                lineHeight: 0
+            }}>
+                <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: '100%', display: 'block' }}>
+                    <path
+                        fill="#e9efdd"
+                        d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,128C672,107,768,117,864,138.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+                    />
+                </svg>
+            </Box>
         </Box>
     );
 };

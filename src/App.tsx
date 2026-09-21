@@ -87,7 +87,7 @@ const MainLayout: React.FC = () => {
         sx={{
           bgcolor: isHomeAtTop ? 'transparent' : 'rgba(255,255,255,0.93)',
           backdropFilter: isHomeAtTop ? 'none' : 'blur(18px)',
-          borderBottom: isHomeAtTop ? '1px solid transparent' : '1px solid #dfe7d4',
+          borderBottom: 'none',
           transition: 'background-color 220ms ease, backdrop-filter 220ms ease, border-color 220ms ease',
           width: '100%',
           zIndex: (theme) => theme.zIndex.drawer + 1
@@ -154,7 +154,7 @@ const MainLayout: React.FC = () => {
                 to="/registration"
                 variant="outlined"
                 sx={{
-                  color: 'primary.dark',
+                  color: '#fff',
                   borderColor: 'divider',
                   borderRadius: 3,
                   minHeight: 60,
@@ -162,7 +162,7 @@ const MainLayout: React.FC = () => {
                   textTransform: 'none',
                   fontWeight: 600,
                   whiteSpace: 'nowrap',
-                  '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light' }
+                  '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light', color: 'primary.main' }
                 }}
               >
                 Get A Demo

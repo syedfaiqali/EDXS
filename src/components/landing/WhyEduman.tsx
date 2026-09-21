@@ -21,7 +21,7 @@ const WhyEduman: React.FC = () => {
     }, []);
 
     return (
-        <Box sx={{ bgcolor: '#e9efdd', mt: '-1px', pt: { xs: 5, md: 6 }, pb: 6, px: "10%", color: '#45672a', position: 'relative', zIndex: 1 }}>
+        <Box sx={{ bgcolor: '#e9efdd', pt: { xs: 5, md: 6 }, pb: 6, px: "10%", color: '#45672a', position: 'relative', zIndex: 1 }}>
             <Box textAlign="center" mb={6}>
                 <Typography variant="h2" fontWeight="800" sx={{ fontSize: '3.5rem' }}>
                     {mainTitle.split('').map((char, i) => (
