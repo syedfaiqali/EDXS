@@ -178,9 +178,8 @@ const TestimonialsSection: React.FC = () => {
                 }}>
                     {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, i) => (
                         <Paper key={i} elevation={0} sx={{
-                            width: { xs: '82vw', sm: 360, md: 420 },
-                            minWidth: { xs: '82vw', sm: 360, md: 420 },
-                            maxWidth: { xs: '82vw', sm: 360, md: 420 },
+                            minWidth: 420,
+                            maxWidth: 420,
                             mx: 2,
                             p: 4,
                             borderRadius: 4,
@@ -262,21 +261,7 @@ const TestimonialsSection: React.FC = () => {
                 </Box>
             </Box>
 
-            <Box
-                textAlign="center"
-                pb={12}
-                pt={6}
-                sx={{
-                    position: 'relative',
-                    zIndex: 1,
-                    color: 'white',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    gap: 2
-                }}
-            >
+            <Box textAlign="center" pb={12} pt={6} sx={{ position: 'relative', zIndex: 1, color: 'white', display: 'flex', justifyContent: 'center', gap: 3 }}>
                 <Button
                     variant="contained"
                     onClick={() => { dispatch(setGlobalStep('selection')); navigate('/contact'); }}
@@ -289,8 +274,6 @@ const TestimonialsSection: React.FC = () => {
                         borderRadius: 50,
                         fontWeight: 700,
                         fontSize: '1rem',
-                        width: { xs: '100%', sm: 'auto' },
-                        maxWidth: 320,
                         '&:hover': {
                             bgcolor: '#dcc6a0',
                             borderColor: '#dcc6a0'
@@ -312,8 +295,6 @@ const TestimonialsSection: React.FC = () => {
                         borderRadius: 50,
                         fontWeight: 700,
                         fontSize: '1rem',
-                        width: { xs: '100%', sm: 'auto' },
-                        maxWidth: 320,
                         '&:hover': {
                             bgcolor: 'rgba(255,255,255,0.1)',
                             border: '2px solid white'
