@@ -63,7 +63,7 @@ const AboutUsBackground: React.FC = () => {
             left: Math.random() * 100,
             delay: Math.random() * 20,
             duration: Math.random() * 20 + 20,
-            color: i % 3 === 0 ? '#76a345' : (i % 3 === 1 ? '#f0dbb0' : '#1e293b'),
+            color: i % 3 === 0 ? '#6f963f' : (i % 3 === 1 ? '#dce9cb' : '#182334'),
         }));
         setItems(newItems);
 
@@ -82,7 +82,7 @@ const AboutUsBackground: React.FC = () => {
                 zIndex: 0,
                 pointerEvents: 'none',
                 opacity: 0.6,
-                background: 'radial-gradient(circle at 50% 50%, rgba(240, 219, 176, 0.05) 0%, rgba(255, 255, 255, 0) 70%)',
+                background: 'radial-gradient(circle at 50% 50%, rgba(150, 185, 109, 0.08) 0%, rgba(255, 255, 255, 0) 70%)',
             }}
         >
             {items.map((item, i) => (

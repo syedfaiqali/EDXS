@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Link, NavLink } from 'react-router-dom';
 import {
   ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
@@ -51,7 +51,17 @@ const MainLayout: React.FC = () => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempLang, setTempLang] = useState(language);
+  const [isScrolled, setIsScrolled] = useState(false);
   const currentPath = location.pathname;
+  const isHomeAtTop = currentPath === '/' && !isScrolled;
+
+  useEffect(() => {
+    const updateScrolledState = () => setIsScrolled(window.scrollY > 24);
+
+    updateScrolledState();
+    window.addEventListener('scroll', updateScrolledState, { passive: true });
+    return () => window.removeEventListener('scroll', updateScrolledState);
+  }, [currentPath]);
   const handleOpenLanguageModal = () => {
     setTempLang(language);
     setIsModalOpen(true);
@@ -72,14 +82,16 @@ const MainLayout: React.FC = () => {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: '#76a345',
-          borderBottom: 'none',
+          bgcolor: isHomeAtTop ? 'transparent' : 'rgba(255,255,255,0.93)',
+          backdropFilter: isHomeAtTop ? 'none' : 'blur(18px)',
+          borderBottom: isHomeAtTop ? '1px solid transparent' : '1px solid #dfe7d4',
+          transition: 'background-color 220ms ease, backdrop-filter 220ms ease, border-color 220ms ease',
           width: '100%',
           zIndex: (theme) => theme.zIndex.drawer + 1
         }}
       >
         <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ py: 4 }}>
+          <Toolbar disableGutters sx={{ minHeight: { xs: 72, md: 82 }, py: 1 }}>
             <Box
               component={Link}
               to="/"
@@ -104,16 +116,16 @@ const MainLayout: React.FC = () => {
                   to={item.path}
                   variant="body2"
                   sx={{
-                    color: 'white',
+                    color: 'text.primary',
                     fontWeight: 600,
                     textDecoration: 'none',
                     opacity: 1,
-                    '&:hover': { opacity: 0.8 },
+                    '&:hover': { color: 'primary.dark', opacity: 1 },
                     pb: 0.5,
                     px: 0.5,
                     borderBottom: '2px solid transparent',
                     '&.active': {
-                      borderBottom: '2px solid white'
+                      borderBottom: '2px solid', borderColor: 'primary.main', color: 'primary.dark'
                     }
                   }}
                   onClick={item.label === 'Home' ? () => dispatch(resetFlow()) : undefined}
@@ -126,7 +138,7 @@ const MainLayout: React.FC = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               {currentPath === '/registration' && (
                 <Translate
-                  sx={{ color: 'white', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
+                  sx={{ color: 'primary.main', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
                   onClick={handleOpenLanguageModal}
                 />
               )}
@@ -135,13 +147,13 @@ const MainLayout: React.FC = () => {
                 to="/registration"
                 variant="outlined"
                 sx={{
-                  color: 'white',
-                  borderColor: 'white',
-                  borderRadius: 2,
+                  color: 'primary.dark',
+                  borderColor: 'divider',
+                  borderRadius: 3,
                   px: 3,
                   textTransform: 'none',
                   fontWeight: 600,
-                  '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)' }
+                  '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light' }
                 }}
               >
                 Get A Demo
@@ -151,13 +163,13 @@ const MainLayout: React.FC = () => {
                 to="/registration"
                 variant="contained"
                 sx={{
-                  bgcolor: '#f0dbb0',
-                  color: '#76a345',
-                  borderRadius: 2,
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  borderRadius: 3,
                   px: 3,
                   textTransform: 'none',
                   fontWeight: 700,
-                  '&:hover': { bgcolor: '#e5c98f' }
+                  '&:hover': { bgcolor: 'primary.dark' }
                 }}
               >
                 Start Free Trial

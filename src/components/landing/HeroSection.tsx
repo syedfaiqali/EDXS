@@ -32,7 +32,7 @@ const HeroSection: React.FC = () => {
     return (
         <Box sx={{
             bgcolor: 'transparent',
-            color: 'white',
+            color: 'text.primary',
             pt: { xs: 8, md: 8 },
             pb: { xs: 8, md: 10 },
             position: 'relative'
@@ -44,24 +44,40 @@ const HeroSection: React.FC = () => {
                         fontWeight: 800,
                         mb: 3,
                         lineHeight: 1.1,
-                        color: '#f0dbb0'
+                        color: '#182334'
                     }}>
-                        {titleText.split('').map((char, i) => (
+                        {titleText.split(' ').map((word, wordIndex) => {
+                            const startIndex = titleText.indexOf(word);
+
+                            return (
                             <Box
-                                key={i}
+                                key={`${word}-${wordIndex}`}
                                 component="span"
                                 sx={{
                                     display: 'inline-block',
-                                    opacity: 0,
-                                    animation: `${reveal} 0.5s ease forwards`,
-                                    animationDelay: `${i * 0.05}s`
+                                    whiteSpace: 'nowrap',
+                                    mr: wordIndex === titleText.split(' ').length - 1 ? 0 : '0.28em'
                                 }}
                             >
-                                {char === ' ' ? '\u00A0' : char}
+                                {word.split('').map((char, charIndex) => (
+                                    <Box
+                                        key={`${char}-${charIndex}`}
+                                        component="span"
+                                        sx={{
+                                            display: 'inline-block',
+                                            opacity: 0,
+                                            animation: `${reveal} 0.5s ease forwards`,
+                                            animationDelay: `${(startIndex + charIndex) * 0.05}s`
+                                        }}
+                                    >
+                                        {char}
+                                    </Box>
+                                ))}
                             </Box>
-                        ))}
+                            );
+                        })}
                     </Typography>
-                    <Typography variant="h6" sx={{ color: 'rgba(255,255,255,0.8)', mb: 6, fontWeight: 400, maxWidth: '90%' }}>
+                    <Typography variant="h6" sx={{ color: 'text.secondary', mb: 5, fontWeight: 500, maxWidth: '90%', lineHeight: 1.65 }}>
                         {subText.split(' ').map((word, i) => (
                             <Box
                                 key={i}
@@ -82,15 +98,15 @@ const HeroSection: React.FC = () => {
                         variant="contained"
                         onClick={() => navigate('/contact')}
                         sx={{
-                            bgcolor: '#f0dbb0',
-                            color: '#76a345',
-                            borderRadius: 2,
+                            bgcolor: 'primary.main',
+                            color: 'white',
+                            borderRadius: 3,
                             px: 5,
                             py: 2,
                             fontSize: '1.1rem',
                             fontWeight: 700,
                             boxShadow: '0 4px 14px 0 rgba(0,0,0,0.2)',
-                            '&:hover': { bgcolor: '#e5c98f' }
+                            '&:hover': { bgcolor: 'primary.dark' }
                         }}
                     >
                         Start 10 Day Trial
@@ -119,7 +135,7 @@ const HeroSection: React.FC = () => {
                                     left: 40 + (i * 45),
                                     width: 3,
                                     height: 180,
-                                    background: 'linear-gradient(to bottom, #f0dbb0, transparent)',
+                                    background: 'linear-gradient(to bottom, rgba(111,150,63,.38), transparent)',
                                     opacity: 0.4
                                 }} />
                             ))}
@@ -128,7 +144,7 @@ const HeroSection: React.FC = () => {
                             <Box sx={{
                                 width: 220,
                                 height: 260,
-                                bgcolor: '#f0dbb0',
+                                bgcolor: '#dce9cb',
                                 clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -141,7 +157,7 @@ const HeroSection: React.FC = () => {
                                 <Box sx={{
                                     width: '85%',
                                     height: '85%',
-                                    bgcolor: '#76a345',
+                                    bgcolor: 'primary.main',
                                     clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
                                 }} />
                             </Box>
@@ -159,10 +175,10 @@ const HeroSection: React.FC = () => {
                                     position: 'absolute',
                                     top: pos.top,
                                     left: pos.left,
-                                    color: '#f0dbb0',
+                                    color: '#96b96d',
                                     fontSize: i % 2 === 0 ? '1.5rem' : '1rem',
                                     opacity: 0.8,
-                                    textShadow: '0 0 10px rgba(240,219,176,0.5)',
+                                    textShadow: '0 0 10px rgba(150,185,109,0.35)',
                                     animation: `${rotate} ${pos.speed}s linear infinite`
                                 }}>★</Box>
                             ))}

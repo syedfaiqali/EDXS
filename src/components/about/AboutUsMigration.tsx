@@ -6,8 +6,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useNavigate } from 'react-router-dom';
 
 const pulseGlow = keyframes`
-  0%, 100% { box-shadow: 0 0 20px rgba(240, 219, 176, 0.2); }
-  50% { box-shadow: 0 0 50px rgba(240, 219, 176, 0.5); }
+  0%, 100% { box-shadow: 0 0 20px rgba(150, 185, 109, 0.2); }
+  50% { box-shadow: 0 0 50px rgba(150, 185, 109, 0.5); }
 `;
 
 const AboutUsMigration: React.FC = () => {

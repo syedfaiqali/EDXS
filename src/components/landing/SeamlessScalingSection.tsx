@@ -55,7 +55,7 @@ const SeamlessScalingSection: React.FC = () => {
     const subText = "Centralized Solutions: Your School Management essentials All Together";
 
     return (
-        <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', py: 15, px: '5%' }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#e9efdd', py: 15, px: '5%' }}>
             <Container maxWidth="xl">
                 <Box textAlign="center" mb={10}>
                     <Typography variant="h3" fontWeight="800" sx={{ color: '#333', mb: 2 }}>

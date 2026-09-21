@@ -51,7 +51,7 @@ const TestimonialsSection: React.FC = () => {
     }, [col1.length]);
 
     return (
-        <Box ref={sectionRef} sx={{ bgcolor: '#f0dbb0', pt: 10, pb: 0, px: '5%', position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#e9efdd', pt: 10, pb: 0, px: '5%', position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             {/* Split Background Effect */}
             <Box sx={{
                 position: 'absolute',
@@ -236,14 +236,14 @@ const TestimonialsSection: React.FC = () => {
                                     variant="contained"
                                     onClick={() => navigate('/products')}
                                     sx={{
-                                        bgcolor: '#f0dbb0',
+                                        bgcolor: '#dce9cb',
                                         color: '#76a345',
                                         px: 5,
                                         py: 1.5,
                                         borderRadius: 3,
                                         fontWeight: 700,
                                         fontSize: '1.1rem',
-                                        border: '2px solid #f0dbb0',
+                                        border: '2px solid #dce9cb',
                                         transition: 'all 0.3s ease',
                                         '&:hover': {
                                             bgcolor: 'white',
@@ -266,17 +266,17 @@ const TestimonialsSection: React.FC = () => {
                     variant="contained"
                     onClick={() => { dispatch(setGlobalStep('selection')); navigate('/contact'); }}
                     sx={{
-                        bgcolor: '#f0dbb0',
+                        bgcolor: '#dce9cb',
                         color: '#76a345',
                         px: 4,
                         py: 1.5,
-                        border: '2px solid #f0dbb0',
+                        border: '2px solid #dce9cb',
                         borderRadius: 50,
                         fontWeight: 700,
                         fontSize: '1rem',
                         '&:hover': {
-                            bgcolor: '#dcc6a0',
-                            borderColor: '#dcc6a0'
+                            bgcolor: '#c7dcb0',
+                            borderColor: '#c7dcb0'
                         },
                         boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
                     }}

@@ -68,7 +68,7 @@ const AboutUsHeader: React.FC = () => {
                     right: '-10%',
                     width: '35%',
                     height: '55%',
-                    background: 'radial-gradient(circle, rgba(240, 219, 176, 0.2) 0%, rgba(240, 219, 176, 0) 70%)',
+                    background: 'radial-gradient(circle, rgba(150, 185, 109, 0.2) 0%, rgba(150, 185, 109, 0) 70%)',
                     animation: `${morph} 10s ease-in-out infinite reverse`,
                     filter: 'blur(40px)',
                 }}

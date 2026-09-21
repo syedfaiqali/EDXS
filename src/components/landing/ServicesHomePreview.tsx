@@ -29,8 +29,8 @@ const services = [
         title: "Traffic Management",
         desc: "Smart city efficiency for regulatory workflows and automated digital licensing systems.",
         icon: <TrafficIcon sx={{ fontSize: '3.5rem' }} />,
-        color: '#5d4037',
-        gradient: 'linear-gradient(135deg, #5d4037 0%, #3e2b25 100%)'
+        color: '#45672a',
+        gradient: 'linear-gradient(135deg, #6f963f 0%, #45672a 100%)'
     },
     {
         title: "CCTV Surveillance",
@@ -44,7 +44,7 @@ const services = [
 const ServicesHomePreview: React.FC = () => {
     return (
         <Box sx={{
-            bgcolor: '#f0dbb0',
+            bgcolor: '#e9efdd',
             py: 15,
             position: 'relative',
             overflow: 'hidden',
@@ -68,7 +68,7 @@ const ServicesHomePreview: React.FC = () => {
                 width: 250,
                 height: 250,
                 borderRadius: '50%',
-                bgcolor: alpha('#5d4037', 0.1),
+                bgcolor: alpha('#45672a', 0.1),
                 filter: 'blur(60px)',
                 animation: `${float} 8s infinite ease-in-out reverse`
             }
@@ -81,7 +81,7 @@ const ServicesHomePreview: React.FC = () => {
                         sx={{
                             fontSize: { xs: '3rem', md: '4rem' },
                             mb: 3,
-                            color: '#5d4037',
+                            color: '#45672a',
                             textTransform: 'uppercase',
                             letterSpacing: -1
                         }}
@@ -149,7 +149,7 @@ const ServicesHomePreview: React.FC = () => {
                                 >
                                     {service.icon}
                                 </Box>
-                                <Typography variant="h4" fontWeight="900" gutterBottom color="#5d4037" sx={{ mb: 2 }}>
+                                <Typography variant="h4" fontWeight="900" gutterBottom color="#45672a" sx={{ mb: 2 }}>
                                     {service.title}
                                 </Typography>
                                 <Typography sx={{ color: 'rgba(93, 64, 55, 0.7)', fontSize: '1.1rem', lineHeight: 1.6 }}>

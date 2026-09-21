@@ -187,7 +187,7 @@ const RegistrationPage: React.FC = () => {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#edd8b4', position: 'relative', overflow: 'hidden', mt: 5 }}>
+        <Box sx={{ minHeight: '100vh', bgcolor: '#e9efdd', position: 'relative', overflow: 'hidden', mt: 5 }}>
             {/* Animated Background Elements */}
             <Box sx={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 0 }}>
                 {[...Array(80)].map((_, i) => {
@@ -206,7 +206,7 @@ const RegistrationPage: React.FC = () => {
                     const numChar = numbers[i % numbers.length];
 
                     const size = isNumber ? Math.random() * 40 + 30 : Math.random() * 50 + 40;
-                    const color = i % 2 === 0 ? '#f0dbb0' : '#76a345';
+                    const color = i % 2 === 0 ? '#dce9cb' : '#6f963f';
 
                     return (
                         <Box
@@ -233,7 +233,7 @@ const RegistrationPage: React.FC = () => {
                                         width: size,
                                         height: size,
                                         objectFit: 'contain',
-                                        filter: color === '#76a345' ? 'none' : 'brightness(0) invert(1)',
+                                        filter: color === '#6f963f' ? 'none' : 'brightness(0) invert(1)',
                                         opacity: 0.5
                                     }}
                                 />

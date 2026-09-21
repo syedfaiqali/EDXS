@@ -8,7 +8,7 @@ const float = keyframes`
   100% { transform: translateY(0px); }
 `;
 
-const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = 'small', color = 'white' }) => {
+const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = 'small', color = '#182334' }) => {
     const isLarge = size === 'large';
 
     return (
@@ -33,7 +33,7 @@ const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = '
                     alignItems: 'center',
                     justifyContent: 'center',
                     animation: `${float} 3s ease-in-out infinite`,
-                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
+                    filter: 'drop-shadow(0 5px 10px rgba(24,35,52,0.14))',
                     '& img': {
                         width: '100%',
                         height: '100%',
@@ -61,7 +61,7 @@ const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = '
                     </Typography>
                     <Typography
                         sx={{
-                            color: color === 'white' ? '#f0dbb0' : '#76a345',
+                            color: '#6f963f',
                             fontWeight: 400,
                             fontSize: isLarge ? '2.4rem' : '1.8rem',
                             lineHeight: 1,
