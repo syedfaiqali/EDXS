@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import navbarLogo from '../assets/edxs-navbar-logo.png';
+import navbarLogo from '../assets/edxs-navbar-logo.webp';
 
 const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = 'small' }) => {
     const isLarge = size === 'large';

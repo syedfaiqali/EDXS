@@ -4,22 +4,22 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { useDispatch } from 'react-redux';
 import { setGlobalStep } from '../../store/selectionSlice';
 import { useNavigate } from 'react-router-dom';
-import dashboardImage from '../../assets/01_Dashboard.png';
-import humanResourceImage from '../../assets/02_Human_Resource_HR.png';
-import organizationImage from '../../assets/03_Organization.png';
-import administrationImage from '../../assets/04_Administration.png';
-import studentImage from '../../assets/05_Student.png';
-import academicsImage from '../../assets/06_Academics.png';
-import frontOfficeImage from '../../assets/07_Front_Office.png';
-import libraryImage from '../../assets/08_Library.png';
-import communicationImage from '../../assets/09_Communication.png';
-import feeManagementImage from '../../assets/10_Fee_Management.png';
-import financialManagementImage from '../../assets/11_Financial_Management.png';
-import freightManagementImage from '../../assets/12_Freight_Management.png';
-import inventoryManagementImage from '../../assets/13_Inventory_Management.png';
-import transportManagementImage from '../../assets/14_Transport_Management.png';
-import lmsAiImage from '../../assets/15_LMS_AI.png';
-import examinationsImage from '../../assets/16_Examinations.png';
+import dashboardImage from '../../assets/01_Dashboard.webp';
+import humanResourceImage from '../../assets/02_Human_Resource_HR.webp';
+import organizationImage from '../../assets/03_Organization.webp';
+import administrationImage from '../../assets/04_Administration.webp';
+import studentImage from '../../assets/05_Student.webp';
+import academicsImage from '../../assets/06_Academics.webp';
+import frontOfficeImage from '../../assets/07_Front_Office.webp';
+import libraryImage from '../../assets/08_Library.webp';
+import communicationImage from '../../assets/09_Communication.webp';
+import feeManagementImage from '../../assets/10_Fee_Management.webp';
+import financialManagementImage from '../../assets/11_Financial_Management.webp';
+import freightManagementImage from '../../assets/12_Freight_Management.webp';
+import inventoryManagementImage from '../../assets/13_Inventory_Management.webp';
+import transportManagementImage from '../../assets/14_Transport_Management.webp';
+import lmsAiImage from '../../assets/15_LMS_AI.webp';
+import examinationsImage from '../../assets/16_Examinations.webp';
 
 const revealScroll = keyframes`
   from { opacity: 0; transform: translateY(30px); }

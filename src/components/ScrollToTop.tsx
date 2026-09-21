@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Zoom } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import xsLogo from '../assets/xs_square_light.png';
+import xsLogo from '../assets/xs_square_light.webp';
 
 const ScrollToTop: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);

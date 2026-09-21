@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, keyframes, Typography } from '@mui/material';
-import xsLogo from '../assets/xs_square_light.png';
+import xsLogo from '../assets/xs_square_light.webp';
 
 
 // Components
