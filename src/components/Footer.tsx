@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <Box
             component="footer"
             sx={{
-                bgcolor: '#76a345', // Dark blue background similar to screenshot
+                bgcolor: '#45672a',
                 color: 'white',
                 py: { xs: 8, md: 10 },
                 position: 'relative',
@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
                                 variant="h2"
                                 sx={{
                                     fontWeight: 800,
-                                    color: '#f0dbb0', // Tan color for text
+                                    color: '#dce9cb',
                                     letterSpacing: -1,
                                     fontSize: { xs: '3rem', md: '5rem' },
                                     lineHeight: 1
@@ -91,7 +91,7 @@ const Footer: React.FC = () => {
                             <East
                                 className="arrow-icon"
                                 sx={{
-                                    color: '#f0dbb0',
+                                    color: '#dce9cb',
                                     fontSize: { xs: '3rem', md: '5rem' },
                                     opacity: 0,
                                     transform: 'translateX(-20px)',

@@ -8,10 +8,10 @@ const ProductDemoSection: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);
 
     return (
-        <Box sx={{ bgcolor: '#f0dbb0', py: { xs: 8, md: 12 }, overflow: 'hidden' }}>
+        <Box sx={{ bgcolor: '#e9efdd', py: { xs: 8, md: 12 }, overflow: 'hidden' }}>
             <Container maxWidth="lg">
                 <Box textAlign="center" mb={6}>
-                    <Typography variant="h3" fontWeight="900" color="#5d4037" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                    <Typography variant="h3" fontWeight="900" color="#45672a" gutterBottom sx={{ textTransform: 'uppercase' }}>
                         Experience <Box component="span" sx={{ color: '#76a345' }}>EDXS</Box> in Action
                     </Typography>
                     <Typography variant="h6" sx={{ color: 'rgba(93, 64, 55, 0.8)', maxWidth: 700, mx: 'auto' }}>

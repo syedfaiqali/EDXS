@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Container, keyframes, Typography } from '@mui/material';
 import xsLogo from '../assets/xs_square_light.png';
 
@@ -40,21 +40,10 @@ const pulse = keyframes`
 `;
 
 const LandingPage: React.FC = () => {
-    const [logoStage, setLogoStage] = useState<'waiting' | 'opening' | 'finished'>('waiting');
-
-    useEffect(() => {
-        // Logo animation trigger
-        const openTimer = setTimeout(() => setLogoStage('opening'), 1000);
-        const finishTimer = setTimeout(() => setLogoStage('finished'), 2500);
-
-        return () => {
-            clearTimeout(openTimer);
-            clearTimeout(finishTimer);
-        };
-    }, []);
+    const [logoStage] = useState<'waiting' | 'opening' | 'finished'>('finished');
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#76a345', position: 'relative', overflow: 'hidden' }}>
+        <Box sx={{ minHeight: '100vh', bgcolor: '#f5f7ef', position: 'relative', overflow: 'hidden' }}>
             {/* Animated Background Elements */}
             {[...Array(15)].map((_, i) => (
                 <Box
@@ -65,7 +54,7 @@ const LandingPage: React.FC = () => {
                         bottom: -100,
                         width: Math.random() * 60 + 20,
                         height: Math.random() * 60 + 20,
-                        bgcolor: i % 3 === 0 ? 'transparent' : (i % 2 === 0 ? 'rgba(240, 219, 176, 0.08)' : 'rgba(240, 219, 176, 0.05)'),
+                        bgcolor: i % 3 === 0 ? 'transparent' : (i % 2 === 0 ? 'rgba(111, 150, 63, 0.08)' : 'rgba(111, 150, 63, 0.04)'),
                         borderRadius: i % 3 === 0 ? '8px' : (i % 2 === 0 ? '50%' : '8px'),
                         animation: `${float} ${Math.random() * 10 + 10}s linear infinite`,
                         animationDelay: `${Math.random() * 20}s`,
@@ -99,7 +88,7 @@ const LandingPage: React.FC = () => {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    bgcolor: '#76a345',
+                    bgcolor: '#f5f7ef',
                     zIndex: 9999,
                     display: 'flex',
                     alignItems: 'center',
@@ -111,7 +100,7 @@ const LandingPage: React.FC = () => {
                         <Typography variant="h1" sx={{
                             fontSize: '15rem',
                             fontWeight: 900,
-                            color: '#f0dbb0',
+                            color: '#6f963f',
                             letterSpacing: -10,
                             mr: logoStage === 'opening' ? 10 : 0,
                             transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -120,7 +109,7 @@ const LandingPage: React.FC = () => {
                         </Typography>
                         <Box sx={{
                             width: logoStage === 'opening' ? 10 : 0,
-                            bgcolor: '#f0dbb0', // separator bar in tan
+                            bgcolor: '#6f963f',
                             height: '100%',
                             transition: 'all 1s ease',
                             mx: logoStage === 'opening' ? 2 : 0
@@ -128,7 +117,7 @@ const LandingPage: React.FC = () => {
                         <Typography variant="h1" sx={{
                             fontSize: '15rem',
                             fontWeight: 900,
-                            color: '#f0dbb0', // Update to Tan
+                            color: '#6f963f',
                             letterSpacing: -10,
                             ml: logoStage === 'opening' ? 10 : 0,
                             transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -145,7 +134,7 @@ const LandingPage: React.FC = () => {
                 transition: 'all 1s ease 0.5s',
                 position: 'relative',
                 zIndex: 10,
-                pt: 12
+                pt: { xs: 9, md: 11 }
             }}>
                 <Container maxWidth="lg">
                     <HeroSection />
@@ -162,7 +151,7 @@ const LandingPage: React.FC = () => {
                 }}>
                     <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
                         <path
-                            fill="#f0dbb0"
+                            fill="#e9efdd"
                             fillOpacity="1"
                             d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,128C672,107,768,117,864,138.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
                         ></path>
@@ -175,7 +164,7 @@ const LandingPage: React.FC = () => {
                 {/* Connection Squiggle Bridge 1: WhyEduman -> HowItWorks */}
                 <Box sx={{
                     position: 'relative',
-                    bgcolor: '#f0dbb0',
+                    bgcolor: '#e9efdd',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -189,7 +178,7 @@ const LandingPage: React.FC = () => {
                             {/* Base Rope with moving brown dots */}
                             <path
                                 d="M150 0 C 180 80, 250 180, 380 140 C 430 110, 480 110, 440 50 C 400 -10, 460 20, 500 100 C 550 170, 700 120, 750 200"
-                                stroke="#5d4037"
+                                stroke="#45672a"
                                 strokeWidth="3.5"
                                 strokeLinecap="round"
                                 strokeDasharray="2 12"
@@ -199,7 +188,7 @@ const LandingPage: React.FC = () => {
                             {/* Traveling Highlight */}
                             <path
                                 d="M150 0 C 180 80, 250 180, 380 140 C 430 110, 480 110, 440 50 C 400 -10, 460 30, 500 100 C 550 170, 700 120, 750 200"
-                                stroke="#f0dbb0"
+                                stroke="#e9efdd"
                                 strokeWidth="4"
                                 strokeLinecap="round"
                                 strokeDasharray="40 160" // Long pulse
@@ -212,7 +201,7 @@ const LandingPage: React.FC = () => {
                             position: 'absolute',
                             top: '35%',
                             left: '52%',
-                            color: '#5d4037',
+                            color: '#45672a',
                             fontSize: '1.8rem',
                             animation: `${pulse} 2s ease -in -out infinite`
                         }}>★</Box>
@@ -224,7 +213,7 @@ const LandingPage: React.FC = () => {
                 {/* Connection Squiggle Bridge 2: HowItWorks -> Testimonials */}
                 <Box sx={{
                     position: 'relative',
-                    bgcolor: '#f0dbb0',
+                    bgcolor: '#e9efdd',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -238,7 +227,7 @@ const LandingPage: React.FC = () => {
                             {/* Base Rope with moving brown dots */}
                             <path
                                 d="M650 0 C 600 50, 450 150, 350 100 C 300 80, 250 80, 280 130 C 310 180, 240 180, 200 120 C 150 60, 50 100, 10 180"
-                                stroke="#5d4037"
+                                stroke="#45672a"
                                 strokeWidth="3.5"
                                 strokeLinecap="round"
                                 strokeDasharray="2 12"
@@ -248,7 +237,7 @@ const LandingPage: React.FC = () => {
                             {/* Traveling Highlight */}
                             <path
                                 d="M650 0 C 600 50, 450 150, 350 100 C 300 80, 250 80, 280 130 C 310 180, 240 180, 200 120 C 150 60, 50 100, 10 180"
-                                stroke="#76a345"
+                                stroke="#6f963f"
                                 strokeWidth="4"
                                 strokeLinecap="round"
                                 strokeDasharray="40 160"
@@ -261,7 +250,7 @@ const LandingPage: React.FC = () => {
                             position: 'absolute',
                             top: '45%',
                             left: '35%',
-                            color: '#76a345',
+                            color: '#6f963f',
                             fontSize: '1.5rem',
                             animation: `${pulse} 2.5s ease -in -out infinite`
                         }}>★</Box>

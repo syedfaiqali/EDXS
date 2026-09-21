@@ -349,8 +349,8 @@ const ProductsSection: React.FC = () => {
             ],
             icon: <PaymentsIcon />,
             reverse: true,
-            accentColor: '#c4a77d',
-            bgColor: '#fcf8f1'
+            accentColor: '#6f963f',
+            bgColor: '#f5f7ef'
         },
         {
             title: 'Eduman Lite',
@@ -434,7 +434,7 @@ const ProductsSection: React.FC = () => {
     return (
         <Box id="products">
             {/* Main Header */}
-            <Box sx={{ py: 15, bgcolor: '#f0dbb0', textAlign: 'center', position: 'relative' }}>
+            <Box sx={{ py: 15, bgcolor: '#e9efdd', textAlign: 'center', position: 'relative' }}>
                 <Container maxWidth="md">
                     <Box sx={{
                         display: 'inline-flex',

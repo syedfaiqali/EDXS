@@ -13,11 +13,11 @@ const rotateY = keyframes`
 `;
 
 const starSpecial = keyframes`
-  0% { transform: translateX(0) rotate(-10deg); color: #f0dbb0; fill: currentColor; filter: none; }
+  0% { transform: translateX(0) rotate(-10deg); color: #dce9cb; fill: currentColor; filter: none; }
   25% { transform: translateX(-35px) rotate(-30deg); color: #fff; fill: none; stroke: currentColor; stroke-width: 2px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.6)); }
-  50% { transform: translateX(0) rotate(-10deg); color: #f0dbb0; fill: currentColor; stroke: none; filter: none; }
+  50% { transform: translateX(0) rotate(-10deg); color: #dce9cb; fill: currentColor; stroke: none; filter: none; }
   75% { transform: translateX(35px) rotate(10deg); color: #76a345; fill: none; stroke: currentColor; stroke-width: 2px; filter: drop-shadow(0 0 8px rgba(118,163,69,0.6)); }
-  100% { transform: translateX(0) rotate(-10deg); color: #f0dbb0; fill: currentColor; filter: none; }
+  100% { transform: translateX(0) rotate(-10deg); color: #dce9cb; fill: currentColor; filter: none; }
 `;
 
 const StatsSection: React.FC = () => {
@@ -74,7 +74,7 @@ const StatsSection: React.FC = () => {
                         )}
 
                         <Box sx={{
-                            color: '#f0dbb0',
+                            color: '#dce9cb',
                             mb: 2,
                             display: 'flex',
                             justifyContent: 'center',
@@ -86,7 +86,7 @@ const StatsSection: React.FC = () => {
 
                         <Typography variant="h3" sx={{
                             mb: 0.5,
-                            color: '#f0dbb0',
+                            color: '#dce9cb',
                             fontWeight: 700,
                             fontSize: { xs: '2rem', md: '2.8rem' }
                         }}>

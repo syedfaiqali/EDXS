@@ -15,7 +15,7 @@ const EDXSPartnerSection: React.FC = () => {
     const descText = "Empower education together! Collaborate with us as an EDXS Partner and access customized resources to drive positive change in learning.";
     const navigate = useNavigate();
     return (
-        <Box ref={sectionRef} sx={{ bgcolor: '#edd8b4', py: { xs: 8, md: 12 }, overflow: 'hidden' }}>
+        <Box ref={sectionRef} sx={{ bgcolor: '#e9efdd', py: { xs: 8, md: 12 }, overflow: 'hidden' }}>
             <Container maxWidth="lg">
                 <Grid container spacing={6} alignItems="center">
                     {/* Left Side: Content */}
@@ -80,7 +80,7 @@ const EDXSPartnerSection: React.FC = () => {
                                 color: '#fff',
                                 px: 4,
                                 py: 1.5,
-                                border: '2px solid #edd8b4',
+                                border: '2px solid #dce9cb',
                                 borderRadius: 50,
                                 fontWeight: 700,
                                 fontSize: '1rem',
@@ -88,7 +88,7 @@ const EDXSPartnerSection: React.FC = () => {
                                 animation: isVisible ? `${reveal} 0.6s ease forwards` : 'none',
                                 animationDelay: `${(titleText.length * 0.04) + (descText.split(' ').length * 0.05) + 0.2}s`,
                                 '&:hover': {
-                                    borderColor: '#dcc6a0'
+                                    borderColor: '#c7dcb0'
                                 },
                                 boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
                             }}
@@ -115,13 +115,13 @@ const EDXSPartnerSection: React.FC = () => {
                                 <path
                                     d="M50 150 Q 150 50, 250 150 T 450 150 T 550 250"
                                     fill="none"
-                                    stroke="#5d4037"
+                                    stroke="#45672a"
                                     strokeWidth="2"
                                 />
                                 <path
                                     d="M100 300 Q 200 200, 300 300 T 500 300"
                                     fill="none"
-                                    stroke="#5d4037"
+                                    stroke="#45672a"
                                     strokeWidth="2"
                                 />
                                 {/* Using a world map path would be huge, staying with abstract pattern fitting the theme */}

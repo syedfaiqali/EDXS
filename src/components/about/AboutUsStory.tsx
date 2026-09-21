@@ -123,7 +123,7 @@ const AboutUsStory: React.FC = () => {
                             }} />
                             <Box sx={{
                                 position: 'absolute', bottom: -50, left: -50, width: 250, height: 250,
-                                border: '2px solid rgba(240, 219, 176, 0.4)', borderRadius: '50%', zIndex: 1,
+                                border: '2px solid rgba(150, 185, 109, 0.4)', borderRadius: '50%', zIndex: 1,
                                 animation: `${visualFloat} 8s ease-in-out infinite`
                             }} />
                         </Box>
