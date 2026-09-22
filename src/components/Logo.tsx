@@ -1,14 +1,8 @@
 import React from 'react';
-import { Box, Typography, keyframes } from '@mui/material';
-import xsLogo from '../assets/xs_square_light.png';
+import { Box } from '@mui/material';
+import navbarLogo from '../assets/edxs-navbar-logo.webp';
 
-const float = keyframes`
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-3px); }
-  100% { transform: translateY(0px); }
-`;
-
-const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = 'small', color = '#182334' }) => {
+const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = 'small' }) => {
     const isLarge = size === 'large';
 
     return (
@@ -16,9 +10,8 @@ const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = '
             sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: isLarge ? 2.5 : 1.5,
                 cursor: 'pointer',
-                transition: 'all 0.3s ease',
+                transition: 'transform 0.3s ease',
                 '&:hover': {
                     transform: 'translateY(-2px)'
                 }
@@ -26,67 +19,19 @@ const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = '
         >
             <Box
                 sx={{
-                    position: 'relative',
-                    width: isLarge ? 64 : 44,
-                    height: isLarge ? 64 : 44,
+                    width: isLarge ? 195 : 130,
+                    height: isLarge ? 81 : 58,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    animation: `${float} 3s ease-in-out infinite`,
-                    filter: 'drop-shadow(0 5px 10px rgba(24,35,52,0.14))',
                     '& img': {
                         width: '100%',
                         height: '100%',
-                        objectFit: 'contain',
-                        borderRadius: isLarge ? '12px' : '8px'
+                        objectFit: 'contain'
                     }
                 }}
             >
-                <img src={xsLogo} alt="EDXS Logo" />
-            </Box>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                    <Typography
-                        sx={{
-                            color: color,
-                            fontWeight: 900,
-                            fontSize: isLarge ? '2.4rem' : '1.8rem',
-                            lineHeight: 1,
-                            letterSpacing: -0.5,
-                            textTransform: 'uppercase',
-                        }}
-                    >
-                        ED
-                    </Typography>
-                    <Typography
-                        sx={{
-                            color: '#6f963f',
-                            fontWeight: 400,
-                            fontSize: isLarge ? '2.4rem' : '1.8rem',
-                            lineHeight: 1,
-                            letterSpacing: -0.5,
-                            textTransform: 'uppercase',
-                            ml: 0.1
-                        }}
-                    >
-                        XS
-                    </Typography>
-                </Box>
-                {/* <Typography
-                    sx={{
-                        color: color,
-                        opacity: 0.85,
-                        fontSize: isLarge ? '0.75rem' : '0.55rem',
-                        fontWeight: 700,
-                        letterSpacing: isLarge ? 3 : 2,
-                        mt: 0.2,
-                        textTransform: 'uppercase',
-                        whiteSpace: 'nowrap'
-                    }}
-                >
-                    School Management System
-                </Typography> */}
+                <img src={navbarLogo} alt="EDXS" />
             </Box>
         </Box>
     );

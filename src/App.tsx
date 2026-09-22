@@ -89,7 +89,7 @@ const MainLayout: React.FC = () => {
         sx={{
           bgcolor: isHomeAtTop ? 'transparent' : 'rgba(255,255,255,0.93)',
           backdropFilter: isHomeAtTop ? 'none' : 'blur(18px)',
-          borderBottom: isHomeAtTop ? '1px solid transparent' : '1px solid #dfe7d4',
+          borderBottom: 'none',
           transition: 'background-color 220ms ease, backdrop-filter 220ms ease, border-color 220ms ease',
           width: '100%',
           zIndex: (theme) => theme.zIndex.drawer + 1
@@ -168,7 +168,7 @@ const MainLayout: React.FC = () => {
               </Typography>
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
               {currentPath === '/registration' && (
                 <Translate
                   sx={{ color: 'primary.main', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
@@ -180,13 +180,15 @@ const MainLayout: React.FC = () => {
                 to="/registration"
                 variant="outlined"
                 sx={{
-                  color: 'primary.dark',
+                  color: '#fff',
                   borderColor: 'divider',
                   borderRadius: 3,
-                  px: 3,
+                  minHeight: 60,
+                  px: 3.5,
                   textTransform: 'none',
                   fontWeight: 600,
-                  '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light' }
+                  whiteSpace: 'nowrap',
+                  '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light', color: 'primary.main' }
                 }}
               >
                 Get A Demo
@@ -199,9 +201,11 @@ const MainLayout: React.FC = () => {
                   bgcolor: 'primary.main',
                   color: 'white',
                   borderRadius: 3,
-                  px: 3,
+                  minHeight: 60,
+                  px: 3.5,
                   textTransform: 'none',
                   fontWeight: 700,
+                  whiteSpace: 'nowrap',
                   '&:hover': { bgcolor: 'primary.dark' }
                 }}
               >
