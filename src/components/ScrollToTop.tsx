@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Zoom } from '@mui/material';
+import { KeyboardArrowUp } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
-import xsLogo from '../assets/xs_square_light.webp';
 
 const ScrollToTop: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -57,21 +57,18 @@ const ScrollToTop: React.FC = () => {
                     '&:hover': {
                         transform: 'translateY(-5px) scale(1.1)',
                         boxShadow: '0 12px 40px rgba(118, 163, 69, 0.2)',
-                        '& img': {
-                            transform: 'rotate(5deg) scale(1.1)'
+                        '& .scroll-to-top-icon': {
+                            transform: 'translateY(-3px)'
                         }
                     }
                 }}
             >
-                <Box
-                    component="img"
-                    src={xsLogo}
-                    alt="Scroll to top"
+                <KeyboardArrowUp
+                    className="scroll-to-top-icon"
                     sx={{
-                        width: 32,
-                        height: 32,
-                        objectFit: 'contain',
-                        transition: 'transform 0.4s ease'
+                        fontSize: '2.25rem',
+                        color: 'primary.main',
+                        transition: 'transform 0.25s ease'
                     }}
                 />
             </Box>

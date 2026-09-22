@@ -5,21 +5,23 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
 import abdullahImage from '../../assets/abdullah.webp';
-import ghufranImage from '../../assets/ghufran.png';
+import ghufranImage from '../../assets/ghufran.webp';
 import aminImage from '../../assets/amin.webp';
 import farazImage from '../../assets/faraz.webp';
-import asharImage from '../../assets/ashar.png';
-import faiqImage from '../../assets/faiq.png';
+import asharImage from '../../assets/ashar.webp';
+import faiqImage from '../../assets/faiq.webp';
 import raoImage from '../../assets/rao.webp';
 import omairImage from '../../assets/omair.webp';
-import sohailImage from '../../assets/Sohail Tareen.png';
-import shahbazImage from '../../assets/ShahbazAhmer.png';
-import wareeshaImage from '../../assets/wareesha.png';
-import mahamImage from '../../assets/maham.png';
-import bilalImage from '../../assets/bilal.png';
-import affanImage from '../../assets/affan.png';
-import kamranImage from '../../assets/kamran.png';
-import osamaImage from '../../assets/osama.png';
+import sohailImage from '../../assets/Sohail Tareen.webp';
+import shahbazImage from '../../assets/ShahbazAhmer.webp';
+import wareeshaImage from '../../assets/wareesha.webp';
+import mahamImage from '../../assets/maham.webp';
+import bilalImage from '../../assets/bilal.webp';
+import affanImage from '../../assets/affan.webp';
+import kamranImage from '../../assets/kamran.webp';
+import osamaImage from '../../assets/osama.webp';
+import asherImage from '../../assets/asher.webp';
+import rizwanImage from '../../assets/rizwan.webp';
 
 // Animation for cards
 const cardFadeIn = keyframes`
@@ -262,27 +264,27 @@ const TeamSection: React.FC = () => {
             name: 'Sohail Tareen',
             role: 'Founder & CEO',
             image: sohailImage,
-            description: 'Visionary leader with 20+ years of experience in educational transformation and digital strategy.',
+            description: 'Leads EDXS with a clear vision for practical, technology-led education management.',
             linkedin: 'https://www.linkedin.com/in/sohail-tareen-931b0b1b/'
         },
         {
             name: 'Shahbaz Ahmer',
             role: 'Chief Technical Officer',
             image: shahbazImage,
-            description: 'Architecting complex systems and leading technical innovations at the intersection of AI and Web3.',
+            description: 'Guides the technology strategy behind reliable, scalable EDXS solutions.',
             linkedin: 'https://www.linkedin.com/in/shahbazahmer/'
         },
         {
             name: 'Maham Tareen',
             role: 'Creative Director',
             image: mahamImage,
-            description: 'Award-winning designer focused on creating intuitive and emotionally resonant user experiences.'
+            description: 'Shapes clear, thoughtful experiences that make EDXS easy for every user to navigate.'
         },
         {
             name: 'Wareesha Tareen',
             role: 'Operational Manager',
             image: wareeshaImage,
-            description: 'Driving organizational excellence through strategic planning and meticulous operational oversight.'
+            description: 'Keeps operational planning aligned, organised, and focused on client success.'
         }
     ];
 
@@ -291,23 +293,22 @@ const TeamSection: React.FC = () => {
             name: 'Bilal Mahmood',
             role: 'Project Manager',
             image: bilalImage,
-            description: 'Ensuring seamless project delivery across global teams with a focus on agile methodologies.',
+            description: 'Coordinates projects from planning to delivery with a focus on clear outcomes.',
             linkedin: 'https://www.linkedin.com/in/bilal-mahmood-4a740690/'
         },
         {
             name: 'Syed Faiq Ali Jafri',
             role: 'Team Lead',
             image: faiqImage,
-            description: 'Full-stack expert mentor guiding development teams toward technical perfection and innovation.',
+            description: 'Leads development work with a hands-on focus on quality and dependable delivery.',
             linkedin: 'https://www.linkedin.com/in/syedfaiqjafridev'
         },
-        // {
-        //     name: 'Adnan',
-        //     role: 'Hospitality Lead',
-        //     image: 'https://via.placeholder.com/400x600?text=Adnan',
-        //     description: 'Fueling the creative process by maintaining the perfect workspace atmosphere and energy.',
-        //     linkedin: 'https://www.linkedin.com/in/adnan-ahmed-4b0b1b1b/'
-        // },
+        {
+            name: 'Muhammad Rizwan Badar',
+            role: 'Chief Technical Officer',
+            image: rizwanImage,
+            description: 'Supports technical operations and keeps core systems ready for day-to-day use.'
+        },
         // {
         //     name: 'Obaid Khan',
         //     role: 'Logistics Manager',
@@ -319,30 +320,24 @@ const TeamSection: React.FC = () => {
     const marketing = [
         {
             name: 'Affan Ahmed Khan',
-            role: 'Implementation Lead',
+            role: 'Devops & Cloud Specialist',
             image: affanImage,
-            description: 'Expert in bridging the gap between digital products and real-world institutional success.',
+            description: 'Builds and maintains cloud infrastructure that keeps EDXS dependable and secure.',
             linkedin: 'https://www.linkedin.com/in/affan-ahmed-khan-1b6258220/'
         },
         {
             name: 'Kamran Bharday',
             role: 'Implementation Expert',
             image: kamranImage,
-            description: 'Dedicated to optimizing system deployments and ensuring high-impact results for all clients.',
+            description: 'Works closely with clients to make system deployment smooth, effective, and practical.',
             linkedin: 'https://www.linkedin.com/in/muhammad-owais-b7135823a/'
         },
-        // {
-        //     name: 'Miya Baji',
-        //     role: 'Wellness Coordinator',
-        //     image: 'https://edu-man.com/img/Mia Baji.webp',
-        //     description: 'Championing work-life balance and psychological safety within our high-performance culture.'
-        // },
-        // {
-        //     name: 'Johnny Bhayya',
-        //     role: 'Team Support Expert',
-        //     image: 'https://via.placeholder.com/400x600?text=Johnny+Bhayya',
-        //     description: 'Providing critical infrastructure support and ensuring peak operational readiness across departments.'
-        // },
+        {
+            name: 'Muhammad Asher',
+            role: 'Junior QA Specialist',
+            image: asherImage,
+            description: 'Supports quality assurance through careful testing and detail-oriented review.'
+        },
     ];
 
     const devTeam1 = [
@@ -350,28 +345,28 @@ const TeamSection: React.FC = () => {
             name: 'Syed Osama Zaidi',
             role: 'Senior Backend Developer',
             image: osamaImage,
-            description: 'Master of scalable architectures and secure data processing pipelines.',
+            description: 'Builds dependable backend services that support EDXS at scale.',
             linkedin: 'https://www.linkedin.com/in/osama-zaidi-4b0b1b1b/'
         },
         {
             name: 'Ashar Samad',
             role: 'Lead System Architect',
             image: asharImage,
-            description: 'The technical backbone of our most complex enterprise-level integrations.',
+            description: 'Designs the system architecture behind robust EDXS integrations.',
             linkedin: 'https://www.linkedin.com/in/ashar-samad-863773194/'
         },
         {
             name: 'Abdullah Khan',
             role: 'Backend Developer',
             image: abdullahImage,
-            description: 'Optimizing performance and building robust APIs that power our entire ecosystem.',
+            description: 'Develops reliable APIs and backend features that power the EDXS platform.',
             linkedin: 'https://www.linkedin.com/in/abdullah-khan-57a278213/'
         },
         {
             name: 'Rao Raza',
             role: 'Backend Developer',
             image: raoImage,
-            description: 'Focused on high-availability systems and modern cloud-native infrastructures.'
+            description: 'Focuses on resilient backend systems and consistent platform performance.'
         }
     ];
 
@@ -380,28 +375,28 @@ const TeamSection: React.FC = () => {
             name: 'Omair Nadiawala',
             role: 'Senior IOS Developer',
             image: omairImage,
-            description: 'Crafting pixel-perfect interfaces that blend aesthetic beauty with functional power.',
+            description: 'Builds polished mobile experiences that keep EDXS useful wherever teams work.',
             linkedin: 'https://www.linkedin.com/in/omairnadiadwala/'
         },
         {
             name: 'Ghufran Ali',
-            role: 'Senior Frontend Developer',
+            role: 'Senior Software Developer',
             image: ghufranImage,
-            description: 'Expert in React ecosystem and creating high-performance interactive web applications.',
+            description: 'Creates responsive, high-performance web experiences across the EDXS platform.',
             linkedin: 'https://www.linkedin.com/in/ghufran-ali-082570175/'
         },
         {
             name: 'Amin Lakhani',
-            role: 'AI Research Engineer',
+            role: 'Senior Software Developer',
             image: aminImage,
-            description: 'Pioneering our intelligent features through deep learning and predictive analytics.',
+            description: 'Contributes to intelligent, data-focused features that make EDXS more useful.',
             linkedin: 'https://www.linkedin.com/in/amin-lakhani-4b38a4223/'
         },
         {
             name: 'Syed Faraz Ali',
-            role: 'Most Senior UI Expert',
+            role: 'Principle Software Developer',
             image: farazImage,
-            description: 'The final word on UI quality and frontend architectural standards across all platforms.',
+            description: 'Maintains strong frontend standards for a consistent, intuitive EDXS experience.',
             linkedin: 'https://www.linkedin.com/in/syed-faraz-ali-704b23384/'
         }
     ];
