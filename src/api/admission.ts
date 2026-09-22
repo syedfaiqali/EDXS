@@ -10,8 +10,15 @@
 
 // import.meta.env is injected by Vite; guarded so the module can also be loaded
 // outside a Vite build (tests, tooling) without blowing up at import time.
-const API_BASE_URL = ((import.meta as { env?: Record<string, string> }).env?.VITE_API_BASE_URL
-    ?? 'http://localhost:5001').replace(/\/$/, '');
+const viteEnv = (import.meta as {
+    env?: { VITE_API_BASE_URL?: string; DEV?: boolean };
+}).env;
+
+// The Vite dev server proxies /api to the local gateway. Keeping local calls
+// relative avoids a browser CORS request from localhost:5173 to localhost:5001.
+const API_BASE_URL = viteEnv?.DEV
+    ? ''
+    : (viteEnv?.VITE_API_BASE_URL ?? 'http://localhost:5001').replace(/\/$/, '');
 
 /** A class or programme a register accepts applications for. */
 export interface AdmissionProgram {
@@ -84,6 +91,8 @@ export interface AdmissionEnquiryRequest {
     registerId?: number;
     /** The class or programme applied for. Required by the server. */
     classId: number;
+    /** Optional campus scope, validated by the public API against the client. */
+    entityId?: number;
     message?: string;
 }
 
@@ -92,6 +101,17 @@ export interface AdmissionEnquiryResult {
     token: string;
     emailSent: boolean;
     message: string;
+}
+
+/** Details collected by the marketing site's "Get A Demo" form. */
+export interface DemoEnquiryRequest {
+    fullName: string;
+    email: string;
+    phone: string;
+    organisationName?: string;
+    message?: string;
+    numberOfPersons: number;
+    entityId?: number;
 }
 
 export interface AdmissionStatusStep {
@@ -286,6 +306,48 @@ export const submitAdmissionEnquiry = async (
         throw new Error(
             await readError(response, 'We could not record your enquiry just now. Please try again.')
         );
+    }
+
+    return (await response.json()) as AdmissionEnquiryResult;
+};
+
+/**
+ * Sends a marketing demo request through the public admission-enquiry
+ * endpoint. This is deliberately the anonymous public endpoint rather than
+ * the staff-only Front Office route: the service resolves the configured
+ * client and writes the resulting record to FOAdmEnquiry itself.
+ */
+export const submitDemoEnquiry = async (
+    request: DemoEnquiryRequest,
+    signal?: AbortSignal
+): Promise<AdmissionEnquiryResult> => {
+    const clientCode = ((import.meta as { env?: Record<string, string> }).env
+        ?.VITE_DEMO_ADMISSION_CLIENT_CODE ?? '101').trim();
+
+    if (!clientCode) {
+        throw new Error('Demo enquiries are not configured yet. Please contact us directly.');
+    }
+
+    const response = await fetch(
+        `${API_BASE_URL}/api/public/admission/${encodeURIComponent(clientCode)}/website-demo`,
+        {
+            method: 'POST',
+            signal,
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+                fullName: request.fullName,
+                email: request.email,
+                phone: request.phone,
+                organisationName: request.organisationName,
+                message: request.message,
+                numberOfPersons: request.numberOfPersons,
+                entityId: request.entityId
+            })
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(await readError(response, 'We could not record your demo request just now.'));
     }
 
     return (await response.json()) as AdmissionEnquiryResult;

@@ -20,7 +20,7 @@ import useAdmissionRefresh from './hooks/useAdmissionRefresh';
 
 
 import LandingPage from './pages/LandingPage';
-import FreeTrialPage from './pages/FreeTrialPage';
+import DemoPage from './pages/DemoPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ProductsPage from './pages/ProductsPage';
 import ServicesPage from './pages/ServicesPage';
@@ -181,7 +181,7 @@ const MainLayout: React.FC = () => {
               )}
               <Button
                 component={Link}
-                to="/free-trial"
+                to="/demo"
                 variant="outlined"
                 sx={{
                   color: isHomeAtTop ? '#fff' : 'primary.main',
@@ -214,7 +214,7 @@ const MainLayout: React.FC = () => {
                   '&:hover': { bgcolor: 'primary.dark' }
                 }}
               >
-                Start Free Trial
+                Request a Demo
               </Button>
             </Box>
           </Toolbar>
@@ -231,11 +231,10 @@ const MainLayout: React.FC = () => {
         <Suspense fallback={<LoadingScreen />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            {/* The demo enquiry flow this URL used to serve has been retired in
-                favour of the trial sign-up, which creates a real account. The
-                route is kept so existing links and bookmarks still land. */}
-            <Route path="/registration" element={<Navigate to="/free-trial" replace />} />
-            <Route path="/free-trial" element={<FreeTrialPage />} />
+            <Route path="/registration" element={<Navigate to="/demo" replace />} />
+            <Route path="/demo" element={<DemoPage />} />
+            {/* Kept for existing links, but demo requests never create an ERP login. */}
+            <Route path="/free-trial" element={<DemoPage />} />
             <Route path="/aboutus" element={<AboutUsPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/services" element={<ServicesPage />} />
