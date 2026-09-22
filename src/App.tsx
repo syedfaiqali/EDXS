@@ -12,6 +12,7 @@ import { resetFlow } from './store/selectionSlice';
 import theme from './theme/theme';
 import Logo from './components/Logo';
 import Footer from './components/Footer';
+import CheckStatusDialog from './components/CheckStatusDialog';
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
@@ -53,6 +54,7 @@ const MainLayout: React.FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [tempLang, setTempLang] = useState(language);
   const [isScrolled, setIsScrolled] = useState(false);
   const currentPath = location.pathname;
@@ -104,7 +106,7 @@ const MainLayout: React.FC = () => {
               <Logo size="small" />
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: { md: 2, lg: 3 } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: { md: 1.5, lg: 2.5 } }}>
               {[
                 { label: 'Home', path: '/' },
                 { label: 'About Us', path: '/aboutus' },
@@ -140,6 +142,30 @@ const MainLayout: React.FC = () => {
                   {item.label}
                 </Typography>
               ))}
+
+              {/* Opens a dialog rather than routing, so it sits beside the links
+                  rather than among them, but is styled to read as one of them. */}
+              <Typography
+                component="button"
+                type="button"
+                variant="body2"
+                onClick={() => setIsStatusOpen(true)}
+                sx={{
+                  color: 'text.primary',
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap',
+                  cursor: 'pointer',
+                  border: 'none',
+                  background: 'none',
+                  font: 'inherit',
+                  pb: 0.5,
+                  px: 0.5,
+                  borderBottom: '2px solid transparent',
+                  '&:hover': { color: 'primary.dark' }
+                }}
+              >
+                Check Status
+              </Typography>
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -221,6 +247,8 @@ const MainLayout: React.FC = () => {
       </Box>
 
       {/* Language Modal */}
+      <CheckStatusDialog open={isStatusOpen} onClose={() => setIsStatusOpen(false)} />
+
       <Dialog open={isModalOpen} onClose={handleCloseModal} maxWidth="xs" fullWidth>
         <DialogTitle sx={{ fontWeight: 700 }}>{t('select_language')}</DialogTitle>
         <DialogContent>

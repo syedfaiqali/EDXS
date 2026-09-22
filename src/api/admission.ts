@@ -2,45 +2,73 @@
  * Admission data, read from the EDXS gateway.
  *
  * These mirror the DTOs on FrontOffice.Service's `PublicAdmissionController`.
- * An enquiry submitted here lands in the same table the back-office Admission
- * Enquiry screen reads, so it joins the school's normal admission pipeline.
+ * The board lists admission registers schools have marked Published on their
+ * back-office Admission Register screen, so nothing appears here that a school
+ * has not chosen to advertise. An enquiry submitted against one lands in the
+ * same table the back office reads.
  */
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5001').replace(/\/$/, '');
 
-export interface AdmissionCampus {
+/** A class or programme a register accepts applications for. */
+export interface AdmissionProgram {
     id: number;
     name: string;
+    seats: number | null;
+    /** Subjects taught on the programme; empty when no syllabus is recorded. */
+    subjects: string[];
 }
 
-/** An admission register, carrying the academic year it belongs to. */
+/** One school's published intake at one campus. */
 export interface AdmissionRegister {
     id: number;
     name: string;
-    academicYear: string;
-    isActive: boolean;
+    registerNo: string;
+    academicSession: string;
+    schoolCode: string;
+    schoolName: string;
+    hasLogo: boolean;
+    campusId: number;
+    campusName: string;
+    city: string;
+    startDate: string | null;
+    endDate: string | null;
+    totalSeats: number | null;
+    programs: AdmissionProgram[];
 }
 
-export interface AdmissionClass {
-    id: number;
-    name: string;
-}
+/**
+ * Where a school's logo is served from. The images are around a megabyte each,
+ * so they are fetched per-card and cached by the browser rather than inlined
+ * into the board response.
+ */
+export const schoolLogoUrl = (schoolCode: string): string =>
+    `${API_BASE_URL}/api/public/admission/schools/${encodeURIComponent(schoolCode)}/logo`;
 
-/** The registers and classes available at one campus. */
-export interface AdmissionOptions {
-    registers: AdmissionRegister[];
-    classes: AdmissionClass[];
-}
-
-export interface AdmissionSchool {
-    /** The code the enquiry and status endpoints are addressed by. */
+export interface AdmissionSchoolFacet {
     code: string;
     name: string;
-    city: string;
-    campuses: AdmissionCampus[];
-    /** False when the school has no campus configured and cannot take an enquiry. */
-    acceptsEnquiries: boolean;
 }
+
+export interface AdmissionBoard {
+    registers: AdmissionRegister[];
+    total: number;
+    schools: AdmissionSchoolFacet[];
+    cities: string[];
+}
+
+export interface AdmissionBoardFilters {
+    search?: string;
+    schoolCode?: string;
+    city?: string;
+}
+
+export const emptyAdmissionBoard: AdmissionBoard = {
+    registers: [],
+    total: 0,
+    schools: [],
+    cities: []
+};
 
 export interface AdmissionEnquiryRequest {
     fullName: string;
@@ -51,7 +79,7 @@ export interface AdmissionEnquiryRequest {
     gradeLevel?: string;
     campusId?: number;
     registerId?: number;
-    /** The class applied for. Required by the server. */
+    /** The class or programme applied for. Required by the server. */
     classId: number;
     message?: string;
 }
@@ -93,7 +121,19 @@ const readError = async (response: Response, fallback: string): Promise<string> 
     return fallback;
 };
 
-/** The schools currently listed in the public admissions directory. */
+/** A school in the public admissions directory. */
+export interface AdmissionSchool {
+    code: string;
+    name: string;
+    city: string;
+    hasLogo: boolean;
+}
+
+/**
+ * Every school in the directory, not just those with an open intake: someone
+ * checking an application they submitted months ago still needs to find their
+ * school in the list.
+ */
 export const fetchAdmissionSchools = async (signal?: AbortSignal): Promise<AdmissionSchool[]> => {
     const response = await fetch(`${API_BASE_URL}/api/public/admission/schools`, {
         signal,
@@ -108,26 +148,84 @@ export const fetchAdmissionSchools = async (signal?: AbortSignal): Promise<Admis
     return Array.isArray(data) ? data : [];
 };
 
-/** The registers and classes offered at one campus. */
-export const fetchAdmissionOptions = async (
-    code: string,
-    campusId: number,
+/** One scheduled period on a programme's weekly timetable. */
+export interface AdmissionPeriod {
+    day: string;
+    /** Monday = 1, so the list can be grouped without parsing day names. */
+    dayOrder: number;
+    startTime: string;
+    endTime: string;
+    subject: string;
+    teacher: string;
+}
+
+/** What a programme teaches, when, and who takes each period. */
+export interface AdmissionProgramDetail {
+    id: number;
+    name: string;
+    subjects: string[];
+    periods: AdmissionPeriod[];
+    teachers: string[];
+}
+
+/**
+ * The syllabus and timetable for one programme. Fetched on demand rather than
+ * with the board, since a single school class can carry over a thousand periods.
+ */
+export const fetchProgramDetail = async (
+    registerId: number,
+    programId: number,
     signal?: AbortSignal
-): Promise<AdmissionOptions> => {
+): Promise<AdmissionProgramDetail> => {
     const response = await fetch(
-        `${API_BASE_URL}/api/public/admission/${encodeURIComponent(code)}/campuses/${campusId}/options`,
+        `${API_BASE_URL}/api/public/admission/registers/${registerId}/programs/${programId}`,
         { signal, headers: { Accept: 'application/json' } }
     );
 
     if (!response.ok) {
-        throw new Error(`Options request failed (${response.status})`);
+        throw new Error(`Programme request failed (${response.status})`);
     }
 
-    const data = (await response.json()) as Partial<AdmissionOptions> | null;
-    return { registers: data?.registers ?? [], classes: data?.classes ?? [] };
+    const data = (await response.json()) as Partial<AdmissionProgramDetail> | null;
+    return {
+        id: data?.id ?? programId,
+        name: data?.name ?? '',
+        subjects: data?.subjects ?? [],
+        periods: data?.periods ?? [],
+        teachers: data?.teachers ?? []
+    };
 };
 
-/** Raises an admission enquiry against one school. */
+/** Every admission register schools are currently advertising. */
+export const fetchAdmissionBoard = async (
+    filters: AdmissionBoardFilters,
+    signal?: AbortSignal
+): Promise<AdmissionBoard> => {
+    const params = new URLSearchParams();
+    if (filters.search?.trim()) params.set('search', filters.search.trim());
+    if (filters.schoolCode) params.set('schoolCode', filters.schoolCode);
+    if (filters.city) params.set('city', filters.city);
+
+    const query = params.toString();
+    const response = await fetch(
+        `${API_BASE_URL}/api/public/admission/registers${query ? `?${query}` : ''}`,
+        { signal, headers: { Accept: 'application/json' } }
+    );
+
+    if (!response.ok) {
+        throw new Error(`Admissions request failed (${response.status})`);
+    }
+
+    const data = (await response.json()) as Partial<AdmissionBoard> | null;
+    return {
+        registers: data?.registers ?? [],
+        total: data?.total ?? 0,
+        schools: data?.schools ?? [],
+        cities: data?.cities ?? []
+    };
+};
+
+/** Raises an admission enquiry against one register. */
 export const submitAdmissionEnquiry = async (
     code: string,
     request: AdmissionEnquiryRequest,
