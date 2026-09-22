@@ -10,8 +10,8 @@ import aminImage from '../../assets/amin.webp';
 import farazImage from '../../assets/faraz.webp';
 import asharImage from '../../assets/ashar.webp';
 import faiqImage from '../../assets/faiq.webp';
-import raoImage from '../../assets/rao.webp';
-import omairImage from '../../assets/omair.webp';
+import raoImage from '../../assets/rao.png';
+import omairImage from '../../assets/omair.png';
 import sohailImage from '../../assets/Sohail Tareen.webp';
 import shahbazImage from '../../assets/ShahbazAhmer.webp';
 import wareeshaImage from '../../assets/wareesha.webp';
@@ -275,20 +275,27 @@ const TeamSection: React.FC = () => {
             linkedin: 'https://www.linkedin.com/in/shahbazahmer/'
         },
         {
-            name: 'Maham Tareen',
-            role: 'Creative Director',
-            image: mahamImage,
-            description: 'Shapes clear, thoughtful experiences that make EDXS easy for every user to navigate.'
+            name: 'Muhammad Rizwan Badar',
+            role: 'Chief Technical Officer',
+            image: rizwanImage,
+            description: 'Supports technical operations and keeps core systems ready for day-to-day use.'
         },
+        
+    ];
+
+    const management = [
         {
             name: 'Wareesha Tareen',
             role: 'Operational Manager',
             image: wareeshaImage,
             description: 'Keeps operational planning aligned, organised, and focused on client success.'
-        }
-    ];
-
-    const management = [
+        },
+        {
+            name: 'Maham Tareen',
+            role: 'Creative Director',
+            image: mahamImage,
+            description: 'Shapes clear, thoughtful experiences that make EDXS easy for every user to navigate.'
+        },
         {
             name: 'Bilal Mahmood',
             role: 'Project Manager',
@@ -303,18 +310,6 @@ const TeamSection: React.FC = () => {
             description: 'Leads development work with a hands-on focus on quality and dependable delivery.',
             linkedin: 'https://www.linkedin.com/in/syedfaiqjafridev'
         },
-        {
-            name: 'Muhammad Rizwan Badar',
-            role: 'Chief Technical Officer',
-            image: rizwanImage,
-            description: 'Supports technical operations and keeps core systems ready for day-to-day use.'
-        },
-        // {
-        //     name: 'Obaid Khan',
-        //     role: 'Logistics Manager',
-        //     image: 'https://via.placeholder.com/400x600?text=Obaid',
-        //     description: 'Ensuring the team moves forward—literally—with precision logistics and on-time coordination.'
-        // }
     ];
 
     const marketing = [
@@ -336,6 +331,7 @@ const TeamSection: React.FC = () => {
             name: 'Muhammad Asher',
             role: 'Junior QA Specialist',
             image: asherImage,
+            linkedin: 'https://www.linkedin.com/in/mohammadasher-dev/',
             description: 'Supports quality assurance through careful testing and detail-oriented review.'
         },
     ];
