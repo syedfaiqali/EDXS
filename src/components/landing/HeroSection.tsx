@@ -155,10 +155,18 @@ const HeroSection: React.FC = () => {
                             borderRadius: 3,
                             px: 5,
                             py: 2,
+                            border: '2px solid transparent',
                             fontSize: '1.1rem',
                             fontWeight: 700,
                             boxShadow: '0 4px 14px 0 rgba(0,0,0,0.2)',
-                            '&:hover': { bgcolor: 'primary.dark' }
+                            transition: 'background-color 220ms ease, color 220ms ease, border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease',
+                            '&:hover': {
+                                bgcolor: 'transparent',
+                                color: 'primary.main',
+                                borderColor: 'primary.main',
+                                boxShadow: 'none',
+                                transform: 'translateY(-2px)',
+                            }
                         }}
                     >
                         Start 10 Day Trial
