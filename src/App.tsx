@@ -13,6 +13,8 @@ import theme from './theme/theme';
 import Logo from './components/Logo';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import ContactShortcuts from './components/ContactShortcuts';
+import ChatbotWidget from './components/ChatbotWidget';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import useAdmissionRefresh from './hooks/useAdmissionRefresh';
 
@@ -292,6 +294,8 @@ const MainLayout: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <ChatbotWidget />
+      <ContactShortcuts />
       <ScrollToTop />
     </Box>
   );

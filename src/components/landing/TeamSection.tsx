@@ -8,14 +8,18 @@ import abdullahImage from '../../assets/abdullah.webp';
 import ghufranImage from '../../assets/ghufran.webp';
 import aminImage from '../../assets/amin.webp';
 import farazImage from '../../assets/faraz.webp';
-import asharImage from '../../assets/ashar.webp';
-import faiqImage from '../../assets/faiq.webp';
+import asharImage from '../../assets/ashar.png';
+import faiqImage from '../../assets/faiq.png';
 import raoImage from '../../assets/rao.webp';
 import omairImage from '../../assets/omair.webp';
 import sohailImage from '../../assets/Sohail Tareen.png';
 import shahbazImage from '../../assets/ShahbazAhmer.png';
 import wareeshaImage from '../../assets/wareesha.png';
 import mahamImage from '../../assets/maham.png';
+import bilalImage from '../../assets/bilal.png';
+import affanImage from '../../assets/affan.png';
+import kamranImage from '../../assets/kamran.png';
+import osamaImage from '../../assets/osama.png';
 
 // Animation for cards
 const cardFadeIn = keyframes`
@@ -286,7 +290,7 @@ const TeamSection: React.FC = () => {
         {
             name: 'Bilal Mahmood',
             role: 'Project Manager',
-            image: 'https://edu-man.com/img/PM.webp',
+            image: bilalImage,
             description: 'Ensuring seamless project delivery across global teams with a focus on agile methodologies.',
             linkedin: 'https://www.linkedin.com/in/bilal-mahmood-4a740690/'
         },
@@ -316,14 +320,14 @@ const TeamSection: React.FC = () => {
         {
             name: 'Affan Ahmed Khan',
             role: 'Implementation Lead',
-            image: 'https://edu-man.com/img/Affan.webp',
+            image: affanImage,
             description: 'Expert in bridging the gap between digital products and real-world institutional success.',
             linkedin: 'https://www.linkedin.com/in/affan-ahmed-khan-1b6258220/'
         },
         {
             name: 'Kamran Bharday',
             role: 'Implementation Expert',
-            image: 'https://edu-man.com/img/kamran.webp',
+            image: kamranImage,
             description: 'Dedicated to optimizing system deployments and ensuring high-impact results for all clients.',
             linkedin: 'https://www.linkedin.com/in/muhammad-owais-b7135823a/'
         },
@@ -345,7 +349,7 @@ const TeamSection: React.FC = () => {
         {
             name: 'Syed Osama Zaidi',
             role: 'Senior Backend Developer',
-            image: 'https://edu-man.com/img/Osama.webp',
+            image: osamaImage,
             description: 'Master of scalable architectures and secure data processing pipelines.',
             linkedin: 'https://www.linkedin.com/in/osama-zaidi-4b0b1b1b/'
         },
