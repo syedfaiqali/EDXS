@@ -62,7 +62,8 @@ const ContactShortcuts: React.FC = () => {
                         display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: 1.25,
+                        // A hidden label must not reserve flex gap; otherwise the icon sits left of centre.
+                        gap: 0,
                         overflow: 'hidden',
                         textDecoration: 'none',
                         fontSize: '0.8rem',
@@ -80,6 +81,7 @@ const ContactShortcuts: React.FC = () => {
                         '&[data-expanded="true"]': {
                             width: { xs: 52, sm: 210 },
                             px: { xs: 0, sm: 2 },
+                            gap: { xs: 0, sm: 1.25 },
                             justifyContent: { xs: 'center', sm: 'flex-start' },
                             transform: 'translateY(-3px)',
                             boxShadow: '0 13px 28px rgba(69, 103, 42, 0.3)',

@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Link, NavLink } from 'react-router-dom';
 import {
   ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
@@ -17,6 +17,9 @@ import ContactShortcuts from './components/ContactShortcuts';
 import ChatbotWidget from './components/ChatbotWidget';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import useAdmissionRefresh from './hooks/useAdmissionRefresh';
+import { AnimatePresence, motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 
 import LandingPage from './pages/LandingPage';
@@ -31,6 +34,8 @@ import AdmissionPage from './pages/AdmissionPage';
 import CareerPage from './pages/CareerPage';
 import ProgramDetailPage from './pages/ProgramDetailPage';
 import CheckStatusPage from './pages/CheckStatusPage';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const LoadingScreen = () => (
   <Box sx={{
@@ -47,6 +52,7 @@ const LoadingScreen = () => (
 );
 
 const MainLayout: React.FC = () => {
+  const pageAnimationRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
@@ -71,6 +77,45 @@ const MainLayout: React.FC = () => {
     updateScrolledState();
     window.addEventListener('scroll', updateScrolledState, { passive: true });
     return () => window.removeEventListener('scroll', updateScrolledState);
+  }, [currentPath]);
+
+  useLayoutEffect(() => {
+    const scope = pageAnimationRef.current;
+    if (!scope) return;
+
+    const media = gsap.matchMedia();
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const context = gsap.context(() => {
+        const select = gsap.utils.selector(scope);
+        const text = select('h1, h2, h3, h4, h5, h6, p, .MuiTypography-root');
+        const images = select('img, video, picture');
+        const forms = select('form');
+        const cards = select('.MuiCard-root, .MuiPaper-root');
+
+        text.forEach((element) => {
+          gsap.fromTo(element, { autoAlpha: 0, y: 18 }, {
+            autoAlpha: 1, y: 0, duration: 0.55, ease: 'power3.out', clearProps: 'transform,opacity,visibility',
+            scrollTrigger: { trigger: element, start: 'top 92%', once: true }
+          });
+        });
+        images.forEach((element) => {
+          gsap.fromTo(element, { autoAlpha: 0, scale: 0.96 }, {
+            autoAlpha: 1, scale: 1, duration: 0.7, ease: 'power3.out', clearProps: 'transform,opacity,visibility',
+            scrollTrigger: { trigger: element, start: 'top 92%', once: true }
+          });
+        });
+        [...forms, ...cards].forEach((element) => {
+          gsap.fromTo(element, { autoAlpha: 0, y: 22 }, {
+            autoAlpha: 1, y: 0, duration: 0.55, ease: 'power3.out', clearProps: 'transform,opacity,visibility',
+            scrollTrigger: { trigger: element, start: 'top 92%', once: true }
+          });
+        });
+      }, scope);
+
+      return () => context.revert();
+    });
+
+    return () => media.revert();
   }, [currentPath]);
   const handleOpenLanguageModal = () => {
     setTempLang(language);
@@ -112,7 +157,7 @@ const MainLayout: React.FC = () => {
               <Logo size="small" />
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: { md: 1.5, lg: 2.5 } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: { md: 2, lg: 3 } }}>
               {[
                 { label: 'Home', path: '/' },
                 { label: 'About Us', path: '/aboutus' },
@@ -133,6 +178,11 @@ const MainLayout: React.FC = () => {
                     fontWeight: 600,
                     textDecoration: 'none',
                     whiteSpace: 'nowrap',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: 46,
+                    lineHeight: 1,
                     opacity: 1,
                     '&:hover': { color: 'primary.dark', opacity: 1 },
                     pb: 0.5,
@@ -159,6 +209,11 @@ const MainLayout: React.FC = () => {
                   fontWeight: 600,
                   textDecoration: 'none',
                   whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: 46,
+                  lineHeight: 1,
                   pb: 0.5,
                   px: 0.5,
                   borderBottom: '2px solid transparent',
@@ -172,7 +227,7 @@ const MainLayout: React.FC = () => {
               </Typography>
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { md: 2, lg: 2.5 }, ml: { md: 2, lg: 3 }, flexShrink: 0 }}>
               {currentPath === '/free-trial' && (
                 <Translate
                   sx={{ color: 'primary.main', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
@@ -192,6 +247,10 @@ const MainLayout: React.FC = () => {
                   textTransform: 'none',
                   fontWeight: 600,
                   whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: 1,
                   transition: 'color 280ms ease, border-color 280ms ease, background-color 280ms ease',
                   '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light', color: 'primary.main' }
                 }}
@@ -211,6 +270,10 @@ const MainLayout: React.FC = () => {
                   textTransform: 'none',
                   fontWeight: 700,
                   whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: 1,
                   '&:hover': { bgcolor: 'primary.dark' }
                 }}
               >
@@ -228,8 +291,17 @@ const MainLayout: React.FC = () => {
         zIndex: 1,
         mb: { xs: 0, md: '90vh' }
       }}>
-        <Suspense fallback={<LoadingScreen />}>
-          <Routes>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            ref={pageAnimationRef}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+          >
+          <Suspense fallback={<LoadingScreen />}>
+          <Routes location={location}>
             <Route path="/" element={<LandingPage />} />
             <Route path="/registration" element={<Navigate to="/demo" replace />} />
             <Route path="/demo" element={<DemoPage />} />
@@ -247,7 +319,9 @@ const MainLayout: React.FC = () => {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </Suspense>
+          </Suspense>
+          </motion.div>
+        </AnimatePresence>
       </Box>
 
       <Box sx={{
@@ -271,7 +345,7 @@ const MainLayout: React.FC = () => {
                 labelId="language-select-label"
                 value={tempLang}
                 label={t('select_language')}
-                onChange={(e) => setTempLang(e.target.value as any)}
+                onChange={(e) => setTempLang(e.target.value as 'English' | 'Urdu' | 'Arabic')}
               >
                 <MenuItem value="English">English</MenuItem>
                 <MenuItem value="Urdu">Urdu (اردو)</MenuItem>
