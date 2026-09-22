@@ -52,7 +52,7 @@ const HeroSection: React.FC = () => {
                 Math.max(0, (window.scrollY - heroStart) / Math.max(hero.offsetHeight, 1))
             );
 
-            curveLayer.style.setProperty('--hero-curve-translate', `${-progress * hero.offsetHeight}px`);
+            curveLayer.style.setProperty('--hero-curve-translate', `${-progress * hero.offsetHeight * 0.12}px`);
         };
 
         const requestCurveUpdate = () => {
@@ -247,7 +247,7 @@ const HeroSection: React.FC = () => {
                 left: 0,
                 right: 0,
                 top: 'calc(100% - var(--hero-wave-height))',
-                height: 'calc(100% + var(--hero-wave-height))',
+                height: 'calc(100% + var(--hero-wave-height) + 4px)',
                 '--hero-wave-height': { xs: '80px', md: '150px' },
                 '--hero-curve-translate': '0px',
                 transform: 'translate3d(0, var(--hero-curve-translate), 0)',

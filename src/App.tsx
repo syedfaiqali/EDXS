@@ -85,10 +85,11 @@ const MainLayout: React.FC = () => {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: isHomeAtTop ? 'transparent' : 'rgba(255,255,255,0.93)',
+          bgcolor: isHomeAtTop ? 'transparent' : 'rgba(255,255,255,0.86)',
           backdropFilter: isHomeAtTop ? 'none' : 'blur(18px)',
-          borderBottom: 'none',
-          transition: 'background-color 220ms ease, backdrop-filter 220ms ease, border-color 220ms ease',
+          borderBottom: isHomeAtTop ? '1px solid transparent' : '1px solid rgba(111,150,63,0.12)',
+          boxShadow: isHomeAtTop ? 'none' : '0 8px 28px rgba(24,35,52,0.08)',
+          transition: 'background-color 280ms ease, backdrop-filter 280ms ease, border-color 280ms ease, box-shadow 280ms ease',
           width: '100%',
           zIndex: (theme) => theme.zIndex.drawer + 1
         }}
@@ -178,14 +179,15 @@ const MainLayout: React.FC = () => {
                 to="/registration"
                 variant="outlined"
                 sx={{
-                  color: '#fff',
-                  borderColor: 'divider',
+                  color: isHomeAtTop ? '#fff' : 'primary.main',
+                  borderColor: isHomeAtTop ? 'rgba(255,255,255,0.7)' : 'rgba(111,150,63,0.35)',
                   borderRadius: 3,
                   minHeight: 60,
                   px: 3.5,
                   textTransform: 'none',
                   fontWeight: 600,
                   whiteSpace: 'nowrap',
+                  transition: 'color 280ms ease, border-color 280ms ease, background-color 280ms ease',
                   '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light', color: 'primary.main' }
                 }}
               >
