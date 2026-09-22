@@ -11,12 +11,11 @@ import {
     keyframes,
 } from '@mui/material';
 import {
-    AutoAwesome,
     Close,
     DeleteOutline,
     Send,
-    SmartToy,
 } from '@mui/icons-material';
+import navbarLogo from '../assets/edxs-navbar-logo.webp';
 
 type ChatMessage = {
     id: string;
@@ -107,14 +106,14 @@ const ChatbotWidget: React.FC = () => {
                         zIndex: 10000,
                         width: 58,
                         height: 58,
-                        bgcolor: 'primary.main',
-                        color: 'white',
+                        bgcolor: 'white',
+                        color: 'primary.main',
                         animation: `${assistantPulse} 2.2s ease-in-out infinite`,
-                        '&:hover': { bgcolor: 'primary.dark', transform: 'translateY(-3px) scale(1.04)' },
+                        '&:hover': { bgcolor: 'white', transform: 'translateY(-3px) scale(1.04)' },
                         '@media (prefers-reduced-motion: reduce)': { animation: 'none', transition: 'none' },
                     }}
                 >
-                    <AutoAwesome />
+                    <Box component="img" src={navbarLogo} alt="EDXS AI Assistant" sx={{ width: 38, height: 30, objectFit: 'contain' }} />
                 </Fab>
             </Tooltip>
 
@@ -149,8 +148,8 @@ const ChatbotWidget: React.FC = () => {
                         }}
                     >
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
-                            <Avatar sx={{ width: 38, height: 38, bgcolor: 'rgba(255,255,255,0.18)' }}>
-                                <SmartToy />
+                            <Avatar sx={{ width: 42, height: 42, p: 0.45, bgcolor: 'white' }}>
+                                <Box component="img" src={navbarLogo} alt="EDXS" sx={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                             </Avatar>
                             <Box>
                                 <Typography sx={{ fontWeight: 800, lineHeight: 1.15 }}>EDXS AI Assistant</Typography>
@@ -182,8 +181,10 @@ const ChatbotWidget: React.FC = () => {
                                     flexDirection: message.role === 'user' ? 'row-reverse' : 'row',
                                 }}
                             >
-                                <Avatar sx={{ width: 28, height: 28, bgcolor: message.role === 'user' ? 'primary.main' : 'secondary.main', color: message.role === 'user' ? 'white' : 'primary.dark' }}>
-                                    {message.role === 'user' ? <Typography sx={{ fontSize: '0.72rem', fontWeight: 800 }}>You</Typography> : <SmartToy sx={{ fontSize: '1rem' }} />}
+                                <Avatar sx={{ width: 28, height: 28, p: message.role === 'user' ? 0 : 0.3, bgcolor: message.role === 'user' ? 'primary.main' : 'white', color: 'white', border: message.role === 'user' ? 'none' : '1px solid #dfe7d4' }}>
+                                    {message.role === 'user'
+                                        ? <Typography sx={{ fontSize: '0.72rem', fontWeight: 800 }}>You</Typography>
+                                        : <Box component="img" src={navbarLogo} alt="EDXS" sx={{ width: '100%', height: '100%', objectFit: 'contain' }} />}
                                 </Avatar>
                                 <Box
                                     sx={{

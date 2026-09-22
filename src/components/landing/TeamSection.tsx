@@ -5,7 +5,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
 import abdullahImage from '../../assets/abdullah.webp';
-import ghufranImage from '../../assets/ghufran.webp';
+import ghufranImage from '../../assets/ghufran.png';
 import aminImage from '../../assets/amin.webp';
 import farazImage from '../../assets/faraz.webp';
 import asharImage from '../../assets/ashar.png';
