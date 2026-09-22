@@ -12,6 +12,10 @@ import asharImage from '../../assets/ashar.webp';
 import faiqImage from '../../assets/faiq.webp';
 import raoImage from '../../assets/rao.webp';
 import omairImage from '../../assets/omair.webp';
+import sohailImage from '../../assets/Sohail Tareen.png';
+import shahbazImage from '../../assets/ShahbazAhmer.png';
+import wareeshaImage from '../../assets/wareesha.png';
+import mahamImage from '../../assets/maham.png';
 
 // Animation for cards
 const cardFadeIn = keyframes`
@@ -253,27 +257,27 @@ const TeamSection: React.FC = () => {
         {
             name: 'Sohail Tareen',
             role: 'Founder & CEO',
-            image: 'https://edu-man.com/img/Founder%20CEO.webp',
+            image: sohailImage,
             description: 'Visionary leader with 20+ years of experience in educational transformation and digital strategy.',
             linkedin: 'https://www.linkedin.com/in/sohail-tareen-931b0b1b/'
         },
         {
             name: 'Shahbaz Ahmer',
             role: 'Chief Technical Officer',
-            image: 'https://edu-man.com/img/CTO.webp',
+            image: shahbazImage,
             description: 'Architecting complex systems and leading technical innovations at the intersection of AI and Web3.',
             linkedin: 'https://www.linkedin.com/in/shahbazahmer/'
         },
         {
             name: 'Maham Tareen',
             role: 'Creative Director',
-            image: 'https://edu-man.com/img/Creative%20director.webp',
+            image: mahamImage,
             description: 'Award-winning designer focused on creating intuitive and emotionally resonant user experiences.'
         },
         {
             name: 'Wareesha Tareen',
             role: 'Operational Manager',
-            image: 'https://edu-man.com/img/Wareesha.webp',
+            image: wareeshaImage,
             description: 'Driving organizational excellence through strategic planning and meticulous operational oversight.'
         }
     ];

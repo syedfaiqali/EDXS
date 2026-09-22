@@ -4,7 +4,7 @@ import AboutUsSection from '../components/landing/AboutUsSection';
 
 const AboutUsPage: React.FC = () => {
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#f9f9f9' }}>
+        <Box sx={{ minHeight: '100vh', bgcolor: '#f5f7ef' }}>
             <AboutUsSection />
         </Box>
     );

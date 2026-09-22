@@ -103,10 +103,9 @@ const AboutUsTimeline: React.FC = () => {
                     borderBottomLeftRadius: 0,
                     borderBottomRightRadius: 0,
                     overflow: 'hidden',
-                    background: 'rgba(255, 255, 255, 0.4)',
-                    backdropFilter: 'blur(30px)',
-                    border: '1px solid rgba(255, 255, 255, 0.5)',
-                    boxShadow: '0 60px 150px rgba(0,0,0,0.1)',
+                    background: '#fff',
+                    border: '1px solid #dfe7d4',
+                    boxShadow: '0 18px 44px rgba(24,35,52,0.07)',
                     p: { xs: 4, md: 8 },
                     mb: 10
                 }}

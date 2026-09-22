@@ -12,11 +12,10 @@ const AboutUsSection: React.FC = () => {
         <Box
             id="about-us"
             sx={{
-                bgcolor: '#fff',
+                bgcolor: '#f5f7ef',
                 position: 'relative',
                 overflow: 'hidden',
-                // Adding a soft top shadow to separate from Hero or previous section
-                boxShadow: '0 -20px 100px rgba(0,0,0,0.02)',
+                boxShadow: '0 -20px 100px rgba(24,35,52,0.02)',
             }}
         >
             {/* Global floating background elements for the entire About Us section */}
