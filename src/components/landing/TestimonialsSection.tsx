@@ -4,6 +4,7 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { useDispatch } from 'react-redux';
 import { setGlobalStep } from '../../store/selectionSlice';
 import { useNavigate } from 'react-router-dom';
+import { TRIAL_DAYS } from '../../api/trial';
 import dashboardImage from '../../assets/01_Dashboard.webp';
 import humanResourceImage from '../../assets/02_Human_Resource_HR.webp';
 import organizationImage from '../../assets/03_Organization.webp';
@@ -314,7 +315,7 @@ const TestimonialsSection: React.FC = () => {
             <Box textAlign="center" pb={12} pt={6} sx={{ position: 'relative', zIndex: 1, color: 'white', display: 'flex', justifyContent: 'center', gap: 3 }}>
                 <Button
                     variant="contained"
-                    onClick={() => { dispatch(setGlobalStep('selection')); navigate('/contact'); }}
+                    onClick={() => { dispatch(setGlobalStep('selection')); navigate('/free-trial'); }}
                     sx={{
                         bgcolor: '#dce9cb',
                         color: '#76a345',
@@ -331,7 +332,7 @@ const TestimonialsSection: React.FC = () => {
                         boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
                     }}
                 >
-                    Start 10 Day Free Trial
+                    Start {TRIAL_DAYS} Day Free Trial
                 </Button>
                 <Button
                     variant="outlined"

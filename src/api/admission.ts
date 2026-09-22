@@ -8,7 +8,10 @@
  * same table the back office reads.
  */
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5001').replace(/\/$/, '');
+// import.meta.env is injected by Vite; guarded so the module can also be loaded
+// outside a Vite build (tests, tooling) without blowing up at import time.
+const API_BASE_URL = ((import.meta as { env?: Record<string, string> }).env?.VITE_API_BASE_URL
+    ?? 'http://localhost:5001').replace(/\/$/, '');
 
 /** A class or programme a register accepts applications for. */
 export interface AdmissionProgram {
@@ -157,6 +160,17 @@ export interface AdmissionPeriod {
     endTime: string;
     subject: string;
     teacher: string;
+    /** Semester the period's subject belongs to; empty when none is recorded. */
+    semester: string;
+    /** Position of the semester in teaching order. */
+    semesterOrder: number;
+}
+
+/** One subject on a programme, with the semester it is taught in. */
+export interface AdmissionSubject {
+    name: string;
+    semester: string;
+    semesterOrder: number;
 }
 
 /** What a programme teaches, when, and who takes each period. */
@@ -164,6 +178,10 @@ export interface AdmissionProgramDetail {
     id: number;
     name: string;
     subjects: string[];
+    /** The subjects with their semesters, for the semester-wise outline. */
+    courseOutline: AdmissionSubject[];
+    /** Semester names in teaching order; empty when none are recorded. */
+    semesters: string[];
     periods: AdmissionPeriod[];
     teachers: string[];
 }
@@ -191,6 +209,8 @@ export const fetchProgramDetail = async (
         id: data?.id ?? programId,
         name: data?.name ?? '',
         subjects: data?.subjects ?? [],
+        courseOutline: data?.courseOutline ?? [],
+        semesters: data?.semesters ?? [],
         periods: data?.periods ?? [],
         teachers: data?.teachers ?? []
     };
@@ -223,6 +243,27 @@ export const fetchAdmissionBoard = async (
         schools: data?.schools ?? [],
         cities: data?.cities ?? []
     };
+};
+
+/** One advertised intake, for the programme page. */
+export const fetchRegister = async (
+    registerId: number,
+    signal?: AbortSignal
+): Promise<AdmissionRegister | null> => {
+    const response = await fetch(`${API_BASE_URL}/api/public/admission/registers/${registerId}`, {
+        signal,
+        headers: { Accept: 'application/json' }
+    });
+
+    if (response.status === 404) {
+        return null;
+    }
+
+    if (!response.ok) {
+        throw new Error(`Intake request failed (${response.status})`);
+    }
+
+    return (await response.json()) as AdmissionRegister;
 };
 
 /** Raises an admission enquiry against one register. */
