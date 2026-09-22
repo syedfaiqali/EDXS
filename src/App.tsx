@@ -12,11 +12,13 @@ import { resetFlow } from './store/selectionSlice';
 import theme from './theme/theme';
 import Logo from './components/Logo';
 import Footer from './components/Footer';
-import CheckStatusDialog from './components/CheckStatusDialog';
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import useAdmissionRefresh from './hooks/useAdmissionRefresh';
+
+
 import LandingPage from './pages/LandingPage';
-import RegistrationPage from './pages/RegistrationPage';
+import FreeTrialPage from './pages/FreeTrialPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ProductsPage from './pages/ProductsPage';
 import ServicesPage from './pages/ServicesPage';
@@ -25,6 +27,8 @@ import ContactPage from './pages/ContactPage';
 import ProgramsPage from './pages/ProgramsPage';
 import AdmissionPage from './pages/AdmissionPage';
 import CareerPage from './pages/CareerPage';
+import ProgramDetailPage from './pages/ProgramDetailPage';
+import CheckStatusPage from './pages/CheckStatusPage';
 
 const LoadingScreen = () => (
   <Box sx={{
@@ -50,9 +54,10 @@ const MainLayout: React.FC = () => {
 
   const { language, setLanguage, t } = useLanguage();
   const dispatch = useDispatch();
+  // One timer for the whole app, refreshing cached admissions data quietly.
+  useAdmissionRefresh();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [tempLang, setTempLang] = useState(language);
   const [isScrolled, setIsScrolled] = useState(false);
   const currentPath = location.pathname;
@@ -111,7 +116,6 @@ const MainLayout: React.FC = () => {
                 { label: 'About Us', path: '/aboutus' },
                 { label: 'Products', path: '/products' },
                 { label: 'Services', path: '/services' },
-                { label: 'Programs', path: '/programs' },
                 { label: 'Admission', path: '/admission' },
                 { label: 'Career', path: '/career' },
                 { label: 'Team', path: '/team' },
@@ -142,25 +146,24 @@ const MainLayout: React.FC = () => {
                 </Typography>
               ))}
 
-              {/* Opens a dialog rather than routing, so it sits beside the links
-                  rather than among them, but is styled to read as one of them. */}
+              {/* Sits apart from the section links above because it is a task
+                  rather than a destination, but is styled to read as one of them. */}
               <Typography
-                component="button"
-                type="button"
+                component={NavLink}
+                to="/check-status"
                 variant="body2"
-                onClick={() => setIsStatusOpen(true)}
                 sx={{
                   color: 'text.primary',
                   fontWeight: 600,
+                  textDecoration: 'none',
                   whiteSpace: 'nowrap',
-                  cursor: 'pointer',
-                  border: 'none',
-                  background: 'none',
-                  font: 'inherit',
                   pb: 0.5,
                   px: 0.5,
                   borderBottom: '2px solid transparent',
-                  '&:hover': { color: 'primary.dark' }
+                  '&:hover': { color: 'primary.dark' },
+                  '&.active': {
+                    borderBottom: '2px solid', borderColor: 'primary.main', color: 'primary.dark'
+                  }
                 }}
               >
                 Check Status
@@ -168,7 +171,7 @@ const MainLayout: React.FC = () => {
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
-              {currentPath === '/registration' && (
+              {currentPath === '/free-trial' && (
                 <Translate
                   sx={{ color: 'primary.main', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
                   onClick={handleOpenLanguageModal}
@@ -176,7 +179,7 @@ const MainLayout: React.FC = () => {
               )}
               <Button
                 component={Link}
-                to="/registration"
+                to="/free-trial"
                 variant="outlined"
                 sx={{
                   color: isHomeAtTop ? '#fff' : 'primary.main',
@@ -195,7 +198,7 @@ const MainLayout: React.FC = () => {
               </Button>
               <Button
                 component={Link}
-                to="/registration"
+                to="/free-trial"
                 variant="contained"
                 sx={{
                   bgcolor: 'primary.main',
@@ -226,13 +229,19 @@ const MainLayout: React.FC = () => {
         <Suspense fallback={<LoadingScreen />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/registration" element={<RegistrationPage />} />
+            {/* The demo enquiry flow this URL used to serve has been retired in
+                favour of the trial sign-up, which creates a real account. The
+                route is kept so existing links and bookmarks still land. */}
+            <Route path="/registration" element={<Navigate to="/free-trial" replace />} />
+            <Route path="/free-trial" element={<FreeTrialPage />} />
             <Route path="/aboutus" element={<AboutUsPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/programs" element={<ProgramsPage />} />
             <Route path="/admission" element={<AdmissionPage />} />
+            <Route path="/admission/intake/:registerId" element={<ProgramDetailPage />} />
             <Route path="/career" element={<CareerPage />} />
+            <Route path="/check-status" element={<CheckStatusPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
@@ -251,8 +260,6 @@ const MainLayout: React.FC = () => {
       </Box>
 
       {/* Language Modal */}
-      <CheckStatusDialog open={isStatusOpen} onClose={() => setIsStatusOpen(false)} />
-
       <Dialog open={isModalOpen} onClose={handleCloseModal} maxWidth="xs" fullWidth>
         <DialogTitle sx={{ fontWeight: 700 }}>{t('select_language')}</DialogTitle>
         <DialogContent>

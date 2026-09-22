@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
     Box,
     Typography,
     Container,
@@ -24,20 +21,18 @@ import {
     IconButton,
     alpha
 } from '@mui/material';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useDebouncedValue from '../../hooks/useDebouncedValue';
 import {
-    fetchAdmissionBoard,
-    fetchProgramDetail,
     submitAdmissionEnquiry,
     emptyAdmissionBoard,
     schoolLogoUrl,
-    type AdmissionBoard,
-    type AdmissionPeriod,
-    type AdmissionProgram,
-    type AdmissionProgramDetail,
     type AdmissionRegister
 } from '../../api/admission';
+import { loadBoard, boardCacheKey } from '../../store/admissionSlice';
+import type { AppDispatch, RootState } from '../../store';
 import SearchIcon from '@mui/icons-material/Search';
 import SchoolIcon from '@mui/icons-material/School';
 import ApartmentIcon from '@mui/icons-material/Apartment';
@@ -47,9 +42,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import ScheduleIcon from '@mui/icons-material/Schedule';
 
 interface FormState {
     fullName: string;
@@ -78,8 +70,6 @@ const formatDate = (iso: string | null): string => {
     const date = new Date(iso);
     return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString();
 };
-
-const closingLabel = (register: AdmissionRegister): string => formatDate(register.endDate);
 
 /**
  * A school's logo, falling back to a generic mark when the school has none or
@@ -126,243 +116,11 @@ const SchoolLogo: React.FC<{ code: string; hasLogo: boolean; size: number }> = (
     );
 };
 
-/**
- * One programme in the Programs dialog. Its syllabus and timetable are fetched
- * the first time it is expanded, so opening the dialog does not pull a timetable
- * for every programme at once — a single school class can run to a thousand
- * periods.
- */
-const ProgramRow: React.FC<{
-    registerId: number;
-    program: AdmissionProgram;
-}> = ({ registerId, program }) => {
-    const [detail, setDetail] = useState<AdmissionProgramDetail | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [failed, setFailed] = useState(false);
-
-    const loadDetail = useCallback(() => {
-        if (detail || isLoading) return;
-        setIsLoading(true);
-        fetchProgramDetail(registerId, program.id)
-            .then((data) => {
-                setDetail(data);
-                setFailed(false);
-            })
-            .catch(() => setFailed(true))
-            .finally(() => setIsLoading(false));
-    }, [detail, isLoading, registerId, program.id]);
-
-    // Periods read best grouped by day, in week order.
-    const byDay = useMemo<[string, AdmissionPeriod[]][]>(() => {
-        if (!detail) return [];
-        const days = new Map<string, AdmissionPeriod[]>();
-        detail.periods.forEach((period) => {
-            const list = days.get(period.day);
-            if (list) {
-                list.push(period);
-            } else {
-                days.set(period.day, [period]);
-            }
-        });
-        return Array.from(days.entries()).sort(
-            ([, a], [, b]) => a[0].dayOrder - b[0].dayOrder
-        );
-    }, [detail]);
-
-    return (
-        <Accordion
-            disableGutters
-            elevation={0}
-            onChange={(_, expanded) => expanded && loadDetail()}
-            sx={{
-                borderRadius: 2,
-                bgcolor: alpha('#76a345', 0.05),
-                border: '1px solid',
-                borderColor: alpha('#76a345', 0.15),
-                '&:before': { display: 'none' }
-            }}
-        >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 2 }}>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: 2,
-                        width: '100%',
-                        pr: 1
-                    }}
-                >
-                    <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>
-                        {program.name}
-                    </Typography>
-                    {program.seats != null && (
-                        <Chip
-                            label={`${program.seats} seats`}
-                            size="small"
-                            sx={{
-                                bgcolor: 'secondary.main',
-                                color: 'primary.dark',
-                                fontWeight: 700,
-                                flexShrink: 0
-                            }}
-                        />
-                    )}
-                </Box>
-            </AccordionSummary>
-
-            <AccordionDetails sx={{ px: 2, pb: 2, pt: 0 }}>
-                {isLoading && <Skeleton variant="rounded" height={90} />}
-
-                {failed && (
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        We could not load the details for this programme.
-                    </Typography>
-                )}
-
-                {detail && !isLoading && (
-                    <>
-                        {detail.subjects.length > 0 && (
-                            <Box sx={{ mb: detail.periods.length > 0 ? 2.5 : 0 }}>
-                                <Typography
-                                    variant="caption"
-                                    sx={{ color: 'text.secondary', fontWeight: 800, letterSpacing: 0.8 }}
-                                >
-                                    {detail.subjects.length === 1
-                                        ? '1 COURSE'
-                                        : `${detail.subjects.length} COURSES`}
-                                </Typography>
-                                <Box sx={{ mt: 0.75, display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-                                    {detail.subjects.map((subject) => (
-                                        <Chip
-                                            key={subject}
-                                            label={subject}
-                                            size="small"
-                                            variant="outlined"
-                                            sx={{
-                                                borderColor: alpha('#76a345', 0.35),
-                                                color: 'text.secondary',
-                                                bgcolor: 'background.paper'
-                                            }}
-                                        />
-                                    ))}
-                                </Box>
-                            </Box>
-                        )}
-
-                        {detail.teachers.length > 0 && (
-                            <Box sx={{ mb: 2.5 }}>
-                                <Typography
-                                    variant="caption"
-                                    sx={{ color: 'text.secondary', fontWeight: 800, letterSpacing: 0.8 }}
-                                >
-                                    {detail.teachers.length === 1 ? 'TEACHER' : 'TEACHERS'}
-                                </Typography>
-                                <Box sx={{ mt: 0.75, display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-                                    {detail.teachers.map((teacher) => (
-                                        <Chip
-                                            key={teacher}
-                                            icon={<PersonOutlineIcon sx={{ fontSize: '0.95rem' }} />}
-                                            label={teacher}
-                                            size="small"
-                                            sx={{
-                                                bgcolor: 'background.paper',
-                                                border: '1px solid',
-                                                borderColor: alpha('#76a345', 0.25),
-                                                color: 'text.primary',
-                                                fontWeight: 600
-                                            }}
-                                        />
-                                    ))}
-                                </Box>
-                            </Box>
-                        )}
-
-                        {byDay.length > 0 && (
-                            <Box>
-                                <Typography
-                                    variant="caption"
-                                    sx={{ color: 'text.secondary', fontWeight: 800, letterSpacing: 0.8 }}
-                                >
-                                    WEEKLY TIMETABLE
-                                </Typography>
-                                <Box sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                                    {byDay.map(([day, periods]) => (
-                                        <Box key={day}>
-                                            <Typography
-                                                variant="body2"
-                                                sx={{ fontWeight: 800, color: 'primary.dark', mb: 0.5 }}
-                                            >
-                                                {day}
-                                            </Typography>
-                                            {periods.map((period, index) => (
-                                                <Box
-                                                    key={`${day}-${index}`}
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexWrap: 'wrap',
-                                                        alignItems: 'baseline',
-                                                        gap: 1,
-                                                        py: 0.4,
-                                                        pl: 1,
-                                                        borderLeft: '2px solid',
-                                                        borderColor: alpha('#76a345', 0.3)
-                                                    }}
-                                                >
-                                                    <Box
-                                                        sx={{
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            gap: 0.5,
-                                                            color: 'text.secondary',
-                                                            minWidth: 150
-                                                        }}
-                                                    >
-                                                        <ScheduleIcon sx={{ fontSize: '0.9rem' }} />
-                                                        <Typography variant="body2">
-                                                            {period.startTime} – {period.endTime}
-                                                        </Typography>
-                                                    </Box>
-                                                    <Typography
-                                                        variant="body2"
-                                                        sx={{ fontWeight: 600, color: 'text.primary' }}
-                                                    >
-                                                        {period.subject || 'Scheduled period'}
-                                                    </Typography>
-                                                    {period.teacher && (
-                                                        <Typography
-                                                            variant="body2"
-                                                            sx={{ color: 'text.secondary' }}
-                                                        >
-                                                            · {period.teacher}
-                                                        </Typography>
-                                                    )}
-                                                </Box>
-                                            ))}
-                                        </Box>
-                                    ))}
-                                </Box>
-                            </Box>
-                        )}
-
-                        {detail.subjects.length === 0 && detail.periods.length === 0 && (
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                The school has not published a syllabus for this programme yet.
-                            </Typography>
-                        )}
-                    </>
-                )}
-            </AccordionDetails>
-        </Accordion>
-    );
-};
-
 const RegisterCard: React.FC<{
     register: AdmissionRegister;
     index: number;
     onApply: (register: AdmissionRegister) => void;
-    onViewPrograms: (register: AdmissionRegister) => void;
-}> = ({ register, index, onApply, onViewPrograms }) => {
+}> = ({ register, index, onApply }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const isVisible = useIntersectionObserver(cardRef, { threshold: 0.1 });
     const closes = formatDate(register.endDate);
@@ -472,7 +230,8 @@ const RegisterCard: React.FC<{
                 <Box sx={{ flexShrink: 0, ml: { md: 'auto' }, display: 'flex', gap: 1.5 }}>
                     <Button
                         variant="outlined"
-                        onClick={() => onViewPrograms(register)}
+                        component={RouterLink}
+                        to={`/admission/intake/${register.id}`}
                         disabled={register.programs.length === 0}
                         sx={{
                             color: 'primary.main',
@@ -499,18 +258,37 @@ const RegisterCard: React.FC<{
 };
 
 const AdmissionApply: React.FC = () => {
-    const [board, setBoard] = useState<AdmissionBoard>(emptyAdmissionBoard);
-    const [facets, setFacets] = useState<AdmissionBoard>(emptyAdmissionBoard);
-    const [isLoading, setIsLoading] = useState(true);
-    const [loadError, setLoadError] = useState<string | null>(null);
+    const dispatch = useDispatch<AppDispatch>();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
     const [schoolCode, setSchoolCode] = useState('');
     const [city, setCity] = useState('');
+    const [loadError, setLoadError] = useState<string | null>(null);
     const debouncedSearch = useDebouncedValue(search);
 
+    const filters = useMemo(
+        () => ({ search: debouncedSearch, schoolCode, city }),
+        [debouncedSearch, schoolCode, city]
+    );
+    const cacheKey = boardCacheKey(filters);
+
+    // Reading straight from the cache means a filter combination already seen
+    // renders immediately, with no request and no loading flash.
+    const board = useSelector((state: RootState) => state.admission.boards[cacheKey]);
+    const facets = useSelector((state: RootState) => state.admission.facets);
+    const isLoading = useSelector(
+        (state: RootState) =>
+            state.admission.boards[cacheKey] === undefined &&
+            state.admission.pending.includes(`board:${cacheKey}`)
+    );
+
+    // A cache miss renders as an empty board rather than null-checking in JSX.
+    const view = board ?? emptyAdmissionBoard;
+    const hasFilters = search.trim() !== '' || schoolCode !== '' || city !== '';
+
     const [selected, setSelected] = useState<AdmissionRegister | null>(null);
-    const [programsFor, setProgramsFor] = useState<AdmissionRegister | null>(null);
     const [programId, setProgramId] = useState<number | ''>('');
     const [form, setForm] = useState<FormState>(emptyForm);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -521,28 +299,20 @@ const AdmissionApply: React.FC = () => {
 
 
     useEffect(() => {
-        const controller = new AbortController();
-        setIsLoading(true);
-
-        fetchAdmissionBoard({ search: debouncedSearch, schoolCode, city }, controller.signal)
-            .then((data) => {
-                setBoard(data);
-                // Facets describe the whole board, so they are kept from the
-                // first successful load rather than narrowing with the filters.
-                setFacets((current) => (current.schools.length === 0 ? data : current));
-                setLoadError(null);
-            })
+        // The thunk skips the request when this combination is already cached or
+        // in flight, so this can fire freely as filters change.
+        dispatch(loadBoard(filters))
+            .unwrap()
+            .then(() => setLoadError(null))
             .catch((err: unknown) => {
-                if (err instanceof DOMException && err.name === 'AbortError') return;
-                setBoard(emptyAdmissionBoard);
+                // A skipped request reports as a condition error, which is not a
+                // failure the visitor should see.
+                if (err && typeof err === 'object' && 'name' in err && err.name === 'ConditionError') {
+                    return;
+                }
                 setLoadError('We could not load open admissions just now. Please try again shortly.');
-            })
-            .finally(() => {
-                if (!controller.signal.aborted) setIsLoading(false);
             });
-
-        return () => controller.abort();
-    }, [debouncedSearch, schoolCode, city]);
+    }, [dispatch, filters]);
 
     const openApply = useCallback((register: AdmissionRegister) => {
         setSelected(register);
@@ -552,6 +322,51 @@ const AdmissionApply: React.FC = () => {
         setSubmitError(null);
         setReference(null);
     }, []);
+
+    // Arriving from an intake page with "apply for this one": open that intake's
+    // form directly, rather than making the visitor find it on the board again.
+    //
+    // The request is consumed once and wiped from history, so closing the dialog
+    // cannot re-trigger it — without that, the effect would reopen the form the
+    // moment `selected` cleared.
+    const requested = location.state as
+        | { applyRegisterId?: number; applyProgramId?: number }
+        | null;
+    const handledRequest = useRef<number | null>(null);
+
+    useEffect(() => {
+        const wanted = requested?.applyRegisterId;
+        if (!wanted || handledRequest.current === wanted) return;
+
+        const match = view.registers.find((register) => register.id === wanted);
+        if (!match) {
+            // A filter left over from an earlier visit can hide the intake, so
+            // the filters are cleared and the lookup retried on the next render.
+            if (!isLoading && hasFilters) {
+                setSearch('');
+                setSchoolCode('');
+                setCity('');
+            }
+            return;
+        }
+
+        handledRequest.current = wanted;
+        setSelected(match);
+        setProgramId(
+            requested?.applyProgramId ??
+                (match.programs.length === 1 ? match.programs[0].id : '')
+        );
+        setForm(emptyForm);
+        setSubmitError(null);
+        setReference(null);
+
+        document
+            .getElementById('admission-apply')
+            ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Drop the intent so a refresh or back-navigation does not reopen it.
+        navigate(location.pathname, { replace: true, state: null });
+    }, [requested, view.registers, isLoading, hasFilters, navigate, location.pathname]);
 
     const updateField = useCallback(
         (key: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -612,8 +427,6 @@ const AdmissionApply: React.FC = () => {
         );
     }, [reference]);
 
-    const hasFilters = search.trim() !== '' || schoolCode !== '' || city !== '';
-
     return (
         <Box id="admission-apply" sx={{ bgcolor: 'background.default', py: { xs: 8, md: 12 } }}>
             <Container maxWidth="lg">
@@ -667,7 +480,7 @@ const AdmissionApply: React.FC = () => {
                                 onChange={(event) => setSchoolCode(event.target.value)}
                             >
                                 <MenuItem value="">All schools</MenuItem>
-                                {facets.schools.map((school) => (
+                                {(facets?.schools ?? []).map((school) => (
                                     <MenuItem key={school.code} value={school.code}>
                                         {school.name}
                                     </MenuItem>
@@ -684,7 +497,7 @@ const AdmissionApply: React.FC = () => {
                                 onChange={(event) => setCity(event.target.value)}
                             >
                                 <MenuItem value="">All cities</MenuItem>
-                                {facets.cities.map((entry) => (
+                                {(facets?.cities ?? []).map((entry) => (
                                     <MenuItem key={entry} value={entry}>
                                         {entry}
                                     </MenuItem>
@@ -695,7 +508,7 @@ const AdmissionApply: React.FC = () => {
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 {isLoading
                                     ? 'Loading…'
-                                    : `${board.total} ${board.total === 1 ? 'intake' : 'intakes'} open`}
+                                    : `${view.total} ${view.total === 1 ? 'intake' : 'intakes'} open`}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -731,7 +544,7 @@ const AdmissionApply: React.FC = () => {
                     </Grid>
                 )}
 
-                {!isLoading && !loadError && board.registers.length === 0 && (
+                {!isLoading && !loadError && view.registers.length === 0 && (
                     <Box sx={{ textAlign: 'center', py: 10 }}>
                         <SearchOffIcon sx={{ fontSize: '4rem', color: 'text.secondary', opacity: 0.5, mb: 2 }} />
                         <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>
@@ -745,101 +558,20 @@ const AdmissionApply: React.FC = () => {
                     </Box>
                 )}
 
-                {!isLoading && board.registers.length > 0 && (
+                {!isLoading && view.registers.length > 0 && (
                     <Grid container spacing={2.5}>
-                        {board.registers.map((register, index) => (
+                        {view.registers.map((register, index) => (
                             <RegisterCard
                                 key={register.id}
                                 register={register}
                                 index={index}
                                 onApply={openApply}
-                                onViewPrograms={setProgramsFor}
                             />
                         ))}
                     </Grid>
                 )}
 
             </Container>
-
-            {/* ---------- Programmes dialog ---------- */}
-            <Dialog
-                open={programsFor !== null}
-                onClose={() => setProgramsFor(null)}
-                maxWidth="sm"
-                fullWidth
-                scroll="paper"
-            >
-                {programsFor && (
-                    <>
-                        <DialogTitle sx={{ pr: 7 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                                <SchoolLogo
-                                    code={programsFor.schoolCode}
-                                    hasLogo={programsFor.hasLogo}
-                                    size={44}
-                                />
-                                <Typography variant="h6" sx={{ fontWeight: 900, color: 'text.primary' }}>
-                                    {programsFor.schoolName}
-                                </Typography>
-                            </Box>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
-                                {programsFor.campusName}
-                                {programsFor.academicSession && ` · ${programsFor.academicSession}`}
-                            </Typography>
-                            <IconButton
-                                onClick={() => setProgramsFor(null)}
-                                sx={{ position: 'absolute', right: 12, top: 12 }}
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        </DialogTitle>
-
-                        <DialogContent dividers>
-                            <Typography
-                                variant="caption"
-                                sx={{ color: 'text.secondary', fontWeight: 800, letterSpacing: 1 }}
-                            >
-                                {programsFor.programs.length === 1
-                                    ? '1 PROGRAMME OPEN'
-                                    : `${programsFor.programs.length} PROGRAMMES OPEN`}
-                            </Typography>
-
-                            <Box sx={{ mt: 1.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                {programsFor.programs.map((program) => (
-                                    <ProgramRow
-                                        key={program.id}
-                                        registerId={programsFor.id}
-                                        program={program}
-                                    />
-                                ))}
-                            </Box>
-
-                            {closingLabel(programsFor) && (
-                                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 3 }}>
-                                    Applications close {closingLabel(programsFor)}.
-                                </Typography>
-                            )}
-                        </DialogContent>
-
-                        <DialogActions sx={{ px: 3, py: 2 }}>
-                            <Button onClick={() => setProgramsFor(null)} sx={{ color: 'text.secondary' }}>
-                                Close
-                            </Button>
-                            <Button
-                                variant="contained"
-                                onClick={() => {
-                                    const register = programsFor;
-                                    setProgramsFor(null);
-                                    openApply(register);
-                                }}
-                                sx={{ bgcolor: 'primary.main', color: 'white', fontWeight: 700 }}
-                            >
-                                Apply
-                            </Button>
-                        </DialogActions>
-                    </>
-                )}
-            </Dialog>
 
             {/* ---------- Apply dialog ---------- */}
             <Dialog

@@ -6,7 +6,10 @@
  * advertising are returned, so everything in this file is public information.
  */
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5001').replace(/\/$/, '');
+// import.meta.env is injected by Vite; guarded so the module can also be loaded
+// outside a Vite build (tests, tooling) without blowing up at import time.
+const API_BASE_URL = ((import.meta as { env?: Record<string, string> }).env?.VITE_API_BASE_URL
+    ?? 'http://localhost:5001').replace(/\/$/, '');
 
 export interface CareerJob {
     id: number;
@@ -122,4 +125,58 @@ export const buildApplyUrl = (job: CareerJob): string | null => {
         return `${portalBase.replace(/\/$/, '')}/jobs/${job.jobPortalJobId}`;
     }
     return null;
+};
+
+/** One stage of a job application, mirroring `AdmissionStatusStep`. */
+export interface CareerApplicationStatusStep {
+    title: string;
+    description: string;
+    /** done | current | upcoming */
+    state: string;
+}
+
+/**
+ * A candidate's application, shaped like `AdmissionStatus` so the status page
+ * can render either journey with one timeline.
+ */
+export interface CareerApplicationStatus {
+    token: string;
+    kind: string;
+    applicantName: string;
+    /** The vacancy applied for, shown where an admission shows the student. */
+    positionTitle: string;
+    submittedOn: string | null;
+    currentStatus: string;
+    steps: CareerApplicationStatusStep[];
+}
+
+/**
+ * Looks up a job application by its reference.
+ *
+ * The public careers board is read-only today and candidates apply on the One
+ * Window job portal, so this endpoint does not exist on the gateway yet. A 404
+ * therefore covers both a mistyped reference and a client whose hiring is not
+ * tracked here; either way the caller shows "no application found" rather than
+ * an error, and the call starts working on its own once the endpoint ships.
+ */
+export const fetchCareerApplicationStatus = async (
+    clientCode: string,
+    token: string,
+    signal?: AbortSignal
+): Promise<CareerApplicationStatus | null> => {
+    const response = await fetch(
+        `${API_BASE_URL}/api/public/careers/${encodeURIComponent(clientCode)}/status/${encodeURIComponent(token)}`,
+        { signal, headers: { Accept: 'application/json' } }
+    );
+
+    // 404 is "not recognised"; 501/503 is the endpoint not being deployed yet.
+    if (response.status === 404 || response.status === 501 || response.status === 503) {
+        return null;
+    }
+
+    if (!response.ok) {
+        throw new Error(`We could not check that reference just now (${response.status}).`);
+    }
+
+    return (await response.json()) as CareerApplicationStatus;
 };
