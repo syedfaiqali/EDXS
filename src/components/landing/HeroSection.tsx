@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Box, Typography, Grid, Button, Container, keyframes } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import heroImage from '../../assets/HeroImage.webp';
@@ -26,12 +26,57 @@ const reveal = keyframes`
 
 const HeroSection: React.FC = () => {
     const navigate = useNavigate();
+    const heroRef = useRef<HTMLDivElement>(null);
+    const curveLayerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const hero = heroRef.current;
+        const curveLayer = curveLayerRef.current;
+
+        if (!hero || !curveLayer) return;
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let frameId: number | null = null;
+
+        const updateCurvePosition = () => {
+            frameId = null;
+
+            if (reducedMotion.matches) {
+                curveLayer.style.setProperty('--hero-curve-translate', '0px');
+                return;
+            }
+
+            const heroStart = window.scrollY + hero.getBoundingClientRect().top;
+            const progress = Math.min(
+                1,
+                Math.max(0, (window.scrollY - heroStart) / Math.max(hero.offsetHeight, 1))
+            );
+
+            curveLayer.style.setProperty('--hero-curve-translate', `${-progress * hero.offsetHeight}px`);
+        };
+
+        const requestCurveUpdate = () => {
+            if (frameId === null) frameId = window.requestAnimationFrame(updateCurvePosition);
+        };
+
+        updateCurvePosition();
+        window.addEventListener('scroll', requestCurveUpdate, { passive: true });
+        window.addEventListener('resize', requestCurveUpdate);
+        reducedMotion.addEventListener('change', requestCurveUpdate);
+
+        return () => {
+            window.removeEventListener('scroll', requestCurveUpdate);
+            window.removeEventListener('resize', requestCurveUpdate);
+            reducedMotion.removeEventListener('change', requestCurveUpdate);
+            if (frameId !== null) window.cancelAnimationFrame(frameId);
+        };
+    }, []);
 
     const titleText = "Let EDXS Take the Strain";
     const subText = "We've revolutionized the way schools operate, taking the strain out of management tasks so educators can focus on what truly matters: nurturing young minds.";
 
     return (
-        <Box sx={{
+        <Box ref={heroRef} sx={{
             bgcolor: '#f5f7ef',
             color: 'text.primary',
             pt: { xs: 17, md: 19 },
@@ -194,22 +239,34 @@ const HeroSection: React.FC = () => {
                 </Grid>
             </Grid>
             </Container>
-            <Box sx={{
+            <Box
+                ref={curveLayerRef}
+                aria-hidden="true"
+                sx={{
                 position: 'absolute',
                 left: 0,
                 right: 0,
-                bottom: 0,
-                height: { xs: 80, md: 150 },
+                top: 'calc(100% - var(--hero-wave-height))',
+                height: 'calc(100% + var(--hero-wave-height))',
+                '--hero-wave-height': { xs: '80px', md: '150px' },
+                '--hero-curve-translate': '0px',
+                transform: 'translate3d(0, var(--hero-curve-translate), 0)',
+                transition: 'transform 600ms cubic-bezier(0.22, 1, 0.36, 1)',
+                willChange: 'transform',
                 zIndex: 2,
                 pointerEvents: 'none',
-                lineHeight: 0
+                lineHeight: 0,
+                '@media (prefers-reduced-motion: reduce)': {
+                    transition: 'none'
+                }
             }}>
-                <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: '100%', display: 'block' }}>
+                <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ width: '100%', height: 'var(--hero-wave-height)', display: 'block' }}>
                     <path
                         fill="#e9efdd"
                         d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,128C672,107,768,117,864,138.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
                     />
                 </svg>
+                <Box sx={{ position: 'absolute', top: 'calc(var(--hero-wave-height) - 1px)', left: 0, right: 0, bottom: 0, bgcolor: '#e9efdd' }} />
             </Box>
         </Box>
     );

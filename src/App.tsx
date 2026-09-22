@@ -15,8 +15,6 @@ import Footer from './components/Footer';
 import CheckStatusDialog from './components/CheckStatusDialog';
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
-
-
 import LandingPage from './pages/LandingPage';
 import RegistrationPage from './pages/RegistrationPage';
 import AboutUsPage from './pages/AboutUsPage';
