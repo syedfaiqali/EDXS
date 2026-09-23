@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import demoVideo from '../../assets/AI School Management Solutions.webm';
-import posterImg from '../../assets/graph.webp';
+import posterImg from '../../assets/graph.png';
 
 const ProductDemoSection: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);

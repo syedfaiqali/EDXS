@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, keyframes } from '@mui/material';
-import graphImg from '../../assets/graph.webp';
+import graphImg from '../../assets/graph.png';
 
 const reveal = keyframes`
   from { opacity: 0; transform: translateY(10px); }

@@ -223,7 +223,7 @@ const TestimonialsSection: React.FC = () => {
                             '&:hover': {
                                 transform: 'scale(1.03)',
                                 boxShadow: '0 15px 40px rgba(0,0,0,0.12)',
-                                borderColor: '#76a345',
+                                borderColor: 'rgba(24,35,52,0.24)',
                                 '& .view-details-overlay': {
                                     opacity: 0.9,
                                     visibility: 'visible'
@@ -272,7 +272,7 @@ const TestimonialsSection: React.FC = () => {
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
-                                    bgcolor: 'rgba(118, 163, 69, 0.95)',
+                                    bgcolor: 'rgba(24, 35, 52, 0.72)',
                                     borderRadius: 4,
                                     display: 'flex',
                                     alignItems: 'center',
@@ -294,11 +294,11 @@ const TestimonialsSection: React.FC = () => {
                                         borderRadius: 3,
                                         fontWeight: 700,
                                         fontSize: '1.1rem',
-                                        border: '2px solid #dce9cb',
+                                        border: '2px solid white',
                                         transition: 'all 0.3s ease',
                                         '&:hover': {
-                                            bgcolor: 'white',
-                                            borderColor: 'white',
+                                            bgcolor: '#f5f7ef',
+                                            borderColor: '#f5f7ef',
                                             transform: 'scale(1.05)',
                                             boxShadow: '0 8px 20px rgba(0,0,0,0.3)'
                                         }
