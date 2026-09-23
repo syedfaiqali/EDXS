@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
                             {[
                                 { Icon: Facebook, href: 'https://www.facebook.com/EduManSchoolManagement' },
                                 { Icon: Instagram, href: 'https://www.instagram.com/Eduman_system/' },
-                                { Icon: LinkedIn, href: 'https://www.linkedin.com/company/eduman/' },
+                                { Icon: LinkedIn, href: 'https://www.linkedin.com/company/edxs/posts/?feedView=all' },
                                 { Icon: Mail, href: 'mailto:info@ed-xs.com' },
                                 { Icon: Phone, href: 'tel:+923223440909' }
                             ].map((social, index) => (
