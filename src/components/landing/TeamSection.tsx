@@ -53,7 +53,7 @@ const TeamGroup: React.FC<TeamSectionProps> = ({ title, members, dark }) => {
         <Box
             ref={sectionRef}
             sx={{
-                bgcolor: dark ? 'primary.main' : 'white',
+                bgcolor: dark ? 'primary.main' : 'secondary.main',
                 py: { xs: 10, md: 15 },
                 textAlign: 'center',
                 borderBottom: `1px solid ${alpha(dark ? '#fff' : '#000', 0.05)}`
@@ -165,7 +165,7 @@ const TeamGroup: React.FC<TeamSectionProps> = ({ title, members, dark }) => {
                                             left: 0,
                                             width: '100%',
                                             height: '100%',
-                                            bgcolor: alpha(dark ? '#1e293b' : '#1e293b', 0.9),
+                                            bgcolor: alpha('#45672a', 0.94),
                                             color: 'white',
                                             display: 'flex',
                                             flexDirection: 'column',
@@ -285,16 +285,16 @@ const TeamSection: React.FC = () => {
 
     const management = [
         {
-            name: 'Wareesha Tareen',
-            role: 'Operational Manager',
-            image: wareeshaImage,
-            description: 'Keeps operational planning aligned, organised, and focused on client success.'
-        },
-        {
             name: 'Maham Tareen',
             role: 'Creative Director',
             image: mahamImage,
             description: 'Shapes clear, thoughtful experiences that make EDXS easy for every user to navigate.'
+        },
+        {
+            name: 'Wareesha Tareen',
+            role: 'Operational Manager',
+            image: wareeshaImage,
+            description: 'Keeps operational planning aligned, organised, and focused on client success.'
         },
         {
             name: 'Bilal Mahmood',
@@ -304,15 +304,15 @@ const TeamSection: React.FC = () => {
             linkedin: 'https://www.linkedin.com/in/bilal-mahmood-4a740690/'
         },
         {
-            name: 'Syed Faiq Ali Jafri',
-            role: 'Team Lead',
-            image: faiqImage,
-            description: 'Leads development work with a hands-on focus on quality and dependable delivery.',
-            linkedin: 'https://www.linkedin.com/in/syedfaiqjafridev'
+            name: 'Ashar Samad',
+            role: 'Lead System Architect',
+            image: asharImage,
+            description: 'Designs the system architecture behind robust EDXS integrations.',
+            linkedin: 'https://www.linkedin.com/in/ashar-samad-863773194/'
         },
     ];
 
-    const marketing = [
+    const platformOperations = [
         {
             name: 'Affan Ahmed Khan',
             role: 'Devops & Cloud Specialist',
@@ -336,20 +336,48 @@ const TeamSection: React.FC = () => {
         },
     ];
 
-    const devTeam1 = [
+    const softwareEngineering = [
+        {
+            name: 'Syed Faraz Ali',
+            role: 'Principle Software Engineer',
+            image: farazImage,
+            description: 'Maintains strong frontend standards for a consistent, intuitive EDXS experience.',
+            linkedin: 'https://www.linkedin.com/in/syed-faraz-ali-704b23384/'
+        },
+        {
+            name: 'Syed Faiq Ali Jafri',
+            role: 'Senior Software Engineer',
+            image: faiqImage,
+            description: 'Leads development work with a hands-on focus on quality and dependable delivery.',
+            linkedin: 'https://www.linkedin.com/in/syedfaiqjafridev'
+        },
+        {
+            name: 'Ghufran Ali',
+            role: 'Senior Software Engineer',
+            image: ghufranImage,
+            description: 'Creates responsive, high-performance web experiences across the EDXS platform.',
+            linkedin: 'https://www.linkedin.com/in/ghufran-ali-082570175/'
+        },
+        {
+            name: 'Omair Nadiawala',
+            role: 'Senior IOS Developer',
+            image: omairImage,
+            description: 'Builds polished mobile experiences that keep EDXS useful wherever teams work.',
+            linkedin: 'https://www.linkedin.com/in/omairnadiadwala/'
+        },
+        {
+            name: 'Amin Lakhani',
+            role: 'Senior Software Engineer',
+            image: aminImage,
+            description: 'Contributes to intelligent, data-focused features that make EDXS more useful.',
+            linkedin: 'https://www.linkedin.com/in/amin-lakhani-4b38a4223/'
+        },
         {
             name: 'Syed Osama Zaidi',
             role: 'Senior Backend Developer',
             image: osamaImage,
             description: 'Builds dependable backend services that support EDXS at scale.',
             linkedin: 'https://www.linkedin.com/in/osama-zaidi-4b0b1b1b/'
-        },
-        {
-            name: 'Ashar Samad',
-            role: 'Lead System Architect',
-            image: asharImage,
-            description: 'Designs the system architecture behind robust EDXS integrations.',
-            linkedin: 'https://www.linkedin.com/in/ashar-samad-863773194/'
         },
         {
             name: 'Abdullah Khan',
@@ -363,86 +391,34 @@ const TeamSection: React.FC = () => {
             role: 'Backend Developer',
             image: raoImage,
             description: 'Focuses on resilient backend systems and consistent platform performance.'
-        }
-    ];
-
-    const devTeam2 = [
-        {
-            name: 'Omair Nadiawala',
-            role: 'Senior IOS Developer',
-            image: omairImage,
-            description: 'Builds polished mobile experiences that keep EDXS useful wherever teams work.',
-            linkedin: 'https://www.linkedin.com/in/omairnadiadwala/'
         },
-        {
-            name: 'Ghufran Ali',
-            role: 'Senior Software Developer',
-            image: ghufranImage,
-            description: 'Creates responsive, high-performance web experiences across the EDXS platform.',
-            linkedin: 'https://www.linkedin.com/in/ghufran-ali-082570175/'
-        },
-        {
-            name: 'Amin Lakhani',
-            role: 'Senior Software Developer',
-            image: aminImage,
-            description: 'Contributes to intelligent, data-focused features that make EDXS more useful.',
-            linkedin: 'https://www.linkedin.com/in/amin-lakhani-4b38a4223/'
-        },
-        {
-            name: 'Syed Faraz Ali',
-            role: 'Principle Software Developer',
-            image: farazImage,
-            description: 'Maintains strong frontend standards for a consistent, intuitive EDXS experience.',
-            linkedin: 'https://www.linkedin.com/in/syed-faraz-ali-704b23384/'
-        }
     ];
 
     return (
         <Box>
             <TeamGroup title="Executive Leadership" members={executives} />
             <TeamGroup title="Operations & Management" members={management} dark />
-            <TeamGroup title="Strategic Implementation" members={marketing} />
-            <TeamGroup title="Infrastructure & Core" members={devTeam1} dark />
-            <TeamGroup title="Interactive & AI" members={devTeam2} />
+            <TeamGroup title="Software Engineering" members={softwareEngineering} dark />
+            <TeamGroup title="Platform Operations & Quality" members={platformOperations} />
 
             {/* Bottom Quote Banner */}
             <Box
                 sx={{
                     position: 'relative',
                     py: { xs: 15, md: 25 },
-                    bgcolor: '#1e293b',
-                    color: 'white',
+                    bgcolor: 'secondary.light',
+                    color: 'primary.dark',
                     textAlign: 'center',
                     overflow: 'hidden'
                 }}
             >
-                {/* Background Text Overlay */}
-                <Typography
-                    variant="h1"
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        fontSize: { xs: '8rem', md: '15rem' },
-                        fontWeight: 900,
-                        opacity: 0.05,
-                        whiteSpace: 'nowrap',
-                        zIndex: 0,
-                        pointerEvents: 'none',
-                        letterSpacing: '0.1em'
-                    }}
-                >
-                    EDXS TEAM
-                </Typography>
-
                 <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
                     <Typography
                         variant="h3"
                         sx={{
                             fontWeight: 700,
                             lineHeight: 1.4,
-                            color: 'secondary.main',
+                            color: 'primary.dark',
                             fontStyle: 'italic',
                             mb: 4,
                             fontSize: { xs: '1.5rem', md: '2.5rem' }
@@ -450,7 +426,7 @@ const TeamSection: React.FC = () => {
                     >
                         "Everyone at EDXS is here for the same reason: we see it as our duty to improve the user experience of the world."
                     </Typography>
-                    <Typography sx={{ opacity: 0.6, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700 }}>
+                    <Typography sx={{ color: 'text.primary', opacity: 0.7, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700 }}>
                         Impact over everything.
                     </Typography>
                 </Container>
