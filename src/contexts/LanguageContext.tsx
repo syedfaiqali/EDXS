@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Box } from '@mui/material';
 
@@ -400,17 +400,21 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [language, setLanguage] = useState<Language>('English');
 
-    const t = (key: string, vars?: Record<string, string>) => {
+    const t = useCallback((key: string, vars?: Record<string, string>) => {
         const phrase = translations[language][key] || key;
         if (!vars) return phrase;
 
         // An unknown placeholder is left as written rather than blanked, so a
         // missing variable shows up as `{days}` instead of a silent gap.
         return phrase.replace(/\{(\w+)\}/g, (match, name: string) => vars[name] ?? match);
-    };
+    }, [language]);
+
+    // Memoised so consumers re-render when the language actually changes, not
+    // every time this provider happens to render.
+    const value = useMemo(() => ({ language, setLanguage, t }), [language, t]);
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, t }}>
+        <LanguageContext.Provider value={value}>
             <Box sx={{ direction: language === 'English' ? 'ltr' : 'rtl' }}>
                 {children}
             </Box>

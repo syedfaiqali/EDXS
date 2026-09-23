@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     Alert, Box, Button, Checkbox, Chip, Divider, Fade, FormControlLabel, Grid,
     IconButton, InputAdornment, MenuItem, Paper, TextField, Typography
@@ -111,8 +111,36 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
 
     // Only the list that belongs to the current selection is offered; a list
     // left over from a previous country or state is ignored until it reloads.
-    const stateOptions = states.countryId === Number(data.countryId) ? states.list : [];
-    const cityOptions = cities.stateId === Number(data.stateId) ? cities.list : [];
+    const stateOptions = useMemo(
+        () => (states.countryId === Number(data.countryId) ? states.list : []),
+        [states, data.countryId]
+    );
+    const cityOptions = useMemo(
+        () => (cities.stateId === Number(data.stateId) ? cities.list : []),
+        [cities, data.stateId]
+    );
+
+    // The option elements are built once per list rather than on every render.
+    // There are 250 countries, and rebuilding them on each keystroke is enough
+    // to make typing anywhere else on the form feel laggy.
+    const countryItems = useMemo(
+        () => countries.map(country => (
+            <MenuItem key={country.id} value={String(country.id)}>{country.name}</MenuItem>
+        )),
+        [countries]
+    );
+    const stateItems = useMemo(
+        () => stateOptions.map(state => (
+            <MenuItem key={state.id} value={String(state.id)}>{state.name}</MenuItem>
+        )),
+        [stateOptions]
+    );
+    const cityItems = useMemo(
+        () => cityOptions.map(city => (
+            <MenuItem key={city.id} value={String(city.id)}>{city.name}</MenuItem>
+        )),
+        [cityOptions]
+    );
 
     /**
      * Checks the organisation name and username once the visitor leaves the
@@ -134,13 +162,33 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
             .catch(() => setNameTaken({ client: '', user: '' }));
     };
 
-    const toggleModule = (moduleId: number) => {
+    const toggleModule = useCallback((moduleId: number) => {
         onModulesChange(
             moduleIds.includes(moduleId)
                 ? moduleIds.filter(id => id !== moduleId)
                 : [...moduleIds, moduleId]
         );
-    };
+    }, [moduleIds, onModulesChange]);
+
+    // Rebuilt only when the modules or the selection change, so typing in a text
+    // field does not re-render every checkbox.
+    const moduleItems = useMemo(
+        () => modules.map(module => (
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={module.id}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={moduleIds.includes(module.id)}
+                            onChange={() => toggleModule(module.id)}
+                            sx={{ color: selectedOrg.color, '&.Mui-checked': { color: selectedOrg.color } }}
+                        />
+                    }
+                    label={module.name}
+                />
+            </Grid>
+        )),
+        [modules, moduleIds, selectedOrg.color, toggleModule]
+    );
 
     const bind = (field: keyof TrialFormData) => ({
         value: data[field],
@@ -310,9 +358,7 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                                     disabled={!countries.length}
                                     helperText={countries.length ? '' : t('lookup_unavailable')}
                                 >
-                                    {countries.map(country => (
-                                        <MenuItem key={country.id} value={String(country.id)}>{country.name}</MenuItem>
-                                    ))}
+                                    {countryItems}
                                 </TextField>
                             </Grid>
                             <Grid size={{ xs: 12, md: 4 }}>
@@ -325,9 +371,7 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                                     disabled={!stateOptions.length}
                                     helperText={data.countryId ? '' : t('select_country_first')}
                                 >
-                                    {stateOptions.map(state => (
-                                        <MenuItem key={state.id} value={String(state.id)}>{state.name}</MenuItem>
-                                    ))}
+                                    {stateItems}
                                 </TextField>
                             </Grid>
                             <Grid size={{ xs: 12, md: 4 }}>
@@ -340,9 +384,7 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                                     disabled={!cityOptions.length}
                                     helperText={data.stateId ? '' : t('select_state_first')}
                                 >
-                                    {cityOptions.map(city => (
-                                        <MenuItem key={city.id} value={String(city.id)}>{city.name}</MenuItem>
-                                    ))}
+                                    {cityItems}
                                 </TextField>
                             </Grid>
 
@@ -441,20 +483,7 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                             </Typography>
                         ) : (
                             <Grid container>
-                                {modules.map(module => (
-                                    <Grid size={{ xs: 12, sm: 6, md: 4 }} key={module.id}>
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    checked={moduleIds.includes(module.id)}
-                                                    onChange={() => toggleModule(module.id)}
-                                                    sx={{ color: selectedOrg.color, '&.Mui-checked': { color: selectedOrg.color } }}
-                                                />
-                                            }
-                                            label={module.name}
-                                        />
-                                    </Grid>
-                                ))}
+                                {moduleItems}
                             </Grid>
                         )}
                         {errors.clientName === undefined && moduleIds.length === 0 && modules.length > 0 && (
