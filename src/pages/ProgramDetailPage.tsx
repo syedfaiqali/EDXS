@@ -8,7 +8,6 @@ import {
     Button,
     TextField,
     MenuItem,
-    Chip,
     Skeleton,
     Alert,
     Breadcrumbs,
@@ -41,9 +40,6 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 /** Columns are fixed so an empty day still holds its place in the week. */
 const WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-/** Where subjects and periods that record no semester are shown. */
-const OTHER_SEMESTER = 'Other';
-
 type DetailTab = 'outline' | 'timetable';
 
 const formatDate = (iso: string | null): string => {
@@ -53,6 +49,66 @@ const formatDate = (iso: string | null): string => {
 };
 
 /** One day's column of periods, mirroring the back-office timetable layout. */
+/**
+ * One subject in the course outline.
+ *
+ * Cards rather than chips because most of what an applicant wants to know about
+ * a course is the description, which a chip has nowhere to put. The number is
+ * positional within the semester, not a course code — the schools' own codes are
+ * not published on this endpoint.
+ */
+const CourseCard: React.FC<{ subject: AdmissionSubject; index: number }> = ({ subject, index }) => (
+    <Box
+        sx={{
+            height: '100%',
+            p: 2.25,
+            borderRadius: 3,
+            border: '1px solid',
+            borderColor: alpha('#76a345', 0.22),
+            bgcolor: 'background.paper',
+            display: 'flex',
+            gap: 1.75,
+            transition: 'border-color .2s ease, box-shadow .2s ease, transform .2s ease',
+            '&:hover': {
+                borderColor: alpha('#76a345', 0.55),
+                boxShadow: `0 10px 24px ${alpha('#182334', 0.08)}`,
+                transform: 'translateY(-2px)'
+            }
+        }}
+    >
+        <Box
+            sx={{
+                flexShrink: 0,
+                width: 34,
+                height: 34,
+                borderRadius: '50%',
+                display: 'grid',
+                placeItems: 'center',
+                bgcolor: alpha('#76a345', 0.12),
+                color: 'primary.dark',
+                fontWeight: 900,
+                fontSize: '0.85rem'
+            }}
+        >
+            {index + 1}
+        </Box>
+
+        <Box sx={{ minWidth: 0 }}>
+            <Typography sx={{ fontWeight: 800, color: 'text.primary', lineHeight: 1.4 }}>
+                {subject.name}
+            </Typography>
+            {subject.description.trim() && (
+                <Typography
+                    variant="body2"
+                    sx={{ mt: 0.75, color: 'text.secondary', lineHeight: 1.65 }}
+                >
+                    {subject.description}
+                </Typography>
+            )}
+        </Box>
+    </Box>
+);
+
 const DayColumn: React.FC<{ day: string; periods: AdmissionPeriod[] }> = ({ day, periods }) => (
     <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2 }}>
         <Box
@@ -141,11 +197,22 @@ const ProgramDetailPage: React.FC = () => {
     const id = Number(registerId);
 
     const dispatch = useDispatch<AppDispatch>();
-    const [programId, setProgramId] = useState<number | ''>('');
+    const [chosenProgramId, setChosenProgramId] = useState<number | ''>('');
     const [tab, setTab] = useState<DetailTab>('outline');
     const [error, setError] = useState<string | null>(null);
 
     const register = useSelector(selectRegister(id));
+
+    // Falls back to the intake's first programme until one is picked, derived so
+    // the dropdown never renders against a programme the intake does not list.
+    const programId = useMemo<number | ''>(() => {
+        const programs = register?.programs ?? [];
+        if (programs.length === 0) return '';
+        return programs.some((program) => program.id === chosenProgramId)
+            ? chosenProgramId
+            : programs[0].id;
+    }, [register, chosenProgramId]);
+
     const detail = useSelector((state: RootState) =>
         programId === '' ? undefined : selectProgramDetail(id, programId)(state)
     );
@@ -182,53 +249,35 @@ const ProgramDetailPage: React.FC = () => {
             });
     }, [dispatch, id]);
 
-    // Default to the first programme once the intake is known.
-    useEffect(() => {
-        if (programId === '' && register && register.programs.length > 0) {
-            setProgramId(register.programs[0].id);
-        }
-    }, [register, programId]);
-
     useEffect(() => {
         if (programId === '' || !Number.isFinite(id)) return;
         dispatch(loadProgramDetail({ registerId: id, programId }));
     }, [dispatch, id, programId]);
 
     // Semesters the programme records, in teaching order. Subjects and periods
-    // that carry no semester are collected under a trailing "Other" group so
-    // nothing is dropped from either tab.
-    const semesters = useMemo(() => {
-        if (!detail) return [] as string[];
+    // that carry no semester are left out: the outline is a statement about when
+    // something is taught, and the database does not say for those.
+    const semesters = useMemo(
+        () => (detail ? detail.semesters.filter((name) => name.trim().length > 0) : []),
+        [detail]
+    );
 
-        const named = detail.semesters.filter((name) => name.trim().length > 0);
-        const hasUngrouped =
-            detail.courseOutline.some((subject) => !subject.semester.trim()) ||
-            detail.periods.some((period) => !period.semester.trim());
+    const [chosenSemester, setChosenSemester] = useState<string>('');
 
-        return hasUngrouped ? [...named, OTHER_SEMESTER] : named;
-    }, [detail]);
-
-    const [semester, setSemester] = useState<string>('');
-
-    // Settle on the first semester as soon as one is known, and recover if the
-    // selected one disappears after switching programme.
-    useEffect(() => {
-        if (semesters.length === 0) {
-            if (semester !== '') setSemester('');
-            return;
-        }
-        if (!semesters.includes(semester)) {
-            setSemester(semesters[0]);
-        }
-    }, [semesters, semester]);
-
-    const groupOf = (name: string): string => (name.trim() ? name.trim() : OTHER_SEMESTER);
+    // Derived rather than corrected in an effect: an effect only fixes the value
+    // after a render has already happened, so the Tabs would render one frame
+    // with a `value` none of its children match — which MUI rejects, and which
+    // is what made this page thrash.
+    const semester = useMemo(() => {
+        if (semesters.length === 0) return '';
+        return semesters.includes(chosenSemester) ? chosenSemester : semesters[0];
+    }, [semesters, chosenSemester]);
 
     /** Subjects in the chosen semester, or all of them when none are recorded. */
     const outline = useMemo<AdmissionSubject[]>(() => {
         if (!detail) return [];
         if (semesters.length === 0) return detail.courseOutline;
-        return detail.courseOutline.filter((subject) => groupOf(subject.semester) === semester);
+        return detail.courseOutline.filter((subject) => subject.semester.trim() === semester);
     }, [detail, semesters, semester]);
 
     /** The chosen semester's periods bucketed into fixed weekday columns. */
@@ -238,7 +287,7 @@ const ProgramDetailPage: React.FC = () => {
             semesters.length === 0
                 ? detail?.periods ?? []
                 : (detail?.periods ?? []).filter(
-                      (period) => groupOf(period.semester) === semester
+                      (period) => period.semester.trim() === semester
                   );
         periods.forEach((period) => {
             days.get(period.day)?.push(period);
@@ -400,7 +449,7 @@ const ProgramDetailPage: React.FC = () => {
                         fullWidth
                         label="Class or programme"
                         value={programId}
-                        onChange={(event) => setProgramId(Number(event.target.value))}
+                        onChange={(event) => setChosenProgramId(Number(event.target.value))}
                         helperText={
                             register.academicSession ? `Session: ${register.academicSession}` : ' '
                         }
@@ -437,7 +486,7 @@ const ProgramDetailPage: React.FC = () => {
                         {semesters.length > 0 && (
                             <Tabs
                                 value={semester}
-                                onChange={(_, next: string) => setSemester(next)}
+                                onChange={(_, next: string) => setChosenSemester(next)}
                                 variant="scrollable"
                                 scrollButtons="auto"
                                 sx={{
@@ -471,19 +520,13 @@ const ProgramDetailPage: React.FC = () => {
                                     >
                                         {outline.length === 1 ? '1 COURSE' : outline.length + ' COURSES'}
                                     </Typography>
-                                    <Box sx={{ mt: 1.25, display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-                                        {outline.map((subject) => (
-                                            <Chip
-                                                key={subject.name}
-                                                label={subject.name}
-                                                variant="outlined"
-                                                sx={{
-                                                    borderColor: alpha('#76a345', 0.35),
-                                                    color: 'text.secondary'
-                                                }}
-                                            />
+                                    <Grid container spacing={2} sx={{ mt: 0.25 }} alignItems="stretch">
+                                        {outline.map((subject, index) => (
+                                            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={subject.name}>
+                                                <CourseCard subject={subject} index={index} />
+                                            </Grid>
                                         ))}
-                                    </Box>
+                                    </Grid>
                                 </>
                             ))}
 

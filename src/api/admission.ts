@@ -169,6 +169,8 @@ export interface AdmissionPeriod {
 /** One subject on a programme, with the semester it is taught in. */
 export interface AdmissionSubject {
     name: string;
+    /** What the subject covers; blank when the school has not recorded one. */
+    description: string;
     semester: string;
     semesterOrder: number;
 }
@@ -209,7 +211,14 @@ export const fetchProgramDetail = async (
         id: data?.id ?? programId,
         name: data?.name ?? '',
         subjects: data?.subjects ?? [],
-        courseOutline: data?.courseOutline ?? [],
+        // Normalised per entry: a gateway predating the description field would
+        // otherwise hand the UI `undefined` where it expects a string.
+        courseOutline: (data?.courseOutline ?? []).map((subject) => ({
+            name: subject?.name ?? '',
+            description: subject?.description ?? '',
+            semester: subject?.semester ?? '',
+            semesterOrder: subject?.semesterOrder ?? 0
+        })),
         semesters: data?.semesters ?? [],
         periods: data?.periods ?? [],
         teachers: data?.teachers ?? []
