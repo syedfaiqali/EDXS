@@ -208,9 +208,9 @@ const TestimonialsSection: React.FC = () => {
                 }}>
                     {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, i) => (
                         <Paper key={i} elevation={0} sx={{
-                            minWidth: 420,
-                            maxWidth: 420,
-                            mx: 2,
+                            minWidth: { xs: 300, sm: 420 },
+                            maxWidth: { xs: 300, sm: 420 },
+                            mx: { xs: 1, sm: 2 },
                             p: t.image ? 0 : 4,
                             borderRadius: 4,
                             bgcolor: 'rgba(255, 255, 255, 0.98)',
@@ -236,7 +236,7 @@ const TestimonialsSection: React.FC = () => {
                                         component="img"
                                         src={t.image}
                                         alt={`${t.name} module preview`}
-                                        sx={{ width: '100%', height: 240, display: 'block', objectFit: 'cover', objectPosition: 'center' }}
+                                        sx={{ width: '100%', height: { xs: 190, sm: 240 }, display: 'block', objectFit: 'cover', objectPosition: 'center' }}
                                     />
                                     <Box sx={{ px: 3, py: 2.5 }}>
                                         <Typography variant="subtitle2" sx={{ color: '#76a345', fontWeight: 800, fontSize: '1rem' }}>
@@ -274,7 +274,7 @@ const TestimonialsSection: React.FC = () => {
                                     bottom: 0,
                                     bgcolor: 'rgba(24, 35, 52, 0.72)',
                                     borderRadius: 4,
-                                    display: 'flex',
+                                    display: { xs: 'none', md: 'flex' },
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     opacity: 0,
@@ -312,15 +312,17 @@ const TestimonialsSection: React.FC = () => {
                 </Box>
             </Box>
 
-            <Box textAlign="center" pb={12} pt={6} sx={{ position: 'relative', zIndex: 1, color: 'white', display: 'flex', justifyContent: 'center', gap: 3 }}>
+            <Box textAlign="center" pb={12} pt={6} sx={{ position: 'relative', zIndex: 1, color: 'white', display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', justifyContent: 'center', gap: 2 }}>
                 <Button
                     variant="contained"
                     onClick={() => { dispatch(setGlobalStep('selection')); navigate('/free-trial'); }}
                     sx={{
                         bgcolor: '#dce9cb',
                         color: '#76a345',
-                        px: 4,
+                        px: { xs: 2.5, md: 4 },
                         py: 1.5,
+                        width: { xs: 246, sm: 'auto' },
+                        minHeight: 56,
                         border: '2px solid #dce9cb',
                         borderRadius: 50,
                         fontWeight: 700,
@@ -338,8 +340,10 @@ const TestimonialsSection: React.FC = () => {
                     variant="outlined"
                     onClick={() => { dispatch(setGlobalStep('selection')); navigate('/contact'); }}
                     sx={{
-                        px: 4,
+                        px: { xs: 2.5, md: 4 },
                         py: 1.5,
+                        width: { xs: 246, sm: 'auto' },
+                        minHeight: 56,
                         bgcolor: '#dce9cb',
                         color: '#76a345',
                         border: '2px solid #dce9cb',

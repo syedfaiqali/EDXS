@@ -115,7 +115,7 @@ const AboutUsTimeline: React.FC = () => {
                     <Box
                         onClick={() => setActiveIndex(prev => Math.max(0, prev - 1))}
                         sx={{
-                            width: 60, height: 60, borderRadius: '50%', border: '1px solid rgba(118,163,69,0.3)',
+                            width: { xs: 44, md: 60 }, height: { xs: 44, md: 60 }, borderRadius: '50%', border: '1px solid rgba(118,163,69,0.3)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
                             zIndex: 10, transition: 'all 0.3s ease', bgcolor: 'white',
                             color: 'primary.main', opacity: activeIndex === 0 ? 0.2 : 1,
@@ -125,7 +125,7 @@ const AboutUsTimeline: React.FC = () => {
                         <ArrowBackIosNewIcon fontSize="small" />
                     </Box>
 
-                    <Box sx={{ flex: 1, position: 'relative', mx: 4, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ flex: 1, minWidth: 0, position: 'relative', mx: { xs: 1.5, md: 4 }, display: 'flex', alignItems: 'center' }}>
                         <Box sx={{ position: 'absolute', width: '100%', height: 4, bgcolor: 'rgba(118, 163, 69, 0.1)', borderRadius: 2 }} />
                         <Box sx={{
                             position: 'absolute', width: `${progressPercent}%`, height: 4,
@@ -146,13 +146,13 @@ const AboutUsTimeline: React.FC = () => {
                                     }}
                                 >
                                     <Typography sx={{
-                                        fontWeight: 900, mb: 2, fontSize: { xs: '0.8rem', md: '1.2rem' },
+                                        fontWeight: 900, mb: 2, fontSize: { xs: '0.8rem', md: '1.2rem' }, display: { xs: activeIndex === i ? 'block' : 'none', md: 'block' },
                                         color: activeIndex === i ? 'primary.main' : 'text.disabled',
                                     }}>
                                         {data.year}
                                     </Typography>
                                     <Box sx={{
-                                        width: 20, height: 20, borderRadius: '50%',
+                                        width: { xs: 14, md: 20 }, height: { xs: 14, md: 20 }, borderRadius: '50%',
                                         bgcolor: activeIndex === i ? 'primary.main' : 'white',
                                         border: `3px solid ${activeIndex === i ? '#76a345' : '#e2e8f0'}`,
                                         boxShadow: activeIndex === i ? '0 0 15px rgba(118, 163, 69, 0.4)' : 'none'
@@ -165,7 +165,7 @@ const AboutUsTimeline: React.FC = () => {
                     <Box
                         onClick={() => setActiveIndex(prev => Math.min(timelineData.length - 1, prev + 1))}
                         sx={{
-                            width: 60, height: 60, borderRadius: '50%', border: '1px solid rgba(118,163,69,0.3)',
+                            width: { xs: 44, md: 60 }, height: { xs: 44, md: 60 }, borderRadius: '50%', border: '1px solid rgba(118,163,69,0.3)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
                             zIndex: 10, transition: 'all 0.3s ease', bgcolor: 'white',
                             color: 'primary.main', opacity: activeIndex === timelineData.length - 1 ? 0.2 : 1,
@@ -185,7 +185,7 @@ const AboutUsTimeline: React.FC = () => {
                         animation: `${contentIn} 0.8s cubic-bezier(0.23, 1, 0.32, 1)`
                     }}
                 >
-                    <Box sx={{ position: 'relative', borderRadius: 10, overflow: 'hidden', height: { xs: 300, md: 500 }, border: '1px solid rgba(255,255,255,0.4)' }}>
+                    <Box sx={{ position: 'relative', borderRadius: { xs: 5, md: 10 }, overflow: 'hidden', height: { xs: 250, sm: 300, md: 500 }, border: '1px solid rgba(255,255,255,0.4)' }}>
                         <Box sx={{
                             position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                             backgroundImage: `url(${activeData.image})`, backgroundSize: 'cover', backgroundPosition: 'center',
@@ -195,7 +195,7 @@ const AboutUsTimeline: React.FC = () => {
                             position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                             background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.8))'
                         }} />
-                        <Box sx={{ position: 'absolute', bottom: 40, left: 40, right: 40 }}>
+                        <Box sx={{ position: 'absolute', bottom: { xs: 20, md: 40 }, left: { xs: 20, md: 40 }, right: { xs: 20, md: 40 } }}>
                             <Chip label={activeData.tag} sx={{ bgcolor: 'secondary.main', color: 'primary.main', fontWeight: 900, mb: 2, px: 2 }} />
                             <Typography variant="h3" sx={{ color: 'white', fontWeight: 900, fontSize: { xs: '2rem', md: '3.5rem' }, lineHeight: 1 }}>
                                 {activeData.year}
@@ -205,7 +205,7 @@ const AboutUsTimeline: React.FC = () => {
 
                     <Box>
                         <Typography variant="h2" sx={{
-                            fontWeight: 900, mb: 4, fontSize: { xs: '2.5rem', md: '4.5rem' },
+                            fontWeight: 900, mb: { xs: 2, md: 4 }, fontSize: { xs: '2rem', md: '4.5rem' },
                             color: 'text.primary', lineHeight: 1, letterSpacing: '-0.04em'
                         }}>
                             {activeData.title}
@@ -217,7 +217,7 @@ const AboutUsTimeline: React.FC = () => {
                             {activeData.content}
                         </Typography>
                         <Box sx={{
-                            p: 4, borderRadius: 6, bgcolor: 'rgba(118, 163, 69, 0.08)',
+                            p: { xs: 2.5, md: 4 }, borderRadius: 6, bgcolor: 'rgba(118, 163, 69, 0.08)',
                             borderLeft: '8px solid', borderColor: 'primary.main'
                         }}>
                             <Typography sx={{ color: 'text.primary', fontSize: '1.2rem', fontStyle: 'italic', fontWeight: 600 }}>

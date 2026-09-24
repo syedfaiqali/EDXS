@@ -45,7 +45,7 @@ const ServicesHomePreview: React.FC = () => {
     return (
         <Box sx={{
             bgcolor: '#e9efdd',
-            py: 15,
+            py: { xs: 8, md: 15 },
             position: 'relative',
             overflow: 'hidden',
             '&::before': {
@@ -74,12 +74,13 @@ const ServicesHomePreview: React.FC = () => {
             }
         }}>
             <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
-                <Box textAlign="center" mb={10}>
+                <Box textAlign="center" mb={{ xs: 6, md: 10 }}>
                     <Typography
                         variant="h2"
                         fontWeight="900"
                         sx={{
-                            fontSize: { xs: '3rem', md: '4rem' },
+                            fontSize: { xs: '2.25rem', md: '4rem' },
+                            lineHeight: { xs: 1.14, md: 1.1 },
                             mb: 3,
                             color: '#45672a',
                             textTransform: 'uppercase',
@@ -95,7 +96,8 @@ const ServicesHomePreview: React.FC = () => {
                             mx: 'auto',
                             fontWeight: 500,
                             color: 'rgba(93, 64, 55, 0.8)',
-                            lineHeight: 1.6
+                            lineHeight: 1.6,
+                            fontSize: { xs: '1rem', md: '1.25rem' }
                         }}
                     >
                         We provide the digital muscles for your infrastructure. From iron-clad security to
@@ -103,15 +105,15 @@ const ServicesHomePreview: React.FC = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={4} sx={{ mb: 10 }}>
+                <Grid container spacing={{ xs: 2.5, md: 4 }} sx={{ mb: { xs: 6, md: 10 } }}>
                     {services.map((service, index) => (
                         <Grid size={{ xs: 12, md: 4 }} key={index}>
                             <Box sx={{
-                                p: 5,
+                                p: { xs: 3, md: 5 },
                                 height: '100%',
                                 bgcolor: 'rgba(255, 255, 255, 0.6)',
                                 backdropFilter: 'blur(10px)',
-                                borderRadius: 6,
+                                borderRadius: { xs: 4, md: 6 },
                                 border: '1px solid rgba(255, 255, 255, 0.8)',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -135,11 +137,11 @@ const ServicesHomePreview: React.FC = () => {
                                 <Box
                                     className="icon-box"
                                     sx={{
-                                        mb: 4,
+                                        mb: { xs: 2.5, md: 4 },
                                         color: service.color,
                                         bgcolor: alpha(service.color, 0.1),
-                                        width: 100,
-                                        height: 100,
+                                        width: { xs: 76, md: 100 },
+                                        height: { xs: 76, md: 100 },
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',

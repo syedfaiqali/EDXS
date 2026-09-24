@@ -111,13 +111,13 @@ const ServicesSection: React.FC = () => {
                 title="MAKE BOLD DECISIONS THAT UNLOCK NEW FRONTIERS OF GROWTH"
                 description="We're experts at combining customer needs, business demands, and technical possibilities to disrupt the status quo. Our team of strategists use a Design Sprint-centric methodology to identify opportunities, ignite innovation, and discover new digital ventures to drive growth outside your core business."
                 illustration={
-                    <Box sx={{ position: 'relative', width: '100%', height: 350, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <Box sx={{ position: 'relative', width: '100%', height: { xs: 300, md: 350 }, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
                         <Box sx={{ position: 'relative' }}>
                             {['HASSEL-FREE', 'TIME-SAVING', 'STREAMLINED', 'OPTIMAL', 'EDXS', 'USER-FRIENDLY'].reverse().map((text, i) => (
                                 <Box
                                     key={text}
                                     sx={{
-                                        width: 200,
+                                        width: { xs: 180, sm: 200 },
                                         height: text === 'EDXS' ? 50 : 40,
                                         bgcolor: text === 'EDXS' ? 'primary.main' : 'white',
                                         color: text === 'EDXS' ? 'white' : 'primary.main',
@@ -138,9 +138,9 @@ const ServicesSection: React.FC = () => {
                             ))}
                             <PanToolIcon sx={{
                                 position: 'absolute',
-                                left: -80,
+                                left: { xs: -48, md: -80 },
                                 bottom: 40,
-                                fontSize: '8rem',
+                                fontSize: { xs: '5rem', md: '8rem' },
                                 color: '#fdd9b5', // Flesh tone
                                 transform: 'rotate(90deg)',
                                 filter: 'drop-shadow(4px 8px 12px rgba(0,0,0,0.15))'
@@ -158,10 +158,10 @@ const ServicesSection: React.FC = () => {
                 description="The best designs not only instill confidence in your brand, but inspire users to download, engage, and evangelize. We use human-centered design and research methods to understand your customers and create uniquely memorable product experiences that they'll love."
                 illustration={
                     <Box sx={{ textAlign: 'center' }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 4, alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: { xs: .5, md: 2 }, mb: 4, alignItems: 'center' }}>
                             {[1, 2, 3].map((_, i) => (
                                 <React.Fragment key={i}>
-                                    <GroupsIcon sx={{ fontSize: '6rem', color: 'secondary.main' }} />
+                                    <GroupsIcon sx={{ fontSize: { xs: '3.5rem', md: '6rem' }, color: 'secondary.main' }} />
                                     {i < 2 && <Typography sx={{ color: 'secondary.main', fontSize: '2.5rem', fontWeight: 900 }}>»</Typography>}
                                 </React.Fragment>
                             ))}
@@ -180,7 +180,7 @@ const ServicesSection: React.FC = () => {
                 description="Our full-stack engineering team creates world class products built with a range of technologies, platforms, and frameworks. From mobile apps to websites, frontend to middleware to backend, architecture consulting to cybersecurity strategy — we've got it covered."
                 illustration={
                     <Box sx={{ position: 'relative', width: '100%', maxWidth: 450 }}>
-                        <LaptopMacIcon sx={{ fontSize: '18rem', color: '#1e293b' }} />
+                        <LaptopMacIcon sx={{ fontSize: { xs: '14rem', md: '18rem' }, color: '#1e293b', maxWidth: '100%' }} />
                         <Box sx={{ position: 'absolute', top: '15%', right: '5%', bgcolor: 'primary.main', borderRadius: '50%', p: 2, color: 'white', animation: `${pulse} 2s infinite`, boxShadow: '0 0 20px rgba(118,163,69,0.4)' }}>
                             <MemoryIcon sx={{ fontSize: '2.5rem' }} />
                         </Box>
@@ -231,7 +231,7 @@ const ServicesSection: React.FC = () => {
                 description="We leverage cutting-edge generative AI to build better products, faster. From personalization, to predictive analytics, to smart search, we use AI to power innovative customer experiences and product features. Learn more at edxs.io."
                 illustration={
                     <Box sx={{ position: 'relative', animation: `${pulse} 3s infinite ease-in-out` }}>
-                        <MemoryIcon sx={{ fontSize: '15rem', color: 'primary.main', filter: 'drop-shadow(0 20px 40px rgba(118,163,69,0.2))' }} />
+                        <MemoryIcon sx={{ fontSize: { xs: '11rem', md: '15rem' }, color: 'primary.main', filter: 'drop-shadow(0 20px 40px rgba(118,163,69,0.2))' }} />
                         <Typography sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontWeight: 900, color: 'white', bgcolor: 'primary.main', px: 2, borderRadius: 1 }}>AI</Typography>
                     </Box>
                 }
@@ -281,7 +281,7 @@ const ServicesSection: React.FC = () => {
                 description="In an era of persistent digital threats, we fortify your organization with elite-level security protocols. Our comprehensive cybersecurity suite includes advanced threat detection, encrypted data management, and proactive vulnerability protection, ensuring your digital assets remain impenetrable."
                 illustration={
                     <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <ShieldIcon sx={{ fontSize: '15rem', color: 'primary.main', filter: 'drop-shadow(0 10px 20px rgba(118,163,69,0.3))' }} />
+                        <ShieldIcon sx={{ fontSize: { xs: '11rem', md: '15rem' }, color: 'primary.main', filter: 'drop-shadow(0 10px 20px rgba(118,163,69,0.3))' }} />
                         <Box sx={{ position: 'absolute', animation: `${pulse} 2s infinite` }}>
                             <LockIcon sx={{ fontSize: '4rem', color: 'white' }} />
                         </Box>
@@ -290,8 +290,8 @@ const ServicesSection: React.FC = () => {
                                 key={angle}
                                 sx={{
                                     position: 'absolute',
-                                    width: 180,
-                                    height: 180,
+                                    width: { xs: 140, md: 180 },
+                                    height: { xs: 140, md: 180 },
                                     border: '2px dashed',
                                     borderColor: 'primary.main',
                                     borderRadius: '50%',
@@ -353,8 +353,8 @@ const ServicesSection: React.FC = () => {
                 illustration={
                     <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Box sx={{
-                            width: 280,
-                            height: 280,
+                            width: { xs: 240, sm: 280 },
+                            height: { xs: 240, sm: 280 },
                             border: '8px solid',
                             borderColor: 'primary.main',
                             borderRadius: '50%',
@@ -363,7 +363,7 @@ const ServicesSection: React.FC = () => {
                             justifyContent: 'center',
                             position: 'relative'
                         }}>
-                            <VideocamIcon sx={{ fontSize: '10rem', color: 'primary.main' }} />
+                            <VideocamIcon sx={{ fontSize: { xs: '8rem', md: '10rem' }, color: 'primary.main' }} />
                             <Box sx={{
                                 position: 'absolute',
                                 top: '20%',

@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Link, Na
 import {
   ThemeProvider, CssBaseline, Box, CircularProgress, AppBar, Toolbar, Container,
   Button, Dialog, DialogTitle, DialogContent, DialogActions, Select, MenuItem,
-  FormControl, InputLabel, Typography
+  FormControl, InputLabel, Typography, Drawer, IconButton, List, ListItemButton, ListItemText
 } from '@mui/material';
-import { Translate } from '@mui/icons-material';
+import { Translate, Menu, Close } from '@mui/icons-material';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from './store';
 import { resetFlow } from './store/selectionSlice';
@@ -68,6 +68,7 @@ const MainLayout: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempLang, setTempLang] = useState(language);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const currentPath = location.pathname;
   const isHomeAtTop = currentPath === '/' && !isScrolled;
 
@@ -129,6 +130,16 @@ const MainLayout: React.FC = () => {
     handleCloseModal();
   };
 
+  const navigationItems = [
+    { label: 'Home', path: '/' }, { label: 'About Us', path: '/aboutus' },
+    { label: 'Products', path: '/products' }, { label: 'Services', path: '/services' },
+    { label: 'Admission', path: '/admission' }, { label: 'Career', path: '/career' },
+    { label: 'Team', path: '/team' }, { label: 'Contact', path: '/contact' },
+    { label: 'Check Status', path: '/check-status' }
+  ];
+
+  const closeNavigation = () => setIsNavigationOpen(false);
+
 
 
   return (
@@ -151,23 +162,14 @@ const MainLayout: React.FC = () => {
             <Box
               component={Link}
               to="/"
-              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: 4, textDecoration: 'none' }}
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: { xs: 1, lg: 4 }, textDecoration: 'none' }}
               onClick={() => dispatch(resetFlow())}
             >
               <Logo size="small" />
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: { md: 2, lg: 3 } }}>
-              {[
-                { label: 'Home', path: '/' },
-                { label: 'About Us', path: '/aboutus' },
-                { label: 'Products', path: '/products' },
-                { label: 'Services', path: '/services' },
-                { label: 'Admission', path: '/admission' },
-                { label: 'Career', path: '/career' },
-                { label: 'Team', path: '/team' },
-                { label: 'Contact', path: '/contact' }
-              ].map((item) => (
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', lg: 'flex' }, justifyContent: 'center', gap: 1.5 }}>
+              {navigationItems.slice(0, -1).map((item) => (
                 <Typography
                   key={item.label}
                   component={NavLink}
@@ -227,7 +229,7 @@ const MainLayout: React.FC = () => {
               </Typography>
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: { md: 2, lg: 2.5 }, ml: { md: 2, lg: 3 }, flexShrink: 0 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 1.5, lg: 2.5 }, ml: { xs: 'auto', lg: 3 }, flexShrink: 0 }}>
               {currentPath === '/free-trial' && (
                 <Translate
                   sx={{ color: 'primary.main', cursor: 'pointer', opacity: 0.8, '&:hover': { opacity: 1 } }}
@@ -239,6 +241,7 @@ const MainLayout: React.FC = () => {
                 to="/demo"
                 variant="outlined"
                 sx={{
+                  display: { xs: 'none', sm: 'inline-flex' },
                   color: isHomeAtTop ? '#fff' : 'primary.main',
                   borderColor: isHomeAtTop ? 'rgba(255,255,255,0.7)' : 'rgba(111,150,63,0.35)',
                   borderRadius: 3,
@@ -247,7 +250,6 @@ const MainLayout: React.FC = () => {
                   textTransform: 'none',
                   fontWeight: 600,
                   whiteSpace: 'nowrap',
-                  display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1,
@@ -262,6 +264,7 @@ const MainLayout: React.FC = () => {
                 to="/free-trial"
                 variant="contained"
                 sx={{
+                  display: { xs: 'none', sm: 'inline-flex' },
                   bgcolor: 'primary.main',
                   color: 'white',
                   borderRadius: 3,
@@ -270,7 +273,6 @@ const MainLayout: React.FC = () => {
                   textTransform: 'none',
                   fontWeight: 700,
                   whiteSpace: 'nowrap',
-                  display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1,
@@ -279,17 +281,49 @@ const MainLayout: React.FC = () => {
               >
                 Request a Demo
               </Button>
+              <IconButton
+                aria-label="Open navigation menu"
+                onClick={() => setIsNavigationOpen(true)}
+                sx={{ display: { xs: 'inline-flex', lg: 'none' }, minWidth: 46, minHeight: 46, color: isHomeAtTop ? 'white' : 'primary.main', border: '1px solid', borderColor: isHomeAtTop ? 'rgba(255,255,255,.55)' : 'rgba(111,150,63,.35)' }}
+              >
+                <Menu />
+              </IconButton>
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
+
+      <Drawer
+        anchor="right"
+        open={isNavigationOpen}
+        onClose={closeNavigation}
+        // The support shortcuts use a deliberately high z-index. Keep the
+        // navigation sheet above them so it remains a clean, focused menu.
+        sx={{ zIndex: 10002 }}
+        PaperProps={{ sx: { width: 'min(88vw, 360px)', p: 2, bgcolor: 'background.default' } }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Logo size="small" />
+          <IconButton aria-label="Close navigation menu" onClick={closeNavigation} sx={{ minWidth: 44, minHeight: 44 }}><Close /></IconButton>
+        </Box>
+        <List disablePadding sx={{ mb: 2 }}>
+          {navigationItems.map((item) => (
+            <ListItemButton key={item.path} component={NavLink} to={item.path} onClick={() => { if (item.path === '/') dispatch(resetFlow()); closeNavigation(); }} sx={{ borderRadius: 2, minHeight: 48, mb: .5, '&.active': { bgcolor: 'secondary.main', color: 'primary.dark' } }}>
+              <ListItemText primary={item.label} primaryTypographyProps={{ fontWeight: 700 }} />
+            </ListItemButton>
+          ))}
+        </List>
+        <Button component={Link} to="/free-trial" variant="contained" fullWidth onClick={closeNavigation} sx={{ minHeight: 48 }}>Request a Demo</Button>
+      </Drawer>
 
       <Box component="main" sx={{
         flexGrow: 1,
         backgroundColor: 'background.default',
         position: 'relative',
         zIndex: 1,
-        mb: { xs: 0, md: '90vh' }
+        // Leave exactly one footer-height of scroll space on every screen so
+        // the fixed footer is revealed beneath the page, including mobile.
+        mb: '90vh'
       }}>
         <AnimatePresence mode="wait">
           <motion.div
@@ -325,7 +359,7 @@ const MainLayout: React.FC = () => {
       </Box>
 
       <Box sx={{
-        position: { xs: 'relative', md: 'fixed' },
+        position: 'fixed',
         bottom: 0,
         left: 0,
         right: 0,

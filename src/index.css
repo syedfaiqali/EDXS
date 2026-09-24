@@ -19,6 +19,7 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 #root {
@@ -27,6 +28,23 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+img, svg, video, canvas {
+  max-width: 100%;
+}
+
+.MuiTypography-root, .MuiAlert-message, .MuiChip-label {
+  overflow-wrap: anywhere;
+}
+
+button, input, select, textarea {
+  font: inherit;
 }
 
 /* Custom Scrollbar */

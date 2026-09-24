@@ -123,7 +123,8 @@ const ContactSection: React.FC = () => {
 
                             {/* Captcha Placeholder */}
                             <Box sx={{
-                                width: 300,
+                                width: '100%',
+                                maxWidth: 300,
                                 height: 80,
                                 bgcolor: 'white',
                                 border: '1px solid #ddd',

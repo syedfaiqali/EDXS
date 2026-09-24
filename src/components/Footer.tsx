@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
                 py: { xs: 8, md: 10 },
                 position: 'relative',
                 overflow: 'hidden',
-                minHeight: { md: '90vh' }, // Match the margin in App.tsx
+                minHeight: '90vh', // Match the reveal space in App.tsx on every breakpoint
                 display: 'flex',
                 alignItems: 'center'
             }}

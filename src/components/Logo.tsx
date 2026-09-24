@@ -19,8 +19,8 @@ const Logo: React.FC<{ size?: 'small' | 'large', color?: string }> = ({ size = '
         >
             <Box
                 sx={{
-                    width: isLarge ? 195 : 130,
-                    height: isLarge ? 81 : 58,
+                    width: isLarge ? { xs: 160, sm: 195 } : { xs: 108, sm: 130 },
+                    height: isLarge ? { xs: 67, sm: 81 } : { xs: 48, sm: 58 },
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

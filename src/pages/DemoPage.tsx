@@ -120,11 +120,11 @@ const DemoPage: React.FC = () => {
                             <TextField label="What would you like to explore?" value={form.message} onChange={update('message')} multiline minRows={4} slotProps={{ htmlInput: { maxLength: 700 } }} sx={{ gridColumn: { sm: '1 / -1' } }} />
                         </Box>
 
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 2, mt: 4 }}>
-                            <Button component={RouterLink} to="/" startIcon={<ArrowBack />} color="inherit" sx={{ color: 'text.secondary' }}>
+                        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 2, mt: 4, maxWidth: { md: 420 } }}>
+                            <Button component={RouterLink} to="/" startIcon={<ArrowBack />} variant="outlined" sx={{ minHeight: 52, px: 1, color: 'primary.main', borderColor: 'rgba(111,150,63,0.45)', fontWeight: 800, fontSize: { xs: '0.82rem', sm: '0.9rem' }, whiteSpace: 'nowrap' }}>
                                 Back to home
                             </Button>
-                            <Button type="submit" variant="contained" disabled={submitting} sx={{ minWidth: 170, py: 1.35, fontWeight: 800 }}>
+                            <Button type="submit" variant="contained" disabled={submitting} sx={{ minWidth: 0, minHeight: 52, py: 1.35, px: 1, fontWeight: 800, fontSize: { xs: '0.82rem', sm: '0.9rem' }, whiteSpace: 'nowrap' }}>
                                 {submitting ? 'Sending request…' : 'Request a demo'}
                             </Button>
                         </Box>

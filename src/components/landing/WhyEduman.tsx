@@ -21,9 +21,9 @@ const WhyEduman: React.FC = () => {
     }, []);
 
     return (
-        <Box sx={{ bgcolor: '#e9efdd', pt: { xs: 5, md: 6 }, pb: 6, px: "10%", color: '#45672a', position: 'relative', zIndex: 1 }}>
-            <Box textAlign="center" mb={6}>
-                <Typography variant="h2" fontWeight="800" sx={{ fontSize: '3.5rem' }}>
+        <Box sx={{ bgcolor: '#e9efdd', pt: { xs: 5, md: 6 }, pb: 6, px: { xs: 3, sm: '10%' }, color: '#45672a', position: 'relative', zIndex: 1 }}>
+            <Box textAlign="center" mb={{ xs: 4, md: 6 }}>
+                <Typography variant="h2" fontWeight="800" sx={{ fontSize: { xs: '2.65rem', md: '3.5rem' }, lineHeight: 1.1 }}>
                     {mainTitle.split('').map((char, i) => (
                         <Box
                             key={i}
@@ -40,11 +40,11 @@ const WhyEduman: React.FC = () => {
                     ))}
                 </Typography>
             </Box>
-            <Grid container spacing={8} alignItems="center">
+            <Grid container spacing={{ xs: 4, md: 8 }} alignItems="center">
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Box sx={{
                         width: '100%',
-                        height: 350,
+                        height: { xs: 280, md: 350 },
                         bgcolor: 'rgba(255,255,255,0.4)',
                         borderRadius: 4,
                         display: 'flex',

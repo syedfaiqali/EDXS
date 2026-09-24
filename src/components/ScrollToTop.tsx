@@ -40,13 +40,13 @@ const ScrollToTop: React.FC = () => {
                 role="presentation"
                 sx={{
                     position: 'fixed',
-                    bottom: 32,
-                    right: 32,
+                    bottom: { xs: 24, md: 32 },
+                    right: { xs: 16, md: 32 },
                     zIndex: 9999,
                     cursor: 'pointer',
                     bgcolor: 'white',
-                    width: 56,
-                    height: 56,
+                    width: { xs: 48, md: 56 },
+                    height: { xs: 48, md: 56 },
                     borderRadius: '50%',
                     boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
                     display: 'flex',

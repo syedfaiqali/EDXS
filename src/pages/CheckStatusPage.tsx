@@ -296,23 +296,44 @@ const CheckStatusPage: React.FC = () => {
     const canCheck = Boolean(schoolCode) && token.trim().length > 0 && !isChecking;
 
     return (
-        <Box sx={{ pt: { xs: 12, md: 16 }, pb: { xs: 8, md: 12 }, minHeight: '100vh' }}>
-            <Container maxWidth="md">
-                <Stack spacing={1} sx={{ mb: { xs: 4, md: 5 } }}>
+        <Box
+            sx={{
+                pt: { xs: 11, md: 14 },
+                pb: { xs: 8, md: 13 },
+                minHeight: '100vh',
+                bgcolor: 'background.default',
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                    content: '""', position: 'absolute', width: { xs: 260, md: 500 }, height: { xs: 260, md: 500 },
+                    borderRadius: '50%', top: { xs: 30, md: -100 }, right: { xs: -150, md: -140 }, bgcolor: alpha('#6f963f', 0.09)
+                },
+                '&::after': {
+                    content: '""', position: 'absolute', width: { xs: 180, md: 320 }, height: { xs: 180, md: 320 },
+                    borderRadius: '50%', bottom: { xs: 80, md: 30 }, left: { xs: -110, md: -100 }, border: `1px solid ${alpha('#6f963f', 0.2)}`
+                }
+            }}
+        >
+            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+                <Stack spacing={1.5} alignItems="center" textAlign="center" sx={{ mb: { xs: 4, md: 6 } }}>
                     <Typography
                         sx={{
-                            fontWeight: 800,
-                            letterSpacing: '0.12em',
+                            fontWeight: 900,
+                            letterSpacing: '0.18em',
                             fontSize: '0.78rem',
-                            color: 'primary.dark'
+                            color: 'primary.dark',
+                            bgcolor: alpha('#6f963f', 0.12),
+                            borderRadius: 99,
+                            px: 2,
+                            py: 0.75
                         }}
                     >
                         APPLICATION TRACKING
                     </Typography>
-                    <Typography variant="h1" sx={{ fontSize: { xs: '2.1rem', md: '2.75rem' } }}>
+                    <Typography variant="h1" sx={{ fontSize: { xs: '2.35rem', md: '3.5rem' }, maxWidth: 700 }}>
                         Check your application status
                     </Typography>
-                    <Typography sx={{ color: 'text.secondary', maxWidth: 620 }}>
+                    <Typography sx={{ color: 'text.secondary', maxWidth: 620, fontSize: { xs: '1rem', md: '1.1rem' } }}>
                         Enter the reference you were given when you applied to see how far your
                         application has come — and what happens next.
                     </Typography>
@@ -320,31 +341,53 @@ const CheckStatusPage: React.FC = () => {
 
                 <Paper
                     elevation={0}
-                    sx={{ borderRadius: 4, border: '1px solid', borderColor: 'divider', overflow: 'hidden' }}
+                    sx={{
+                        maxWidth: 960,
+                        mx: 'auto',
+                        borderRadius: { xs: 3, md: 5 },
+                        border: '1px solid',
+                        borderColor: alpha('#6f963f', 0.2),
+                        overflow: 'hidden',
+                        boxShadow: '0 24px 60px rgba(24,35,52,0.10)'
+                    }}
                 >
                     <Tabs
                         value={kind}
                         onChange={handleKindChange}
                         variant="fullWidth"
-                        sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
+                        sx={{
+                            px: { xs: 0.5, md: 2 },
+                            bgcolor: alpha('#6f963f', 0.07),
+                            borderBottom: '1px solid',
+                            borderColor: alpha('#6f963f', 0.15),
+                            '& .MuiTabs-indicator': { height: 3, borderRadius: '3px 3px 0 0' }
+                        }}
                     >
                         <Tab
                             value="admission"
                             icon={<SchoolIcon />}
                             iconPosition="start"
                             label="Admission"
-                            sx={{ fontWeight: 800, textTransform: 'none', minHeight: 64 }}
+                            sx={{ fontWeight: 800, textTransform: 'none', minHeight: 72 }}
                         />
                         <Tab
                             value="career"
                             icon={<WorkOutlineIcon />}
                             iconPosition="start"
                             label="Career"
-                            sx={{ fontWeight: 800, textTransform: 'none', minHeight: 64 }}
+                            sx={{ fontWeight: 800, textTransform: 'none', minHeight: 72 }}
                         />
                     </Tabs>
 
-                    <Box sx={{ p: { xs: 2.5, md: 4 } }}>
+                    <Box sx={{ p: { xs: 2.5, md: 5 } }}>
+                        <Box sx={{ mb: 3 }}>
+                            <Typography variant="h3" sx={{ fontSize: { xs: '1.35rem', md: '1.55rem' }, mb: 0.5 }}>
+                                Find your application
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Select your {organisationLabel.toLowerCase()} and enter the reference from your confirmation email.
+                            </Typography>
+                        </Box>
                         <Box
                             component="form"
                             onSubmit={(event: React.FormEvent) => {
@@ -387,7 +430,7 @@ const CheckStatusPage: React.FC = () => {
                                     type="submit"
                                     variant="contained"
                                     disabled={!canCheck}
-                                    sx={{ px: 4, py: 1.25, flexShrink: 0, width: { xs: '100%', md: 'auto' } }}
+                                    sx={{ px: 4, py: 1.25, minHeight: 48, flexShrink: 0, width: { xs: '100%', md: 'auto' } }}
                                 >
                                     {isChecking ? 'Checking…' : 'Check Status'}
                                 </Button>

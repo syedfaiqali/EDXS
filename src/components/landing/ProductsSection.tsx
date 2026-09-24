@@ -75,7 +75,7 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescrip
             <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
                 <Grid container spacing={10} alignItems="flex-start" flexDirection={reverse ? 'row-reverse' : 'row'}>
                     {/* Image/Logo Side */}
-                    <Grid size={{ xs: 12, md: 6 }} sx={{ position: 'sticky', top: 120 }}>
+                    <Grid size={{ xs: 12, md: 6 }} sx={{ position: { xs: 'relative', md: 'sticky' }, top: { md: 120 } }}>
                         <Box
                             sx={{
                                 position: 'relative',
@@ -91,16 +91,16 @@ const ProductRow: React.FC<ProductRowProps> = ({ title, description, fullDescrip
                             {/* Decorative Outer Rings */}
                             <Box sx={{
                                 position: 'absolute',
-                                width: { xs: 300, md: 450 },
-                                height: { xs: 300, md: 450 },
+                                width: { xs: 250, sm: 300, md: 450 },
+                                height: { xs: 250, sm: 300, md: 450 },
                                 borderRadius: '50%',
                                 border: `1px dashed ${alpha(accentColor, 0.3)}`,
                                 animation: `${orbit} 15s linear infinite`
                             }} />
                             <Box sx={{
                                 position: 'absolute',
-                                width: { xs: 250, md: 350 },
-                                height: { xs: 250, md: 350 },
+                                width: { xs: 210, sm: 250, md: 350 },
+                                height: { xs: 210, sm: 250, md: 350 },
                                 borderRadius: '50%',
                                 border: `2px solid ${alpha(accentColor, 0.1)}`,
                             }} />
