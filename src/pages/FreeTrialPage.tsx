@@ -56,9 +56,9 @@ const FreeTrialPage: React.FC = () => {
     const handleChange = (field: keyof TrialFormData, value: string) => {
         setData(previous => {
             // A country or state change invalidates what hung off it, otherwise
-            // a stale city id would be submitted against a different state.
-            if (field === 'countryId') return { ...previous, countryId: value, stateId: '', cityId: '' };
-            if (field === 'stateId') return { ...previous, stateId: value, cityId: '' };
+            // a stale city would be submitted against a different state.
+            if (field === 'country') return { ...previous, country: value, state: '', city: '' };
+            if (field === 'state') return { ...previous, state: value, city: '' };
             return { ...previous, [field]: value };
         });
 
@@ -79,6 +79,9 @@ const FreeTrialPage: React.FC = () => {
             { field: 'contactPerson', label: t('contact_person') },
             { field: 'contactNo', label: t('contact_no') },
             { field: 'email', label: t('email_address') },
+            { field: 'country', label: t('country') },
+            { field: 'state', label: t('state') },
+            { field: 'city', label: t('city') },
             { field: 'address', label: t('address') },
             { field: 'userName', label: t('username') },
             { field: 'password', label: t('password') },
@@ -142,9 +145,9 @@ const FreeTrialPage: React.FC = () => {
                 contactNo: data.contactNo,
                 email: data.email,
                 address: data.address,
-                countryId: data.countryId ? Number(data.countryId) : null,
-                stateId: data.stateId ? Number(data.stateId) : null,
-                cityId: data.cityId ? Number(data.cityId) : null,
+                country: data.country,
+                state: data.state,
+                city: data.city,
                 campusName: data.campusName,
                 userName: data.userName,
                 password: data.password,

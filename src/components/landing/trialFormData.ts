@@ -9,9 +9,9 @@ export interface TrialFormData {
     contactNo: string;
     email: string;
     address: string;
-    countryId: string;
-    stateId: string;
-    cityId: string;
+    country: string;
+    state: string;
+    city: string;
     campusName: string;
     userName: string;
     password: string;
@@ -22,6 +22,6 @@ export interface TrialFormData {
 
 export const emptyTrialForm: TrialFormData = {
     clientName: '', description: '', contactPerson: '', contactNo: '', email: '',
-    address: '', countryId: '', stateId: '', cityId: '', campusName: '',
+    address: '', country: '', state: '', city: '', campusName: '',
     userName: '', password: '', confirmPassword: '', fullName: '', mobile: ''
 };

@@ -24,6 +24,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import LandingPage from './pages/LandingPage';
 import DemoPage from './pages/DemoPage';
+import FreeTrialPage from './pages/FreeTrialPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ProductsPage from './pages/ProductsPage';
 import ServicesPage from './pages/ServicesPage';
@@ -238,7 +239,7 @@ const MainLayout: React.FC = () => {
               )}
               <Button
                 component={Link}
-                to="/demo"
+                to="/free-trial"
                 variant="outlined"
                 sx={{
                   display: { xs: 'none', sm: 'inline-flex' },
@@ -257,11 +258,11 @@ const MainLayout: React.FC = () => {
                   '&:hover': { borderColor: 'primary.main', bgcolor: 'secondary.light', color: 'primary.main' }
                 }}
               >
-                Get A Demo
+                Start Free Trial
               </Button>
               <Button
                 component={Link}
-                to="/free-trial"
+                to="/demo"
                 variant="contained"
                 sx={{
                   display: { xs: 'none', sm: 'inline-flex' },
@@ -313,7 +314,8 @@ const MainLayout: React.FC = () => {
             </ListItemButton>
           ))}
         </List>
-        <Button component={Link} to="/free-trial" variant="contained" fullWidth onClick={closeNavigation} sx={{ minHeight: 48 }}>Request a Demo</Button>
+        <Button component={Link} to="/free-trial" variant="outlined" fullWidth onClick={closeNavigation} sx={{ minHeight: 48, mb: 1 }}>Start Free Trial</Button>
+        <Button component={Link} to="/demo" variant="contained" fullWidth onClick={closeNavigation} sx={{ minHeight: 48 }}>Request a Demo</Button>
       </Drawer>
 
       <Box component="main" sx={{
@@ -339,8 +341,7 @@ const MainLayout: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/registration" element={<Navigate to="/demo" replace />} />
             <Route path="/demo" element={<DemoPage />} />
-            {/* Kept for existing links, but demo requests never create an ERP login. */}
-            <Route path="/free-trial" element={<DemoPage />} />
+            <Route path="/free-trial" element={<FreeTrialPage />} />
             <Route path="/aboutus" element={<AboutUsPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/services" element={<ServicesPage />} />

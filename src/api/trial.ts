@@ -18,16 +18,26 @@ export const TRIAL_DAYS = 15;
 
 /**
  * Where a new trial account signs in. Set `VITE_APP_LOGIN_URL` per deployment;
- * the fallback points at the shared demo instance, so a build without that
+ * the fallback points at the EDXS app, so a build without that
  * variable still sends people somewhere they can use their new login.
  */
 export const trialLoginUrl = (): string =>
     (import.meta as { env?: Record<string, string> }).env?.VITE_APP_LOGIN_URL
-    || 'http://demo.kcompute.com:8061/login';
+    || 'http://edxs.app.io/';
 
-/** One entry of a country/state/city or module lookup list. */
+/** One entry of the module lookup list. */
 export interface TrialLookup {
     id: number;
+    code: string;
+    name: string;
+}
+
+/**
+ * A country, state or city. The lists come from the CountriesNow directory via
+ * the gateway, and a location is identified by its name: the server finds the
+ * matching record, or adds the state or city, when the trial is created.
+ */
+export interface TrialLocation {
     code: string;
     name: string;
 }
@@ -48,9 +58,9 @@ export interface TrialSignupRequest {
     contactNo: string;
     email: string;
     address: string;
-    countryId: number | null;
-    stateId: number | null;
-    cityId: number | null;
+    country: string;
+    state: string;
+    city: string;
     campusName: string;
     userName: string;
     password: string;
@@ -96,7 +106,7 @@ const describeFailure = async (response: Response): Promise<string> => {
     return 'We could not start your trial just now. Please try again in a moment.';
 };
 
-const getLookup = async (path: string, signal?: AbortSignal): Promise<TrialLookup[]> => {
+const getLookup = async <T>(path: string, signal?: AbortSignal): Promise<T[]> => {
     const response = await fetch(`${API_BASE_URL}/api/auth/public/trial/${path}`, {
         headers: { Accept: 'application/json' },
         signal
@@ -106,21 +116,22 @@ const getLookup = async (path: string, signal?: AbortSignal): Promise<TrialLooku
         throw new Error(await describeFailure(response));
     }
 
-    return await response.json() as TrialLookup[];
+    return await response.json() as T[];
 };
 
 /** The modules a trial account can be given access to. */
 export const fetchTrialModules = (signal?: AbortSignal): Promise<TrialLookup[]> =>
-    getLookup('lookups/modules', signal);
+    getLookup<TrialLookup>('lookups/modules', signal);
 
-export const fetchTrialCountries = (signal?: AbortSignal): Promise<TrialLookup[]> =>
-    getLookup('lookups/countries', signal);
+export const fetchTrialCountries = (signal?: AbortSignal): Promise<TrialLocation[]> =>
+    getLookup<TrialLocation>('lookups/countries', signal);
 
-export const fetchTrialStates = (countryId: number, signal?: AbortSignal): Promise<TrialLookup[]> =>
-    getLookup(`lookups/states?countryId=${countryId}`, signal);
+/** States of a country, which is passed by name as the countries list gave it. */
+export const fetchTrialStates = (country: string, signal?: AbortSignal): Promise<TrialLocation[]> =>
+    getLookup<TrialLocation>(`lookups/states?${new URLSearchParams({ country })}`, signal);
 
-export const fetchTrialCities = (stateId: number, countryId: number, signal?: AbortSignal): Promise<TrialLookup[]> =>
-    getLookup(`lookups/cities?stateId=${stateId}&countryId=${countryId}`, signal);
+export const fetchTrialCities = (country: string, state: string, signal?: AbortSignal): Promise<TrialLocation[]> =>
+    getLookup<TrialLocation>(`lookups/cities?${new URLSearchParams({ country, state })}`, signal);
 
 /**
  * Whether the organisation name and username are still free. The server also
@@ -182,9 +193,9 @@ export const startFreeTrial = async (
             contactNo: request.contactNo.trim(),
             email: request.email.trim(),
             address: request.address.trim(),
-            countryId: request.countryId,
-            stateId: request.stateId,
-            cityId: request.cityId,
+            country: request.country,
+            state: request.state,
+            city: request.city,
             campusName: request.campusName.trim(),
             userName: request.userName.trim(),
             password: request.password,

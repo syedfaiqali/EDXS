@@ -12,7 +12,7 @@ import {
     TRIAL_DAYS, checkTrialAvailability, fetchTrialCities, fetchTrialCountries,
     fetchTrialModules, fetchTrialStates, trialEndDate
 } from '../../api/trial';
-import type { TrialLookup } from '../../api/trial';
+import type { TrialLocation, TrialLookup } from '../../api/trial';
 import type { TrialFormData } from './trialFormData';
 import type { SelectedOrg } from './types';
 
@@ -50,9 +50,9 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
     const { t, language } = useLanguage();
 
     const [modules, setModules] = useState<TrialLookup[]>([]);
-    const [countries, setCountries] = useState<TrialLookup[]>([]);
-    const [states, setStates] = useState<{ countryId: number; list: TrialLookup[] }>({ countryId: 0, list: [] });
-    const [cities, setCities] = useState<{ stateId: number; list: TrialLookup[] }>({ stateId: 0, list: [] });
+    const [countries, setCountries] = useState<TrialLocation[]>([]);
+    const [states, setStates] = useState<{ country: string; list: TrialLocation[] }>({ country: '', list: [] });
+    const [cities, setCities] = useState<{ key: string; list: TrialLocation[] }>({ key: '', list: [] });
     const [lookupError, setLookupError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [nameTaken, setNameTaken] = useState({ client: '', user: '' });
@@ -80,64 +80,66 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
         return () => controller.abort();
     }, []);
 
-    // States and cities narrow as the visitor picks, the way the back office's
-    // New Client screen does. The fetched list is keyed by the selection it was
+    // States and cities narrow as the visitor picks: the country's states, then
+    // that state's cities. Each fetched list is keyed by the selection it was
     // loaded for, so clearing the parent empties the child list on render rather
     // than through a second state write.
     useEffect(() => {
-        const countryId = Number(data.countryId);
-        if (!countryId) return;
+        const country = data.country;
+        if (!country) return;
 
         const controller = new AbortController();
-        fetchTrialStates(countryId, controller.signal)
-            .then(loaded => setStates({ countryId, list: loaded }))
-            .catch(() => setStates({ countryId, list: [] }));
+        fetchTrialStates(country, controller.signal)
+            .then(loaded => setStates({ country, list: loaded }))
+            .catch(() => setStates({ country, list: [] }));
 
         return () => controller.abort();
-    }, [data.countryId]);
+    }, [data.country]);
+
+    // Country and state together, as a state name can repeat across countries.
+    const cityKey = `${data.country}\n${data.state}`;
 
     useEffect(() => {
-        const countryId = Number(data.countryId);
-        const stateId = Number(data.stateId);
-        if (!countryId || !stateId) return;
+        if (!data.country || !data.state) return;
 
+        const key = cityKey;
         const controller = new AbortController();
-        fetchTrialCities(stateId, countryId, controller.signal)
-            .then(loaded => setCities({ stateId, list: loaded }))
-            .catch(() => setCities({ stateId, list: [] }));
+        fetchTrialCities(data.country, data.state, controller.signal)
+            .then(loaded => setCities({ key, list: loaded }))
+            .catch(() => setCities({ key, list: [] }));
 
         return () => controller.abort();
-    }, [data.countryId, data.stateId]);
+    }, [data.country, data.state, cityKey]);
 
     // Only the list that belongs to the current selection is offered; a list
     // left over from a previous country or state is ignored until it reloads.
     const stateOptions = useMemo(
-        () => (states.countryId === Number(data.countryId) ? states.list : []),
-        [states, data.countryId]
+        () => (states.country === data.country ? states.list : []),
+        [states, data.country]
     );
     const cityOptions = useMemo(
-        () => (cities.stateId === Number(data.stateId) ? cities.list : []),
-        [cities, data.stateId]
+        () => (cities.key === cityKey ? cities.list : []),
+        [cities, cityKey]
     );
 
     // The option elements are built once per list rather than on every render.
-    // There are 250 countries, and rebuilding them on each keystroke is enough
-    // to make typing anywhere else on the form feel laggy.
+    // There are over 200 countries, and some states have as many cities;
+    // rebuilding them on each keystroke makes typing elsewhere feel laggy.
     const countryItems = useMemo(
         () => countries.map(country => (
-            <MenuItem key={country.id} value={String(country.id)}>{country.name}</MenuItem>
+            <MenuItem key={country.name} value={country.name}>{country.name}</MenuItem>
         )),
         [countries]
     );
     const stateItems = useMemo(
         () => stateOptions.map(state => (
-            <MenuItem key={state.id} value={String(state.id)}>{state.name}</MenuItem>
+            <MenuItem key={state.name} value={state.name}>{state.name}</MenuItem>
         )),
         [stateOptions]
     );
     const cityItems = useMemo(
         () => cityOptions.map(city => (
-            <MenuItem key={city.id} value={String(city.id)}>{city.name}</MenuItem>
+            <MenuItem key={city.name} value={city.name}>{city.name}</MenuItem>
         )),
         [cityOptions]
     );
@@ -169,6 +171,13 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                 : [...moduleIds, moduleId]
         );
     }, [moduleIds, onModulesChange]);
+
+    const allModulesSelected = modules.length > 0 && modules.every(module => moduleIds.includes(module.id));
+    const someModulesSelected = !allModulesSelected && modules.some(module => moduleIds.includes(module.id));
+
+    const toggleAllModules = () => {
+        onModulesChange(allModulesSelected ? [] : modules.map(module => module.id));
+    };
 
     // Rebuilt only when the modules or the selection change, so typing in a text
     // field does not re-render every checkbox.
@@ -352,11 +361,13 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                                 <TextField
                                     fullWidth
                                     select
+                                    required
                                     label={t('country')}
-                                    value={countries.length ? data.countryId : ''}
-                                    onChange={(event) => onChange('countryId', event.target.value)}
+                                    value={countries.length ? data.country : ''}
+                                    onChange={(event) => onChange('country', event.target.value)}
                                     disabled={!countries.length}
-                                    helperText={countries.length ? '' : t('lookup_unavailable')}
+                                    error={!!errors.country}
+                                    helperText={errors.country ?? (countries.length ? '' : t('lookup_unavailable'))}
                                 >
                                     {countryItems}
                                 </TextField>
@@ -365,11 +376,13 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                                 <TextField
                                     fullWidth
                                     select
+                                    required
                                     label={t('state')}
-                                    value={stateOptions.length ? data.stateId : ''}
-                                    onChange={(event) => onChange('stateId', event.target.value)}
+                                    value={stateOptions.length ? data.state : ''}
+                                    onChange={(event) => onChange('state', event.target.value)}
                                     disabled={!stateOptions.length}
-                                    helperText={data.countryId ? '' : t('select_country_first')}
+                                    error={!!errors.state}
+                                    helperText={errors.state ?? (data.country ? '' : t('select_country_first'))}
                                 >
                                     {stateItems}
                                 </TextField>
@@ -378,11 +391,13 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                                 <TextField
                                     fullWidth
                                     select
+                                    required
                                     label={t('city')}
-                                    value={cityOptions.length ? data.cityId : ''}
-                                    onChange={(event) => onChange('cityId', event.target.value)}
+                                    value={cityOptions.length ? data.city : ''}
+                                    onChange={(event) => onChange('city', event.target.value)}
                                     disabled={!cityOptions.length}
-                                    helperText={data.stateId ? '' : t('select_state_first')}
+                                    error={!!errors.city}
+                                    helperText={errors.city ?? (data.state ? '' : t('select_state_first'))}
                                 >
                                     {cityItems}
                                 </TextField>
@@ -482,9 +497,27 @@ const TrialSignupForm: React.FC<TrialSignupFormProps> = ({
                                 {t('modules_unavailable')}
                             </Typography>
                         ) : (
-                            <Grid container>
-                                {moduleItems}
-                            </Grid>
+                            <>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={allModulesSelected}
+                                            indeterminate={someModulesSelected}
+                                            onChange={toggleAllModules}
+                                            sx={{
+                                                color: selectedOrg.color,
+                                                '&.Mui-checked, &.MuiCheckbox-indeterminate': { color: selectedOrg.color }
+                                            }}
+                                        />
+                                    }
+                                    label={t('select_all_modules')}
+                                    sx={{ mb: 1, '& .MuiFormControlLabel-label': { fontWeight: 700 } }}
+                                />
+                                <Divider sx={{ mb: 1 }} />
+                                <Grid container>
+                                    {moduleItems}
+                                </Grid>
+                            </>
                         )}
                         {errors.clientName === undefined && moduleIds.length === 0 && modules.length > 0 && (
                             <Typography variant="caption" color="text.secondary">
