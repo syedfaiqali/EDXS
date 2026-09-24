@@ -5,7 +5,7 @@ import {
     MenuBook, Calculate, Functions, HistoryEdu, Science,
     AutoStories, Psychology, Architecture, Language, Draw
 } from '@mui/icons-material';
-import xsLogo from '../assets/xs_square_light.webp';
+import xsLogo from '../assets/xs_square_light.png';
 import { useLanguage } from '../contexts/LanguageContext';
 
 import OrgSelectionGrid from '../components/landing/OrgSelectionGrid';

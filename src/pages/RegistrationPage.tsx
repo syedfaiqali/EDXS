@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Box, Container, keyframes, Typography } from '@mui/material';
-import xsLogo from '../assets/xs_square_light.webp';
+import xsLogo from '../assets/xs_square_light.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../store';

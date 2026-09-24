@@ -111,6 +111,14 @@ export interface DemoEnquiryRequest {
     organisationName?: string;
     message?: string;
     numberOfPersons: number;
+    collectedBy?: string;
+    contactPerson?: string;
+    city?: string;
+    numberOfCampuses?: number | null;
+    studentStrength?: number | null;
+    citiesOfOperation?: string;
+    interestedIn?: string[];
+    notes?: string;
     entityId?: number;
 }
 
@@ -350,6 +358,14 @@ export const submitDemoEnquiry = async (
                 organisationName: request.organisationName,
                 message: request.message,
                 numberOfPersons: request.numberOfPersons,
+                collectedBy: request.collectedBy,
+                contactPerson: request.contactPerson,
+                city: request.city,
+                numberOfCampuses: request.numberOfCampuses,
+                studentStrength: request.studentStrength,
+                citiesOfOperation: request.citiesOfOperation,
+                interestedIn: request.interestedIn,
+                notes: request.notes,
                 entityId: request.entityId
             })
         }

@@ -15,7 +15,7 @@ import {
     DeleteOutline,
     Send,
 } from '@mui/icons-material';
-import navbarLogo from '../assets/edxs-navbar-logo.webp';
+import navbarLogo from '../assets/edxs-navbar-logo.png';
 
 type ChatMessage = {
     id: string;

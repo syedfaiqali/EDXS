@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Box, Typography, Grid, Button, Container, keyframes } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import heroImage from '../../assets/HeroImage.webp';
+import heroImage from '../../assets/HeroImage.png';
 
 const float = keyframes`
   0% { transform: translateY(0); }
