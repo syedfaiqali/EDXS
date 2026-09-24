@@ -1,7 +1,7 @@
 /**
  * Careers board data, read from the EDXS gateway.
  *
- * The shapes here mirror the DTOs returned by `GET /api/public/careers`
+ * The shapes here mirror the DTOs returned by `GET /api/auth/public/careers`
  * (Auth.Service `PublicCareersController`). Only vacancies a client is already
  * advertising are returned, so everything in this file is public information.
  */
@@ -91,7 +91,7 @@ export const fetchCareers = async (
     if (filters.pageSize) params.set('pageSize', String(filters.pageSize));
 
     const query = params.toString();
-    const response = await fetch(`${API_BASE_URL}/api/public/careers${query ? `?${query}` : ''}`, {
+    const response = await fetch(`${API_BASE_URL}/api/auth/public/careers${query ? `?${query}` : ''}`, {
         signal,
         headers: { Accept: 'application/json' }
     });
@@ -165,7 +165,7 @@ export const fetchCareerApplicationStatus = async (
     signal?: AbortSignal
 ): Promise<CareerApplicationStatus | null> => {
     const response = await fetch(
-        `${API_BASE_URL}/api/public/careers/${encodeURIComponent(clientCode)}/status/${encodeURIComponent(token)}`,
+        `${API_BASE_URL}/api/auth/public/careers/${encodeURIComponent(clientCode)}/status/${encodeURIComponent(token)}`,
         { signal, headers: { Accept: 'application/json' } }
     );
 

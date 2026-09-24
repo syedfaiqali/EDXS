@@ -97,7 +97,7 @@ const describeFailure = async (response: Response): Promise<string> => {
 };
 
 const getLookup = async (path: string, signal?: AbortSignal): Promise<TrialLookup[]> => {
-    const response = await fetch(`${API_BASE_URL}/api/public/trial/${path}`, {
+    const response = await fetch(`${API_BASE_URL}/api/auth/public/trial/${path}`, {
         headers: { Accept: 'application/json' },
         signal
     });
@@ -137,7 +137,7 @@ export const checkTrialAvailability = async (
     if (userName.trim()) query.set('userName', userName.trim());
 
     const response = await fetch(
-        `${API_BASE_URL}/api/public/trial/availability?${query.toString()}`,
+        `${API_BASE_URL}/api/auth/public/trial/availability?${query.toString()}`,
         { headers: { Accept: 'application/json' }, signal }
     );
 
@@ -165,7 +165,7 @@ export const startFreeTrial = async (
     request: TrialSignupRequest,
     signal?: AbortSignal
 ): Promise<TrialSignupResult> => {
-    const response = await fetch(`${API_BASE_URL}/api/public/trial`, {
+    const response = await fetch(`${API_BASE_URL}/api/auth/public/trial`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -53,7 +53,7 @@ export interface AdmissionRegister {
  * into the board response.
  */
 export const schoolLogoUrl = (schoolCode: string): string =>
-    `${API_BASE_URL}/api/public/admission/schools/${encodeURIComponent(schoolCode)}/logo`;
+    `${API_BASE_URL}/api/FrontOffice/public/admission/schools/${encodeURIComponent(schoolCode)}/logo`;
 
 export interface AdmissionSchoolFacet {
     code: string;
@@ -158,7 +158,7 @@ export interface AdmissionSchool {
  * school in the list.
  */
 export const fetchAdmissionSchools = async (signal?: AbortSignal): Promise<AdmissionSchool[]> => {
-    const response = await fetch(`${API_BASE_URL}/api/public/admission/schools`, {
+    const response = await fetch(`${API_BASE_URL}/api/FrontOffice/public/admission/schools`, {
         signal,
         headers: { Accept: 'application/json' }
     });
@@ -218,7 +218,7 @@ export const fetchProgramDetail = async (
     signal?: AbortSignal
 ): Promise<AdmissionProgramDetail> => {
     const response = await fetch(
-        `${API_BASE_URL}/api/public/admission/registers/${registerId}/programs/${programId}`,
+        `${API_BASE_URL}/api/FrontOffice/public/admission/registers/${registerId}/programs/${programId}`,
         { signal, headers: { Accept: 'application/json' } }
     );
 
@@ -257,7 +257,7 @@ export const fetchAdmissionBoard = async (
 
     const query = params.toString();
     const response = await fetch(
-        `${API_BASE_URL}/api/public/admission/registers${query ? `?${query}` : ''}`,
+        `${API_BASE_URL}/api/FrontOffice/public/admission/registers${query ? `?${query}` : ''}`,
         { signal, headers: { Accept: 'application/json' } }
     );
 
@@ -279,7 +279,7 @@ export const fetchRegister = async (
     registerId: number,
     signal?: AbortSignal
 ): Promise<AdmissionRegister | null> => {
-    const response = await fetch(`${API_BASE_URL}/api/public/admission/registers/${registerId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/FrontOffice/public/admission/registers/${registerId}`, {
         signal,
         headers: { Accept: 'application/json' }
     });
@@ -302,7 +302,7 @@ export const submitAdmissionEnquiry = async (
     signal?: AbortSignal
 ): Promise<AdmissionEnquiryResult> => {
     const response = await fetch(
-        `${API_BASE_URL}/api/public/admission/${encodeURIComponent(code)}/enquiries`,
+        `${API_BASE_URL}/api/FrontOffice/public/admission/${encodeURIComponent(code)}/enquiries`,
         {
             method: 'POST',
             signal,
@@ -338,7 +338,7 @@ export const submitDemoEnquiry = async (
     }
 
     const response = await fetch(
-        `${API_BASE_URL}/api/public/admission/${encodeURIComponent(clientCode)}/website-demo`,
+        `${API_BASE_URL}/api/FrontOffice/public/admission/${encodeURIComponent(clientCode)}/website-demo`,
         {
             method: 'POST',
             signal,
@@ -372,7 +372,7 @@ export const fetchAdmissionStatus = async (
     signal?: AbortSignal
 ): Promise<AdmissionStatus | null> => {
     const response = await fetch(
-        `${API_BASE_URL}/api/public/admission/${encodeURIComponent(code)}/status/${encodeURIComponent(token)}`,
+        `${API_BASE_URL}/api/FrontOffice/public/admission/${encodeURIComponent(code)}/status/${encodeURIComponent(token)}`,
         { signal, headers: { Accept: 'application/json' } }
     );
 
